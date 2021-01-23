@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intsa", "Intsa\Intsa.csproj", "{B53D1138-DF07-4ADC-BB2C-D9284B05F061}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intsa", "Intsa\Intsa.csproj", "{A575D04C-A395-40DD-B78A-3A75CF460DBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B53D1138-DF07-4ADC-BB2C-D9284B05F061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B53D1138-DF07-4ADC-BB2C-D9284B05F061}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B53D1138-DF07-4ADC-BB2C-D9284B05F061}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B53D1138-DF07-4ADC-BB2C-D9284B05F061}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A575D04C-A395-40DD-B78A-3A75CF460DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A575D04C-A395-40DD-B78A-3A75CF460DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A575D04C-A395-40DD-B78A-3A75CF460DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A575D04C-A395-40DD-B78A-3A75CF460DBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
