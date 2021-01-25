@@ -1,5 +1,14 @@
 ﻿@page "/"
 
-<h1>안녕하세요!</h1>
+@inject NavigationManager NavigationManagerInjector
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+
+@code {
+    
+    protected override void OnInitialized()
+    {
+        @*NavigationManagerInjector.NavigateTo("/Home", true);*@
+    }
+
+} 
