@@ -1,0 +1,107 @@
+﻿@page "/Boards/Notices"
+@page "/Boards/Notices/Index"
+
+<ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">HOME</a></li>
+    <li class="breadcrumb-item">BOARDS</li>
+    <li class="breadcrumb-item active">NOTICE</li>
+</ul>
+
+<h1 class="page-header">
+    Notice <small>사내 공지사항</small>
+</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <AuthorizeView>
+            <Authorized>
+
+            </Authorized>
+            <NotAuthorized>
+
+                <!-- BEGIN #responsiveTables -->
+                <div id="responsiveTables" class="mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
+                        <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Heading</th>
+                                        <th scope="col">Heading</th>
+                                        <th scope="col">Heading</th>
+                                        <th scope="col">Heading</th>
+                                        <th scope="col">Heading</th>
+                                        <th scope="col">Heading</th>
+                                        <th scope="col">Heading</th>
+                                        <th scope="col">Heading</th>
+                                        <th scope="col">Heading</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                        <td>Cell</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                 </div>
+            </div>
+            <!-- END #responsiveTables -->
+
+            </NotAuthorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Administrators, Managers">
+            <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
+        </AuthorizeView>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+    </div>
+    <div class="col-md-12">
+    </div>
+
+</div>

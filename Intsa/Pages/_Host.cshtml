@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Intsa</title>
+    <title>INT, S.A.</title>
     <base href="~/" />
     @*<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
         <link href="css/site.css" rel="stylesheet" />*@
@@ -22,9 +22,9 @@
     <!-- ================== END core-css ================== -->
 
 </head>
-<body>
+<body data-spy='scroll' data-target='#sidebar-bootstrap' data-offset='200'>
     <!-- BEGIN #app -->
-    <div id="app" class="app">
+    <div id="app" class="app app-content-full-height">
         <!-- BEGIN #header -->
         <div id="header" class="app-header">
             <!-- BEGIN mobile-toggler -->
@@ -44,8 +44,9 @@
                     </button>
                 </div>
 
-                <a href="#" class="brand-logo">
-                    <img src="/templates/dashboard/assets/img/logo.png" alt="" height="20" />
+                <a href="/Dashboard" class="brand-logo">
+                    @*<img src="/templates/dashboard/assets/img/logo.png" alt="" height="20" />*@
+                    <h4>INT, S.A.</h4>
                 </a>
             </div>
             <!-- END brand -->
@@ -145,44 +146,39 @@
                 <div class="menu">
                     <div class="menu-header">Navigation</div>
                     <div class="menu-item active">
-                        <a href="index.html" class="menu-link">
+                        <a href="/Dashboard" class="menu-link">
                             <span class="menu-icon"><i class="fa fa-laptop"></i></span>
                             <span class="menu-text">Dashboard</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a href="analytics.html" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-chart-pie"></i></span>
-                            <span class="menu-text">Analytics</span>
                         </a>
                     </div>
                     <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
                             <span class="menu-icon">
-                                <i class="fa fa-envelope"></i>
-                                <span class="menu-icon-label">6</span>
+                                <i class="fa fa-book-reader"></i>
+                                <span class="menu-icon-label">3</span>
                             </span>
-                            <span class="menu-text">Email</span>
+                            <span class="menu-text">INT Boards</span>
                             <span class="menu-caret"><b class="caret"></b></span>
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="email_inbox.html" class="menu-link">
-                                    <span class="menu-text">Inbox</span>
+                                <a href="/Boards/Notices" class="menu-link">
+                                    <span class="menu-text">Notice</span>
                                 </a>
                             </div>
                             <div class="menu-item">
                                 <a href="email_compose.html" class="menu-link">
-                                    <span class="menu-text">Compose</span>
+                                    <span class="menu-text">General & Suggestions</span>
                                 </a>
                             </div>
                             <div class="menu-item">
                                 <a href="email_detail.html" class="menu-link">
-                                    <span class="menu-text">Detail</span>
+                                    <span class="menu-text">Survey Board</span>
                                 </a>
                             </div>
                         </div>
                     </div>
+                    
                     <div class="menu-divider"></div>
                     <div class="menu-header">Components</div>
                     <div class="menu-item">
@@ -407,11 +403,6 @@
                             <span class="menu-text">Helper</span>
                         </a>
                     </div>
-                    <div class="p-3 px-4 mt-auto hide-on-minified">
-                        <a href="../../documentation/index.html" class="btn btn-block btn-secondary font-weight-600 rounded-pill">
-                            <i class="fa fa-code-branch mr-1 ml-n1 opacity-5"></i> Documentation
-                        </a>
-                    </div>
                 </div>
                 <!-- END menu -->
             </div>
@@ -422,7 +413,7 @@
         </div>
         <!-- END #sidebar -->
         <!-- BEGIN #content -->
-        <div id="content" class="app-content">
+        <div id="content" class="app-content" data-scrollbar="true" data-height="100%" data-skip-mobile="true">
             <app>
                 <div>
                     <component type="typeof(App)" render-mode="ServerPrerendered" />
@@ -438,7 +429,7 @@
     <!-- END #app -->
 
 
-    <div id="blazor-error-ui">
+    @*<div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.
         </environment>
@@ -447,7 +438,7 @@
         </environment>
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
-    </div>
+    </div>*@
 
     <script src="_framework/blazor.server.js"></script>
 
