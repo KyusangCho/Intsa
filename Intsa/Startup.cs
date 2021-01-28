@@ -1,5 +1,6 @@
 using Intsa.Areas.Identity;
 using Intsa.Data;
+using Intsa.Models.Boards;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -42,6 +43,26 @@ namespace Intsa
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
+
+            AddDependencyInjectionContainerForBoards(services); 
+
+        }
+
+        /// <summary>
+        /// 공지사항 관련 의존성 주입 관련 코드 별도 관리 
+        /// </summary>
+        /// <param name="services"></param>
+        private void AddDependencyInjectionContainerForBoards(IServiceCollection services)
+        {
+            // Board > NoticeAppDbContext.cs Inject: New Dbcontext Add
+            services.AddEntityFrameworkSqlServer().AddDbContext<NoticeAppDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")); 
+            }); 
+
+
+            // INoticeRepositoryAsync Inject: DI컨테이너에 서비스(리포지토리) 등록
+            services.AddTransient<INoticeRepositoryAsync, NoticeRepositoryAsync>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

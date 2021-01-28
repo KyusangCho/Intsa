@@ -19,89 +19,76 @@
             </Authorized>
             <NotAuthorized>
 
+                @if (models == null) { 
+                    <p><em>Loading...</em></p>
+                    <div>
+                        <MatProgressBar Indeterminate="true"></MatProgressBar>
+                    </div>
+                }
+                else
+                {
                 <!-- BEGIN #responsiveTables -->
                 <div id="responsiveTables" class="mb-5">
-                <div class="card">
-                    <div class="card-header">
-                        <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
-                        <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Heading</th>
-                                        <th scope="col">Heading</th>
-                                        <th scope="col">Heading</th>
-                                        <th scope="col">Heading</th>
-                                        <th scope="col">Heading</th>
-                                        <th scope="col">Heading</th>
-                                        <th scope="col">Heading</th>
-                                        <th scope="col">Heading</th>
-                                        <th scope="col">Heading</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                        <td>Cell</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
+                            <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
                         </div>
-                    </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive table-hover">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Created</th>
+                                                    <th scope="col">&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var m in models)
+                                                {
+                                                    <tr>
+                                                        <th scope="row">@m.Id</th>
+                                                        <td @onclick="@(()=> NameClick(m.Id))">
+                                                            <a href="/Boards/Notices/Details/@m.Id">
+                                                                @m.Title
+                                                            </a>
+                                                        </td>
+                                                        <td>@m.Name</td>
+                                                        <td>@m.Created?.ToShortDateString()</td>
+                                                        <td>
+                                                            <a href="/Boards/Notices/Details/@m.Id" class="btn btn-light">Details</a>
+                                                            <a href="/Boards/Notices/Edit/@m.Id" class="btn btn-light">Edit</a>
+                                                            <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-danger">Delete</a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
+                                </div>
+                            </div>
 
-                 </div>
-            </div>
-            <!-- END #responsiveTables -->
+                            
+                        </div>
+
+                     </div>
+                </div>
+                <!-- END #responsiveTables -->
+                }
 
             </NotAuthorized>
         </AuthorizeView>
         <AuthorizeView Roles="Administrators, Managers">
             <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
         </AuthorizeView>
-    </div>
-
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-    </div>
-    <div class="col-md-12">
     </div>
 
 </div>
