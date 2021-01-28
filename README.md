@@ -3,6 +3,7 @@
 
 ### 01 Admin, User 페이지분리, Aspstudio 템플릿 적용
 
+### 02 Board > Notice 공지사항 게시판관련 모델, 리포지토리, WebApi 추가 
 
 
 
