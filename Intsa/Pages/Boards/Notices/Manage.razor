@@ -1,5 +1,107 @@
-﻿@page "/Boards/Notices/Manage" 
+﻿@page "/Boards/Notices/Manage"
 
-<h3>Manage</h3>
+<ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">HOME</a></li>
+    <li class="breadcrumb-item">BOARDS</li>
+    <li class="breadcrumb-item">NOTICE</li>
+    <li class="breadcrumb-item active">MANAGE</li>
+</ul>
 
+<h1 class="page-header">
+    Manage <small>사내 공지사항 -  관리자 페이지</small>
+</h1>
 
+<div class="row">
+    <div class="col-md-12">
+        
+        @if (models == null)
+        {
+            <p><em>Loading...</em></p>
+            <div>
+                <MatProgressBar Indeterminate="true"></MatProgressBar>
+            </div>
+        }
+        else
+        {
+            <!-- BEGIN #responsiveTables -->
+            <div id="responsiveTables" class="mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
+                        <AuthorizeView>
+                            <Authorized>
+                            </Authorized>
+                            <NotAuthorized>
+                                <a href="/Boards/Notices" class="btn btn-primary">List</a>
+                                <input type="button" name="btnCreate" value="Create with Modal" 
+                                       class="btn btn-primary" 
+                                       @onclick="ShowEditorForm" />
+                            </NotAuthorized>
+                        </AuthorizeView>
+                        <AuthorizeView Roles="Administrators, Managers">
+                            <a href="/Boards/Notices" class="btn btn-primary">List</a>
+                        </AuthorizeView>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive table-hover">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Created</th>
+                                                <th scope="col">Action</th>
+                                                <th>Admin</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var m in models)
+                                            {
+                                                <tr>
+                                                    <th scope="row">@m.Id</th>
+                                                    <td @onclick="@(()=> NameClick(m.Id))">
+                                                        <a href="/Boards/Notices/Details/@m.Id">
+                                                            @m.Title
+                                                        </a>
+                                                    </td>
+                                                    <td>@m.Name</td>
+                                                    <td>@m.Created?.ToShortDateString()</td>
+                                                    <td>
+                                                        <a href="/Boards/Notices/Details/@m.Id" class="btn btn-light">Details</a>
+                                                        <a href="/Boards/Notices/Edit/@m.Id" class="btn btn-light">Edit</a>
+                                                        <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-danger">Delete</a>
+                                                    </td>
+                                                    <td>
+                                                        <input type="button" name="btnEdit" value="Edit with Modal"
+                                                               class="btn btn-primary"
+                                                               @onclick="@(() => EditBy(m))" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
+                            </div>
+                        </div>
+
+                        <Intsa.Pages.Boards.Notices.Components.EditorForm
+                            @ref="EditorFormReference" 
+                            Model="model"
+                            CreateCallback="CreateOrEdit"
+                            EditCallback="CreateOrEdit"
+                            >
+                            <EditorFormTitle>@EditorFormTitle</EditorFormTitle>
+                        </Intsa.Pages.Boards.Notices.Components.EditorForm>
+                    </div>
+                </div>
+            </div>
+            <!-- END #responsiveTables -->
+        }
+    </div>
+</div>
