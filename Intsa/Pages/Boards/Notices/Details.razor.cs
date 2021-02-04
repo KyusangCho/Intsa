@@ -1,14 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Intsa.Models.Boards;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace Intsa.Pages.Boards.Notices
 {
     public partial class Details
     {
-        protected override void OnInitialized()
+        [Parameter]
+        public int Id { get; set; }
+
+        [Inject]
+        public INoticeRepositoryAsync NoticeRepositoryAsyncReference { get; set; }
+
+        protected BoardNotices model = new BoardNotices();
+
+        protected string content = ""; 
+
+        protected override async Task OnInitializedAsync()
         {
+            model = await NoticeRepositoryAsyncReference.GetByIdAsync(Id);
+            content = Dul.HtmlUtility.EncodeWithTabAndSpace(model.Content); 
 
         }
     }

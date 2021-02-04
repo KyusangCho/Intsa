@@ -26,6 +26,7 @@ namespace Intsa.Models.Boards
         public async Task<BoardNotices> AddAsync(BoardNotices model)
         {
             _context.BoardNotices.Add(model);
+
             try
             {
                 await _context.SaveChangesAsync(); 
