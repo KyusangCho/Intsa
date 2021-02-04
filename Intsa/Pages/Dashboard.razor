@@ -786,53 +786,7 @@
         </div>
         <!-- 결재 반려목록 END card -->
 
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="table-responsive table-hover">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Created</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var m in models)
-                                    {
-                                        <tr>
-                                            <td scope="row" class="text-dark">@m.Id</td>
-                                            <td @onclick="@(()=> NameClick(m.Id))">
-                                                <a href="/Boards/Notices/Details/@m.Id" class="text-dark">
-                                                    @m.Title
-                                                </a>
-                                            </td>
-                                            <td>@m.Name</td>
-                                            <td>@m.Created?.ToShortDateString()</td>
-                                            <td>
-                                                <a href="/Boards/Notices/Details/@m.Id" class="btn btn-light">Details</a>
-                                                <a href="/Boards/Notices/Edit/@m.Id" class="btn btn-light">Edit</a>
-                                                <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-danger">Delete</a>
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
-                    </div>
-                </div>
-
-
-            </div>
-
-        </div>
+        
     </div>
     <!-- END col-6 -->
 </div>
