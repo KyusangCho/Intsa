@@ -16,6 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Syncfusion.Blazor;
+using BlazorDemos.Shared;
 
 namespace Intsa
 {
@@ -41,15 +43,16 @@ namespace Intsa
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddSyncfusionBlazor(); 
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-            services.AddSingleton<WeatherForecastService>();
-
+            services.AddScoped<SampleService>(); 
+            
             AddDependencyInjectionContainerForBoards(services); 
 
         }
 
         /// <summary>
-        /// °øÁö»çÇ× °ü·Ã ÀÇÁ¸¼º ÁÖÀÔ °ü·Ã ÄÚµå º°µµ °ü¸® 
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
         /// </summary>
         /// <param name="services"></param>
         private void AddDependencyInjectionContainerForBoards(IServiceCollection services)
@@ -61,7 +64,7 @@ namespace Intsa
             }); 
 
 
-            // INoticeRepositoryAsync Inject: DIÄÁÅ×ÀÌ³Ê¿¡ ¼­ºñ½º(¸®Æ÷ÁöÅä¸®) µî·Ï
+            // INoticeRepositoryAsync Inject: DIï¿½ï¿½ï¿½ï¿½ï¿½Ì³Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä¸®) ï¿½ï¿½ï¿½
             services.AddTransient<INoticeRepositoryAsync, NoticeRepositoryAsync>(); 
         }
 

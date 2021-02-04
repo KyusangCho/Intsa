@@ -45,16 +45,16 @@
                                                     <th scope="col">Title</th>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Created</th>
-                                                    <th scope="col">&nbsp;</th>
+                                                    <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach (var m in models)
                                                 {
                                                     <tr>
-                                                        <th scope="row">@m.Id</th>
+                                                        <td scope="row" class="text-dark">@m.Id</td>
                                                         <td @onclick="@(()=> NameClick(m.Id))">
-                                                            <a href="/Boards/Notices/Details/@m.Id">
+                                                            <a href="/Boards/Notices/Details/@m.Id" class="text-dark">
                                                                 @m.Title
                                                             </a>
                                                         </td>

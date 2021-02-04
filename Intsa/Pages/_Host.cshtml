@@ -3,6 +3,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = null;
+    string menuController = "root"; 
 }
 
 <!DOCTYPE html>
@@ -16,7 +17,7 @@
     <base href="~/" />
     @*<link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
         <link href="css/site.css" rel="stylesheet" />*@
-
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/blazor/18.4.30/styles/bootstrap4.css?_ga=2.192766442.1526098423.1612211511-1909562544.1612211511" />
     <!-- ================== BEGIN core-css ================== -->
     <link href="/templates/dashboard/assets/css/app.min.css" rel="stylesheet" />
     <script src="_content/MatBlazor/dist/matBlazor.js"></script>
@@ -130,9 +131,10 @@
                     <div class="dropdown-menu dropdown-menu-right mr-lg-3">
                         <a class="dropdown-item d-flex align-items-center" href="#">Edit Profile <i class="fa fa-user-circle fa-fw ml-auto text-gray-400 f-s-16"></i></a>
                         <a class="dropdown-item d-flex align-items-center" href="#">Inbox <i class="fa fa-envelope fa-fw ml-auto text-gray-400 f-s-16"></i></a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">Calendar <i class="fa fa-calendar-alt fa-fw ml-auto text-gray-400 f-s-16"></i></a>
+                        <a class="dropdown-item d-flex align-items-center" href="/CustomTemplate">Calendar <i class="fa fa-calendar-alt fa-fw ml-auto text-gray-400 f-s-16"></i></a>
                         <a class="dropdown-item d-flex align-items-center" href="#">Setting <i class="fa fa-wrench fa-fw ml-auto text-gray-400 f-s-16"></i></a>
                         <div class="dropdown-divider"></div>
+                        <a class="dropdown-item d-flex align-items-center" href="templates/dashboard/page_login.html">Log In <i class="fa fa-toggle-off fa-fw ml-auto text-gray-400 f-s-16"></i></a>
                         <a class="dropdown-item d-flex align-items-center" href="#">Log Out <i class="fa fa-toggle-off fa-fw ml-auto text-gray-400 f-s-16"></i></a>
                     </div>
                 </div>
@@ -147,12 +149,371 @@
                 <!-- BEGIN menu -->
                 <div class="menu">
                     <div class="menu-header">Navigation</div>
-                    <div class="menu-item active">
+                    <div class="menu-item @(menuController == "root" ? "active" : "")">
                         <a href="/Dashboard" class="menu-link">
                             <span class="menu-icon"><i class="fa fa-laptop"></i></span>
                             <span class="menu-text">Dashboard</span>
                         </a>
                     </div>
+                    <div class="menu-divider"></div>
+                    <!-- #region 영업관리 -->
+                    <!-- 영업관리 BEGIN menu -->
+                    <div class="menu-header">Sales & Distributtion</div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">File number management</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Order Status</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Shipment</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Billing & Payment</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Analysis</span>
+                        </a>
+                    </div>
+                    <!-- 영업관리 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 생산관리 -->
+                    <!-- 생산관리 BEGIN menu -->
+                    <div class="menu-header">Production Planning</div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Work Order Plan</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Work Order Sheet</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Billing & Payment</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Analysis</span>
+                        </a>
+                    </div>
+                    <!-- 생산관리 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 자재관리 -->
+                    <!-- 자재관리 BEGIN menu -->
+                    <div class="menu-header">Materials Management</div>
+                    <div class="menu-item has-sub">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Purchase Requisition</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Yarn</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Fabric</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Trim</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item has-sub">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Purchase Order</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Yarn</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Fabric</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Trim</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item has-sub">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Movement Management</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Yarn</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Fabric</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Trim</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item has-sub">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Inventory Management</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Yarn</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Fabric</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Trim</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Billing & Payment</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Analysis</span>
+                        </a>
+                    </div>
+                    <!-- 자재관리 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 공장 라인맵 -->
+                    <!-- 공장 라인맵 BEGIN menu -->
+                    <div class="menu-header">Line Map</div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Order</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Line Planning</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/CustomLine" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Line Map</span>
+                        </a>
+                    </div>
+
+                    <div class="menu-item has-sub">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Settings</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Factory</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Calendar</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Buyer</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Department</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Line</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fas fa-file"></i></span>
+                            <span class="menu-text">Analysis</span>
+                        </a>
+                    </div>
+                    <!-- 공장 라인맵 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 물류관리 -->
+                    <!-- 물류관리 BEGIN menu -->
+                    <div class="menu-header">Logistics Management</div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text"></span>
+                        </a>
+                    </div>
+
+                    <!-- 물류관리 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 동시관리 -->
+                    <!-- 동시관리 BEGIN menu -->
+                    <div class="menu-header">Concur Management</div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Motor & Panel</span>
+                        </a>
+                    </div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Metting Room</span>
+                        </a>
+                    </div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Voucher</span>
+                        </a>
+                    </div>
+
+                    <!-- 동시관리 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 자금관리 -->
+                    <!-- 자금관리 BEGIN menu -->
+                    <div class="menu-header">Treasury</div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Invoice</span>
+                        </a>
+                    </div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Voucher</span>
+                        </a>
+                    </div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Analysis</span>
+                        </a>
+                    </div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Treasury Management</span>
+                        </a>
+                    </div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Treasury Plan</span>
+                        </a>
+                    </div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Treasury Calendar</span>
+                        </a>
+                    </div>
+
+                    <!-- 자금관리 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 관리회계 -->
+                    <!-- 관리회계 BEGIN menu -->
+                    <div class="menu-header">Controlling</div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text"></span>
+                        </a>
+                    </div>
+
+                    <!-- 관리회계 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 품질관리 -->
+                    <!-- 품질관리 BEGIN menu -->
+                    <div class="menu-header">Quality Management</div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text"></span>
+                        </a>
+                    </div>
+
+                    <!-- 품질관리 END menu -->
+                    <!-- #endregion -->
+                    <div class="menu-divider"></div>
+                    <!-- #region 인적자원관리 -->
+                    <!-- 인적자원관리 BEGIN menu -->
+                    <div class="menu-header">Human Resources</div>
+
+                    <!-- #region 게시판 -->
+
                     <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
                             <span class="menu-icon">
@@ -170,241 +531,283 @@
                             </div>
                             <div class="menu-item">
                                 <a href="email_compose.html" class="menu-link">
-                                    <span class="menu-text">General & Suggestions</span>
+                                    <span class="menu-text">Suggestions</span>
                                 </a>
                             </div>
                             <div class="menu-item">
                                 <a href="email_detail.html" class="menu-link">
-                                    <span class="menu-text">Survey Board</span>
+                                    <span class="menu-text">Survey</span>
                                 </a>
                             </div>
                         </div>
                     </div>
-                    
+
+                    <!-- #endregion -->
+
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Payroll Personal</span>
+                        </a>
+                    </div>
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Analysis</span>
+                        </a>
+                    </div>
+
+                    <!-- 인적자원관리 END menu -->
+                    <!-- #endregion -->
                     <div class="menu-divider"></div>
-                    <div class="menu-header">Components</div>
-                    <div class="menu-item">
-                        <a href="widgets.html" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-qrcode"></i></span>
-                            <span class="menu-text">Widgets</span>
-                        </a>
-                    </div>
+                    <!-- #region 기본설정 및 코드관리 -->
+                    <!-- 기본정보 BEGIN menu -->
+                    <div class="menu-header">Settings & Codes</div>
                     <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-heart"></i></span>
-                            <span class="menu-text">UI Kits</span>
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
+                            <span class="menu-text">Organization</span>
                             <span class="menu-caret"><b class="caret"></b></span>
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="ui_bootstrap.html" class="menu-link">
-                                    <span class="menu-text">Bootstrap</span>
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Cost Center</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="ui_buttons.html" class="menu-link">
-                                    <span class="menu-text">Buttons</span>
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Department</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="ui_card.html" class="menu-link">
-                                    <span class="menu-text">Card</span>
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Team</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="ui_icons.html" class="menu-link">
-                                    <span class="menu-text">Icons</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="ui_modal_notification.html" class="menu-link">
-                                    <span class="menu-text">Modal & Notification</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="ui_typography.html" class="menu-link">
-                                    <span class="menu-text">Typography</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="ui_tabs_accordions.html" class="menu-link">
-                                    <span class="menu-text">Tabs & Accordions</span>
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">User & Auth</span>
                                 </a>
                             </div>
                         </div>
                     </div>
                     <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-file-alt"></i></span>
-                            <span class="menu-text">Forms</span>
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
+                            <span class="menu-text">Customer</span>
                             <span class="menu-caret"><b class="caret"></b></span>
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="form_elements.html" class="menu-link">
-                                    <span class="menu-text">Form Elements</span>
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Buyer</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="form_plugins.html" class="menu-link">
-                                    <span class="menu-text">Form Plugins</span>
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Supplier</span>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="menu-item has-sub">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
+                            <span class="menu-text">Organization</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Cost Center</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="form_wizards.html" class="menu-link">
-                                    <span class="menu-text">Wizards</span>
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Department</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Team</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">User & Auth</span>
                                 </a>
                             </div>
                         </div>
                     </div>
                     <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-table"></i></span>
-                            <span class="menu-text">Tables</span>
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
+                            <span class="menu-text">Codes</span>
                             <span class="menu-caret"><b class="caret"></b></span>
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="table_elements.html" class="menu-link">
-                                    <span class="menu-text">Table Elements</span>
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Yarn</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="table_plugins.html" class="menu-link">
-                                    <span class="menu-text">Table Plugins</span>
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Fabric Type</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Other Codes</span>
                                 </a>
                             </div>
                         </div>
                     </div>
+
                     <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-chart-bar"></i></span>
-                            <span class="menu-text">Charts</span>
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
+                            <span class="menu-text">Size & Template</span>
                             <span class="menu-caret"><b class="caret"></b></span>
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="chart_js.html" class="menu-link">
-                                    <span class="menu-text">Chart.js</span>
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Size</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="chart_apex.html" class="menu-link">
-                                    <span class="menu-text">Apexcharts.js</span>
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Size Group</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Order Template</span>
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <a href="map.html" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-map-marker-alt"></i></span>
-                            <span class="menu-text">Map</span>
-                        </a>
-                    </div>
+
                     <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-code-branch"></i></span>
-                            <span class="menu-text">Layout</span>
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
+                            <span class="menu-text">Accounting</span>
                             <span class="menu-caret"><b class="caret"></b></span>
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="layout_starter.html" class="menu-link">
-                                    <span class="menu-text">Starter Page</span>
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Asset Account</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="layout_fixed_footer.html" class="menu-link">
-                                    <span class="menu-text">Fixed Footer</span>
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Exchange Rate</span>
                                 </a>
                             </div>
-                            <div class="menu-item">
-                                <a href="layout_full_height.html" class="menu-link">
-                                    <span class="menu-text">Full Height</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="layout_full_width.html" class="menu-link">
-                                    <span class="menu-text">Full Width</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="layout_boxed_layout.html" class="menu-link">
-                                    <span class="menu-text">Boxed Layout</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="layout_minified_sidebar.html" class="menu-link">
-                                    <span class="menu-text">Minified Sidebar</span>
-                                </a>
-                            </div>
+
                         </div>
                     </div>
+
                     <div class="menu-item has-sub">
                         <a href="#" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-globe"></i></span>
-                            <span class="menu-text">Pages</span>
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
+                            <span class="menu-text">Size & Template</span>
                             <span class="menu-caret"><b class="caret"></b></span>
                         </a>
                         <div class="menu-submenu">
                             <div class="menu-item">
-                                <a href="page_gallery.html" class="menu-link">
-                                    <span class="menu-text">Gallery</span>
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Size</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="page_search_results.html" class="menu-link">
-                                    <span class="menu-text">Search Results</span>
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Size Group</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="page_coming_soon.html" class="menu-link">
-                                    <span class="menu-text">Coming Soon Page</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="page_404_error.html" class="menu-link">
-                                    <span class="menu-text">404 Error Page</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="page_login.html" class="menu-link">
-                                    <span class="menu-text">Login</span>
-                                </a>
-                            </div>
-                            <div class="menu-item">
-                                <a href="page_register.html" class="menu-link">
-                                    <span class="menu-text">Register</span>
+                                <a href="email_detail.html" class="menu-link">
+                                    <span class="menu-text">Order Template</span>
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="menu-divider"></div>
-                    <div class="menu-header">Users</div>
-                    <div class="menu-item">
-                        <a href="profile.html" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-user-circle"></i></span>
-                            <span class="menu-text">Profile</span>
+
+                    <div class="menu-item has-sub">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
+                            <span class="menu-text">Approval</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
                         </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Approval Template</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Approval Status</span>
+                                </a>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="menu-item">
-                        <a href="calendar.html" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-calendar"></i></span>
+
+                    <div class="menu-item has-sub">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa fa-file"></i>
+                            </span>
                             <span class="menu-text">Calendar</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="email_inbox.html" class="menu-link">
+                                    <span class="menu-text">Weekly Calendar</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="email_compose.html" class="menu-link">
+                                    <span class="menu-text">Monthly Calendar</span>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="menu-item ">
+                        <a href="/" class="menu-link">
+                            <span class="menu-icon"><i class="fa fa-file"></i></span>
+                            <span class="menu-text">Batch Processing</span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a href="settings.html" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-cog"></i></span>
-                            <span class="menu-text">Settings</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a href="helper.html" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-question-circle"></i></span>
-                            <span class="menu-text">Helper</span>
-                        </a>
-                    </div>
+
+                    <!-- 기본정보 END menu -->
+                    <!-- #endregion -->
+                    <p></p>
                 </div>
                 <!-- END menu -->
             </div>

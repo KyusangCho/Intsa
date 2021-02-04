@@ -1,7 +1,838 @@
 ﻿@page "/Dashboard" 
+@namespace Intsa.Pages 
 
 <h3>Dashboard</h3>
 
-@code {
+<div class="row">
 
-}
+    <!-- 좌측 결재 진행사항 BEGIN col-6 -->
+    <div class="col-xl-8">
+        <!-- BEGIN card -->
+        <div class="card">
+            <!-- BEGIN card-body -->
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="flex-grow-1">
+                        <h5 class="mb-1">미결재 목록</h5>
+                        <div class="fs-13px">Pending electronic approval</div>
+                    </div>
+                    <a href="#">See All</a>
+                </div>
+
+                <!-- BEGIN table-responsive -->
+                <div class="table-responsive mb-n2">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr class="text-dark">
+                                <th>구분</th>
+                                <th>TEAM/FILE#/PO#</th>
+                                <th>거래처</th>
+                                <th class="text-center">진행상태</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link active" href="#">
+                                                    <div class="nav-no">12</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link active" href="#">
+                                                    <div class="nav-no">13</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">20</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link active" href="#">
+                                                    <div class="nav-no">12</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link active" href="#">
+                                                    <div class="nav-no">13</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">20</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link active" href="#">
+                                                    <div class="nav-no">12</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link active" href="#">
+                                                    <div class="nav-no">13</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">0</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">Material Management</div>
+                                            <div class="fs-13px">Tom Shin</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                            <div class="font-weight-500 text-dark">2011602-01</div>
+                                            <div class="fs-13px">TRIM20135131</div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="d-flex">
+                                        <div class="ml-0 flex-grow-1">
+                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="nav-wizards-container">
+                                        <nav class="nav nav-wizards-1 mb-2">
+                                            <!-- completed -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Tom Shin</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- active -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link completed" href="#">
+                                                    <div class="nav-no">-</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+
+                                            <!-- disabled -->
+                                            <div class="nav-item col">
+                                                <a class="nav-link disabled" href="#">
+                                                    <div class="nav-no">20</div>
+                                                    <div class="nav-text">Chris Lee</div>
+                                                </a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END table-responsive -->
+            </div>
+            <!-- END card-body -->
+        </div>
+        <!-- END card -->
+    </div>
+    <!-- 좌측 결재 진행사항 END col-6 --> 
+    <!-- BEGIN col-6 -->
+    <div class="col-xl-4">
+        <!-- 결재 반려목록 BEGIN card -->
+        <div class="card mb-3">
+            <!-- BEGIN card-body -->
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="flex-grow-1">
+                        <h5 class="mb-1">반려 목록</h5>
+                        <div class="fs-13px">Latest rejected approval</div>
+                    </div>
+                    <a href="#">See All</a>
+                </div>
+
+                <!-- product-1 -->
+                <div class="d-flex align-items-center mb-0">
+
+                    <div class="flex-grow-1">
+                        <div>
+                            <div class="text-dark fs-10px font-weight-600">Material Management</div>
+                            <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
+                            <div class="fs-13px">2020.05.21 13:34</div>
+                        </div>
+                    </div>
+                    <div class="pl-3 text-center">
+                        <div class="text-danger fs-10px font-weight-600">Rejected by</div>
+                        <div class="text-dark font-weight-600">Chris Lee</div>
+                        <div class="fs-13px">2020.05.21 13:34</div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END card-body -->
+            <!-- BEGIN card-body -->
+            <div class="card-body">
+
+                <!-- product-1 -->
+                <div class="d-flex align-items-center mb-0">
+
+                    <div class="flex-grow-1">
+                        <div>
+                            <div class="text-dark fs-10px font-weight-600">Material Management</div>
+                            <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
+                            <div class="fs-13px">2020.05.21 13:34</div>
+                        </div>
+                    </div>
+                    <div class="pl-3 text-center">
+                        <div class="text-danger fs-10px font-weight-600">Rejected by</div>
+                        <div class="text-dark font-weight-600">Chris Lee</div>
+                        <div class="fs-13px">2020.05.21 13:34</div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END card-body -->
+            <!-- BEGIN card-body -->
+            <div class="card-body">
+
+                <!-- product-1 -->
+                <div class="d-flex align-items-center mb-0">
+
+                    <div class="flex-grow-1">
+                        <div>
+                            <div class="text-dark fs-10px font-weight-600">Material Management</div>
+                            <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
+                            <div class="fs-13px">2020.05.21 13:34</div>
+                        </div>
+                    </div>
+                    <div class="pl-3 text-center">
+                        <div class="text-danger fs-10px font-weight-600">Rejected by</div>
+                        <div class="text-dark font-weight-600">Chris Lee</div>
+                        <div class="fs-13px">2020.05.21 13:34</div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END card-body -->
+        </div>
+        <!-- 결재 반려목록 END card -->
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive table-hover">
+                            <table class="table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Created</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var m in models)
+                                    {
+                                        <tr>
+                                            <td scope="row" class="text-dark">@m.Id</td>
+                                            <td @onclick="@(()=> NameClick(m.Id))">
+                                                <a href="/Boards/Notices/Details/@m.Id" class="text-dark">
+                                                    @m.Title
+                                                </a>
+                                            </td>
+                                            <td>@m.Name</td>
+                                            <td>@m.Created?.ToShortDateString()</td>
+                                            <td>
+                                                <a href="/Boards/Notices/Details/@m.Id" class="btn btn-light">Details</a>
+                                                <a href="/Boards/Notices/Edit/@m.Id" class="btn btn-light">Edit</a>
+                                                <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-danger">Delete</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <!-- END col-6 -->
+</div>
