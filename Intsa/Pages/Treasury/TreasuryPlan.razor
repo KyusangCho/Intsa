@@ -1,0 +1,176 @@
+﻿@page "/TreasuryPlan"
+
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+
+<div class="row mb-1 align-items-baseline">
+    <div class="col-md-6">
+        <div class="btn-group-vertical btn-group-sm">
+            <button type="button" class="btn btn-outline-dark">전월 금액: -$300,411.99</button>
+            <button type="button" class="btn btn-outline-dark">바이어 총입금: $150,000,000</button>
+            <button type="button" class="btn btn-outline-dark">이 달 총결제액: $1,576,355.24</button>
+            <button type="button" class="btn btn-outline-dark">결제 후 잔액: -$1,876,767.23</button>
+        </div>
+    </div>
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-3 text-right">
+        <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-success">결제 완료</button>
+            <button type="button" class="btn btn-secondary">결제 예정</button>
+            <button type="button" class="btn btn-warning">입금 예정</button>
+            <button type="button" class="btn btn-yellow">입금 완료</button>
+        </div>
+
+    </div>
+</div>
+
+<SfSchedule TValue="AppointmentData" Height="100%" @bind-SelectedDate="@CurrentDate" @bind-CurrentView="@CurrentView" EnableAutoRowHeight="true"
+            MinDate="new DateTime(2021, 1, 1)" MaxDate="new DateTime(2030, 12, 31)">
+    <ScheduleTemplates>
+        <EditorTemplate>
+            <table class="custom-event-editor" width="100%" cellpadding="5">
+                <tbody>
+                    <tr>
+                        <td class="e-textlabel">Summary</td>
+                        <td colspan="4">
+                            <SfTextBox @bind-Value="@((context as AppointmentData).Subject)"></SfTextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Status</td>
+                        <td colspan="4">
+                            <SfDropDownList ID="EventType" DataSource="@StatusData" Placeholder="Choose statas" @bind-Value="@((context as AppointmentData).EventType)">
+                                <DropDownListFieldSettings Value="Id"></DropDownListFieldSettings>
+                            </SfDropDownList>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">From</td>
+                        <td colspan="4">
+                            <SfDatePicker @bind-Value="@((context as AppointmentData).StartTime)"></SfDatePicker>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">To</td>
+                        <td colspan="4">
+                            <SfDatePicker @bind-Value="@((context as AppointmentData).EndTime)"></SfDatePicker>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="e-textlabel">Reason</td>
+                        <td colspan="4">
+                            <SfTextBox Multiline="true" @bind-Value="@((context as AppointmentData).Description)"></SfTextBox>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </EditorTemplate>
+        <CellTemplate>
+            <div class="templatewrap">
+                @{
+                    @if((int)(context as TemplateContext).Date.Month == 2 && (int)(context as TemplateContext).Date.Day == 15)
+                    {
+                        <div class="caption">Thanksgiving day</div>
+                    }
+                    @if ((int)(context as TemplateContext).Date.Month == 12 && (int)(context as TemplateContext).Date.Day == 9)
+                    {
+                        <div class="caption">Party time</div>
+                    }
+                    @if ((int)(context as TemplateContext).Date.Month == 12 && (int)(context as TemplateContext).Date.Day == 13)
+                    {
+                        <div class="caption">Party time</div>
+                    }
+                    @if ((int)(context as TemplateContext).Date.Month == 12 && (int)(context as TemplateContext).Date.Day == 22)
+                    {
+                        <div class="caption">Happy birthday</div>
+                    }
+                    @if ((int)(context as TemplateContext).Date.Month == 12 && (int)(context as TemplateContext).Date.Day == 24)
+                    {
+                        <div class="caption">Christmas Eve</div>
+                    }
+                    @if ((int)(context as TemplateContext).Date.Month == 12 && (int)(context as TemplateContext).Date.Day == 25)
+                    {
+                        <div class="caption">Christmas day</div>
+                    }
+                    @if ((int)(context as TemplateContext).Date.Month == 1 && (int)(context as TemplateContext).Date.Day == 1)
+                    {
+                        <div class="caption">New Year"s Day</div>
+                    }
+                    @if ((int)(context as TemplateContext).Date.Month == 1 && (int)(context as TemplateContext).Date.Day == 14)
+                    {
+                        <div class="caption">Get together</div>
+                    }
+                }
+            </div>
+        </CellTemplate>
+    </ScheduleTemplates>
+    <ScheduleViews>
+        <ScheduleView Option="View.Week" StartHour="08:00" EndHour="17:00"></ScheduleView>
+        <ScheduleView Option="View.Month" ShowWeekend="false"></ScheduleView>
+    </ScheduleViews>
+    <ScheduleEventSettings DataSource="@DataSource">
+    </ScheduleEventSettings>
+</SfSchedule>
+
+<style>
+    .schedule-cell-dimension.e-schedule .e-timeline-view .e-date-header-wrap table col,
+    .schedule-cell-dimension.e-schedule .e-timeline-view .e-content-wrap table col {
+        width: 200px;
+    }
+
+    .schedule-cell-dimension.e-schedule .e-timeline-month-view .e-date-header-wrap table col,
+    .schedule-cell-dimension.e-schedule .e-timeline-month-view .e-content-wrap table col {
+        width: 200px;
+    }
+</style>
+
+@code {
+
+    View CurrentView = View.Month;  // 현재 뷰 지정
+    DateTime CurrentDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);     // 기본날짜 지정
+    public class DDFields
+    {
+        public string Id { get; set; }
+        public string Text { get; set; }
+    }
+
+    List<DDFields> StatusData = new List<DDFields>()
+{
+        new DDFields(){ Id = "New", Text = "New"},
+        new DDFields(){ Id = "Requested", Text = "Requested"},
+        new DDFields(){ Id = "Confirmed", Text = "Confirmed"},
+    };
+
+    #region Validation
+
+    static Dictionary<string, object> ValidationMessages = new Dictionary<string, object>() { { "regex", "Special character(s) not allowed in this field" } };
+    ValidationRules ValidationRules = new ValidationRules { Required = true };
+    ValidationRules LocationValidationRules = new ValidationRules { Required = true, RegexPattern = "^[a-zA-Z0-9-]*$", Messages = ValidationMessages };
+    ValidationRules DescriptionValidationRules = new ValidationRules { Required = true, MinLength = 5, MaxLength = 500 };
+
+    #endregion
+
+    List<AppointmentData> DataSource = new List<AppointmentData>    // 데이터 소스지정
+{
+        new AppointmentData { Id = 1, Subject = "Paris", StartTime = new DateTime(2020, 2, 13, 10, 0, 0) , EndTime = new DateTime(2020, 2, 13, 12, 0, 0), EventType = "Confirmed"},
+        new AppointmentData { Id = 2, Subject = "Germany", StartTime = new DateTime(2020, 2, 15, 10, 0, 0) , EndTime = new DateTime(2020, 2, 15, 12, 0, 0), EventType = "New"},
+        new AppointmentData { Id = 3, Subject = "Meeting", StartTime = new DateTime(2020, 2, 9, 9, 30, 0) , EndTime = new DateTime(2020, 2, 9, 11, 30, 0), EventType = "Requested"},
+        new AppointmentData { Id = 4, Subject = "Vacation", StartTime = new DateTime(2020, 2, 14, 11, 30, 0) , EndTime = new DateTime(2020, 2, 14, 13, 0, 0), EventType = "Confirmed"}
+    };
+
+
+
+    public class AppointmentData
+    {
+        public int Id { get; set; }
+        public string Subject { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public string Description { get; set; }
+        public string EventType { get; set; }
+
+    }
+
+}
