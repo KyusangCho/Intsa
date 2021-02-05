@@ -18,6 +18,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Syncfusion.Blazor;
 using BlazorDemos.Shared;
+using System.IO;
+using Syncfusion.Licensing;
 
 namespace Intsa
 {
@@ -26,6 +28,11 @@ namespace Intsa
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt"))
+            {
+                string licenseKey = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt");
+                SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -74,6 +81,10 @@ namespace Intsa
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            //Register Syncfusion license
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
