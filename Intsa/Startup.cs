@@ -43,7 +43,10 @@ namespace Intsa
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSyncfusionBlazor(); 
+            
+            services.AddSyncfusionBlazor();
+            services.AddSyncfusionBlazor();
+
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddScoped<SampleService>(); 
             
