@@ -28,12 +28,12 @@ namespace Intsa
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt"))
-            {
-                string licenseKey = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt");
-                Console.WriteLine(licenseKey);
-                SyncfusionLicenseProvider.RegisterLicense(licenseKey);
-            }
+            //if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt"))
+            //{
+            //    string licenseKey = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt");
+            //    Console.WriteLine(licenseKey);
+            //    SyncfusionLicenseProvider.RegisterLicense(licenseKey);
+            //}
         }
 
         public IConfiguration Configuration { get; }
@@ -84,7 +84,7 @@ namespace Intsa
         {
 
             //Register Syncfusion license
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mzk0OTIxQDMxMzgyZTM0MmUzMGswR0VyQVBtOGRKSmNqcGM2TFkwM2RFNU1ua1FlZlJGK2FUbXJMU20xTmM9");
 
             if (env.IsDevelopment())
             {
