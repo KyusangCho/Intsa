@@ -31,6 +31,7 @@ namespace Intsa
             if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt"))
             {
                 string licenseKey = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/SyncfusionLicense.txt");
+                Console.WriteLine(licenseKey);
                 SyncfusionLicenseProvider.RegisterLicense(licenseKey);
             }
         }
