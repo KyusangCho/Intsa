@@ -708,83 +708,136 @@
     <!-- 좌측 결재 진행사항 END col-6 --> 
     <!-- BEGIN col-6 -->
     <div class="col-xl-4">
-        <!-- 결재 반려목록 BEGIN card -->
-        <div class="card mb-3">
-            <!-- BEGIN card-body -->
-            <div class="card-body">
-                <div class="d-flex align-items-center mb-4">
-                    <div class="flex-grow-1">
-                        <h5 class="mb-1">반려 목록</h5>
-                        <div class="fs-13px">Latest rejected approval</div>
+
+        <div class="row">
+            <div class="col-12">
+                <!-- 결재 반려목록 BEGIN card -->
+                <div class="card mb-3">
+                    <!-- BEGIN card-body -->
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="flex-grow-1">
+                                <h5 class="mb-1">반려 목록</h5>
+                                <div class="fs-13px">Latest rejected approval</div>
+                            </div>
+                            <a href="#">See All</a>
+                        </div>
+
+                        <!-- product-1 -->
+                        <div class="d-flex align-items-center mb-0">
+
+                            <div class="flex-grow-1">
+                                <div>
+                                    <div class="text-dark fs-10px font-weight-600">Material Management</div>
+                                    <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
+                                    <div class="fs-13px">2020.05.21 13:34</div>
+                                </div>
+                            </div>
+                            <div class="pl-3 text-center">
+                                <div class="text-danger fs-10px font-weight-600">Rejected by</div>
+                                <div class="text-dark font-weight-600">Chris Lee</div>
+                                <div class="fs-13px">2020.05.21 13:34</div>
+                            </div>
+                        </div>
+
                     </div>
-                    <a href="#">See All</a>
+                    <!-- END card-body -->
+                    <!-- BEGIN card-body -->
+                    <div class="card-body">
+
+                        <!-- product-1 -->
+                        <div class="d-flex align-items-center mb-0">
+
+                            <div class="flex-grow-1">
+                                <div>
+                                    <div class="text-dark fs-10px font-weight-600">Material Management</div>
+                                    <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
+                                    <div class="fs-13px">2020.05.21 13:34</div>
+                                </div>
+                            </div>
+                            <div class="pl-3 text-center">
+                                <div class="text-danger fs-10px font-weight-600">Rejected by</div>
+                                <div class="text-dark font-weight-600">Chris Lee</div>
+                                <div class="fs-13px">2020.05.21 13:34</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END card-body -->
+                    <!-- BEGIN card-body -->
+                    <div class="card-body">
+
+                        <!-- product-1 -->
+                        <div class="d-flex align-items-center mb-0">
+
+                            <div class="flex-grow-1">
+                                <div>
+                                    <div class="text-dark fs-10px font-weight-600">Material Management</div>
+                                    <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
+                                    <div class="fs-13px">2020.05.21 13:34</div>
+                                </div>
+                            </div>
+                            <div class="pl-3 text-center">
+                                <div class="text-danger fs-10px font-weight-600">Rejected by</div>
+                                <div class="text-dark font-weight-600">Chris Lee</div>
+                                <div class="fs-13px">2020.05.21 13:34</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- END card-body -->
                 </div>
+                <!-- 결재 반려목록 END card -->
+            </div>
 
-                <!-- product-1 -->
-                <div class="d-flex align-items-center mb-0">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-1">
+                            <a href="/Boards/Notices" class="text-dark">Notice</a>
+                        </h5>
+                    </div>
 
-                    <div class="flex-grow-1">
-                        <div>
-                            <div class="text-dark fs-10px font-weight-600">Material Management</div>
-                            <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
-                            <div class="fs-13px">2020.05.21 13:34</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive table-hover">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Title</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Created</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @*@foreach (var m in models)
+                                            {
+                                                <tr>
+                                                    <td scope="row" class="text-dark">@m.Id</td>
+                                                    <td @onclick="@(()=> NameClick(m.Id))">
+                                                        <a href="/Boards/Notices/Details/@m.Id" class="text-dark">
+                                                            @m.Title
+                                                        </a>
+                                                    </td>
+                                                    <td>@m.Name</td>
+                                                    <td>@m.Created?.ToShortDateString()</td>
+                                                    
+                                                </tr>
+                                            }*@
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="pl-3 text-center">
-                        <div class="text-danger fs-10px font-weight-600">Rejected by</div>
-                        <div class="text-dark font-weight-600">Chris Lee</div>
-                        <div class="fs-13px">2020.05.21 13:34</div>
-                    </div>
                 </div>
-
+                
             </div>
-            <!-- END card-body -->
-            <!-- BEGIN card-body -->
-            <div class="card-body">
-
-                <!-- product-1 -->
-                <div class="d-flex align-items-center mb-0">
-
-                    <div class="flex-grow-1">
-                        <div>
-                            <div class="text-dark fs-10px font-weight-600">Material Management</div>
-                            <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
-                            <div class="fs-13px">2020.05.21 13:34</div>
-                        </div>
-                    </div>
-                    <div class="pl-3 text-center">
-                        <div class="text-danger fs-10px font-weight-600">Rejected by</div>
-                        <div class="text-dark font-weight-600">Chris Lee</div>
-                        <div class="fs-13px">2020.05.21 13:34</div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- END card-body -->
-            <!-- BEGIN card-body -->
-            <div class="card-body">
-
-                <!-- product-1 -->
-                <div class="d-flex align-items-center mb-0">
-
-                    <div class="flex-grow-1">
-                        <div>
-                            <div class="text-dark fs-10px font-weight-600">Material Management</div>
-                            <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
-                            <div class="fs-13px">2020.05.21 13:34</div>
-                        </div>
-                    </div>
-                    <div class="pl-3 text-center">
-                        <div class="text-danger fs-10px font-weight-600">Rejected by</div>
-                        <div class="text-dark font-weight-600">Chris Lee</div>
-                        <div class="fs-13px">2020.05.21 13:34</div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- END card-body -->
         </div>
-        <!-- 결재 반려목록 END card -->
+
+        
 
         
     </div>
