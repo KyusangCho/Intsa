@@ -75,9 +75,8 @@
                                                         <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-danger">Delete</a>
                                                     </td>
                                                     <td>
-                                                        <input type="button" name="btnEdit" value="Edit with Modal"
-                                                               class="btn btn-primary"
-                                                               @onclick="@(() => EditBy(m))" />
+                                                        <input type="button" name="btnEdit" value="Edit with Modal" class="btn btn-primary" @onclick="@(() => EditBy(m))" />
+                                                        <input type="button" name="btnDelete" value="Delete with Modal" class="btn btn-danger" @onclick="@(() => DeleteBy(m))" />
                                                     </td>
                                                 </tr>
                                             }
@@ -98,6 +97,11 @@
                             >
                             <EditorFormTitle>@EditorFormTitle</EditorFormTitle>
                         </Intsa.Pages.Boards.Notices.Components.EditorForm>
+
+                        <Intsa.Pages.Boards.Notices.Components.DeleteDialog
+                                                                            @ref="DeleteDialogReference"
+                                                                            OnClick="DeleteClick">
+                        </Intsa.Pages.Boards.Notices.Components.DeleteDialog>
                     </div>
                 </div>
             </div>

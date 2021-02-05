@@ -16,6 +16,7 @@ namespace Intsa.Pages.Boards.Notices
         public NavigationManager NavigationManagerReference { get; set; }
 
         public EditorForm EditorFormReference { get; set; }
+        public DeleteDialog DeleteDialogReference { get; set; }
 
         protected List<BoardNotices> models;
         protected BoardNotices model = new BoardNotices(); 
@@ -40,6 +41,7 @@ namespace Intsa.Pages.Boards.Notices
             var resultSet = await NoticeRepositoryAsyncReference.GetAllAsync(pager.PageIndex, pager.PageSize);
             pager.RecordCount = resultSet.TotalRecords;
             models = resultSet.Records.ToList();
+            StateHasChanged();
         }
 
         protected void NameClick(int id)
@@ -54,7 +56,6 @@ namespace Intsa.Pages.Boards.Notices
 
             await DisplayData();
 
-            StateHasChanged();
         }
 
         public string EditorFormTitle { get; set; } = "CREATE"; 
@@ -73,11 +74,25 @@ namespace Intsa.Pages.Boards.Notices
             EditorFormReference.Show(); 
         }
 
+        protected void DeleteBy(BoardNotices model)
+        {
+            this.model = model;
+            DeleteDialogReference.Show(); 
+        }
+
         protected async void CreateOrEdit()
         {
             EditorFormReference.Hide();
             await DisplayData();
-            StateHasChanged(); 
+            
+        }
+
+        protected async void DeleteClick()
+        {
+            await NoticeRepositoryAsyncReference.DeleteAsync(this.model.Id);
+            DeleteDialogReference.Hide();
+            this.model = new BoardNotices(); 
+            await DisplayData();
         }
     }
 }
