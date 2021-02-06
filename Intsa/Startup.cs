@@ -62,9 +62,8 @@ namespace Intsa
         {
             // Board > NoticeAppDbContext.cs Inject: New Dbcontext Add
             services.AddEntityFrameworkSqlServer().AddDbContext<NoticeAppDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")); 
-            }); 
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);  
 
 
             // INoticeRepositoryAsync Inject: DI�����̳ʿ� ����(�������丮) ���

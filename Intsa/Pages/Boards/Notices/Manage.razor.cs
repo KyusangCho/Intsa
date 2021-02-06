@@ -10,6 +10,9 @@ namespace Intsa.Pages.Boards.Notices
 {
     public partial class Manage
     {
+        [Parameter]
+        public int ParentId { get; set; } = 0; 
+
         [Inject]
         public INoticeRepositoryAsync NoticeRepositoryAsyncReference { get; set; }
         [Inject]
@@ -19,6 +22,12 @@ namespace Intsa.Pages.Boards.Notices
         public DeleteDialog DeleteDialogReference { get; set; }
 
         protected List<BoardNotices> models;
+
+        /// <summary>
+        /// 공지사항으로 올리기 폼을 띄울건지 여부 
+        /// </summary>
+        public bool IsInlineDialogShow { get; set; } = false; 
+
         protected BoardNotices model = new BoardNotices(); 
 
         protected BeanyPager.BeanyPagerBase pager = new BeanyPager.BeanyPagerBase()
@@ -37,11 +46,21 @@ namespace Intsa.Pages.Boards.Notices
 
         private async Task DisplayData()
         {
-            //await Task.Delay(3000); 
-            var resultSet = await NoticeRepositoryAsyncReference.GetAllAsync(pager.PageIndex, pager.PageSize);
-            pager.RecordCount = resultSet.TotalRecords;
-            models = resultSet.Records.ToList();
-            StateHasChanged();
+            if (ParentId == 0)
+            {
+                //await Task.Delay(3000); 
+                var resultSet = await NoticeRepositoryAsyncReference.GetAllAsync(pager.PageIndex, pager.PageSize);
+                pager.RecordCount = resultSet.TotalRecords;
+                models = resultSet.Records.ToList();
+                StateHasChanged();
+            }
+            else
+            {
+                var resultSet = await NoticeRepositoryAsyncReference.GetAllByParentIdAsync(pager.PageIndex, pager.PageSize, ParentId);
+                pager.RecordCount = resultSet.TotalRecords;
+                models = resultSet.Records.ToList();
+                StateHasChanged();
+            }
         }
 
         protected void NameClick(int id)
@@ -79,6 +98,11 @@ namespace Intsa.Pages.Boards.Notices
             this.model = model;
             DeleteDialogReference.Show(); 
         }
+        protected void ToggleBy(BoardNotices model)
+        {
+            this.model = model;
+            IsInlineDialogShow = true; 
+        }
 
         protected async void CreateOrEdit()
         {
@@ -92,6 +116,22 @@ namespace Intsa.Pages.Boards.Notices
             await NoticeRepositoryAsyncReference.DeleteAsync(this.model.Id);
             DeleteDialogReference.Hide();
             this.model = new BoardNotices(); 
+            await DisplayData();
+        }
+
+        protected void ToggleClose()
+        {
+            IsInlineDialogShow = false;
+            this.model = new BoardNotices(); 
+        }
+
+        protected async void ToggleClick()
+        {
+            this.model.IsPinned = (this.model?.IsPinned == true) ? false : true; 
+
+            await NoticeRepositoryAsyncReference.EditAsync(this.model);
+            IsInlineDialogShow = false; 
+            this.model = new BoardNotices();
             await DisplayData();
         }
     }
