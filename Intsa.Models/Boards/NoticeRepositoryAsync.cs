@@ -19,7 +19,7 @@ namespace Intsa.Models.Boards
         public NoticeRepositoryAsync(NoticeAppDbContext context, ILoggerFactory loggerFactory)
         {
             this._context = context;
-            this._logger = loggerFactory.CreateLogger(nameof(NoticeRepositoryAsync)); 
+            this._logger = loggerFactory.CreateLogger(nameof(NoticeRepositoryAsync));
         }
 
         // 입력
@@ -29,20 +29,20 @@ namespace Intsa.Models.Boards
 
             try
             {
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
             }
             catch (Exception e)
             {
-                _logger.LogError($"에러 발생({nameof(AddAsync)}): {e.Message}"); 
+                _logger.LogError($"에러 발생({nameof(AddAsync)}): {e.Message}");
             }
-            return model; 
+            return model;
         }
         // 출력
         public async Task<List<BoardNotices>> GetAllAsync()
         {
             return await _context.BoardNotices.OrderByDescending(m => m.Id)
                 //.Include(m => m.NoticesComments)
-                .ToListAsync(); 
+                .ToListAsync();
         }
 
         // 상세
@@ -50,7 +50,7 @@ namespace Intsa.Models.Boards
         {
             return await _context.BoardNotices
                     //.Include(m => m.NoticesComments)
-                    .SingleOrDefaultAsync(m => m.Id == id); 
+                    .SingleOrDefaultAsync(m => m.Id == id);
         }
 
         // 수정
@@ -61,13 +61,13 @@ namespace Intsa.Models.Boards
 
             try
             {
-                return await _context.SaveChangesAsync() > 0 ? true : false; 
+                return await _context.SaveChangesAsync() > 0 ? true : false;
             }
             catch (Exception e)
             {
-                _logger.LogError($"에러발생({nameof(EditAsync)}): {e.Message}"); 
+                _logger.LogError($"에러발생({nameof(EditAsync)}): {e.Message}");
             }
-            return false; 
+            return false;
         }
         // 삭제 
         public async Task<bool> DeleteAsync(int id)
@@ -78,13 +78,13 @@ namespace Intsa.Models.Boards
 
             try
             {
-                return (await _context.SaveChangesAsync() > 0 ? true : false); 
+                return (await _context.SaveChangesAsync() > 0 ? true : false);
             }
             catch (Exception e)
             {
-                _logger.LogError($"에러발생({nameof(DeleteAsync)}): {e.Message}"); 
+                _logger.LogError($"에러발생({nameof(DeleteAsync)}): {e.Message}");
             }
-            return false; 
+            return false;
         }
         // 페이징
         public async Task<PagingResult<BoardNotices>> GetAllAsync(int pageIndex, int pageSize)
@@ -96,7 +96,7 @@ namespace Intsa.Models.Boards
                                 .Skip(pageIndex * pageSize)
                                 .Take(pageSize)
                                 .ToListAsync();
-            return new PagingResult<BoardNotices>(models, totalRecords); 
+            return new PagingResult<BoardNotices>(models, totalRecords);
         }
 
         // 부모 
@@ -105,15 +105,15 @@ namespace Intsa.Models.Boards
             var totalRecords = await _context.BoardNotices.Where(m => m.ParentId == parentId).CountAsync();
 
             var models = await _context.BoardNotices
-                    .Where(m => m.ParentId == parentId) 
+                    .Where(m => m.ParentId == parentId)
                     .OrderByDescending(m => m.Id)
                     //.Include(m => m.NoticesComments)
                     .Skip(pageIndex * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
 
-            return new PagingResult<BoardNotices>(models, totalRecords); 
-                                
+            return new PagingResult<BoardNotices>(models, totalRecords);
+
         }
 
         // 고정상태 (전체중에 몇개) 
@@ -121,7 +121,7 @@ namespace Intsa.Models.Boards
         {
             var totalRecords = await _context.BoardNotices.Where(m => m.ParentId == parentId).CountAsync();
             var pinnedRecords = await _context.BoardNotices.Where(m => m.ParentId == parentId && m.IsPinned == true).CountAsync();
-            
+
             // 새로운 클래스 생성없이 튜플로 반환 
             return new Tuple<int, int>(pinnedRecords, totalRecords);    // (2, 10) 10개중 2개 고정 
         }
@@ -133,18 +133,53 @@ namespace Intsa.Models.Boards
             try
             {
                 var models = await _context.BoardNotices.Where(m => m.ParentId == parentId).ToListAsync();
-                
-                foreach(var model in models)
+
+                foreach (var model in models)
                 {
                     _context.BoardNotices.Remove(model);
                 }
-                return (await _context.SaveChangesAsync() > 0); 
+                return (await _context.SaveChangesAsync() > 0);
             }
             catch (Exception e)
             {
-                _logger.LogError($"ERROR({nameof(DeleteAllByParentId)}): {e.Message}"); 
+                _logger.LogError($"ERROR({nameof(DeleteAllByParentId)}): {e.Message}");
             }
-            return false; 
+            return false;
+        }
+
+        // 검색 
+        public async Task<PagingResult<BoardNotices>> SearchAllAsync(int pageIndex, int pageSize, string searchQuery)
+        {
+            var totalRecords = await _context.BoardNotices
+                .Where(m => m.Name.Contains(searchQuery) || m.Title.Contains(searchQuery) || m.Content.Contains(searchQuery))
+                .CountAsync();
+            var models = await _context.BoardNotices
+                .Where(m => m.Name.Contains(searchQuery) || m.Title.Contains(searchQuery) || m.Content.Contains(searchQuery))
+                .OrderByDescending(m => m.Id)
+                //.Include(m => m.NoticesComments)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagingResult<BoardNotices>(models, totalRecords);
+        }
+
+        public async Task<PagingResult<BoardNotices>> SearchAllByParentIdAsync(int pageIndex, int pageSize, string searchQuery, int parentId)
+        {
+            var totalRecords = await _context.BoardNotices
+                .Where(m => m.ParentId == parentId)
+                .Where(m => m.Name.Contains(searchQuery) || m.Title.Contains(searchQuery) || m.Content.Contains(searchQuery))
+                .CountAsync();
+            var models = await _context.BoardNotices
+                .Where(m => m.ParentId == parentId)
+                .Where(m => m.Name.Contains(searchQuery) || m.Title.Contains(searchQuery) || m.Content.Contains(searchQuery))
+                .OrderByDescending(m => m.Id)
+                //.Include(m => m.NoticesComments)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagingResult<BoardNotices>(models, totalRecords);
         }
     }
 }

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intsa.Models.Tests", "Intsa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{BE95E7B6-2E67-49F6-B00D-642A1F29DE70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intsa.Apis", "Intsa.Apis\Intsa.Apis.csproj", "{988D1F28-050E-4CF4-992B-41C36B5696D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intsa.Apis", "Intsa.Apis\Intsa.Apis.csproj", "{988D1F28-050E-4CF4-992B-41C36B5696D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

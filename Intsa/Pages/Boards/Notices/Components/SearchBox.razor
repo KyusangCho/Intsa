@@ -1,0 +1,8 @@
+﻿<div class="search">
+    <i class="oi oi-eye"></i>
+    <input placeholder="Search..."
+           @attributes="AdditionalAttributes" @bind="SearchQuery" @bind:event="oninput" />
+    <input type="button" value="Search" @onclick="Search" />
+</div>
+<hr />
+자식: @SearchQuery

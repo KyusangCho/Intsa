@@ -19,13 +19,20 @@ namespace Intsa.Pages.Boards.Notices
         {
             PageNumber = 1,
             PageIndex = 0, 
-            PageSize = 10, 
+            PageSize = 2, 
             PagerButtonCount = 5, 
         }; 
 
         protected override async Task OnInitializedAsync()
         {
-            await DisplayData();
+            if (string.IsNullOrEmpty(this.searchQuery))
+            {
+                await DisplayData(); 
+            }
+            else
+            {
+                await SearchData(); 
+            }
 
         }
 
@@ -47,9 +54,35 @@ namespace Intsa.Pages.Boards.Notices
             pager.PageIndex = pageIndex;
             pager.PageNumber = pageIndex + 1;
 
-            await DisplayData();
+            if (string.IsNullOrEmpty(this.searchQuery))
+            {
+                await DisplayData();
+            }
+            else
+            {
+                await SearchData();
+            }
 
             StateHasChanged(); 
+        }
+
+        private string searchQuery; 
+
+        protected async void Search(string query)
+        {
+            this.searchQuery = query;
+
+            await SearchData();
+
+            StateHasChanged(); 
+        }
+
+        private async Task SearchData()
+        {
+            //await Task.Delay(3000); 
+            var resultSet = await NoticeRepositoryAsyncReference.SearchAllAsync(pager.PageIndex, pager.PageSize, this.searchQuery);
+            pager.RecordCount = resultSet.TotalRecords;
+            models = resultSet.Records.ToList();
         }
     }
 }

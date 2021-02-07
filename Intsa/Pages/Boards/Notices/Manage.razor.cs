@@ -40,7 +40,14 @@ namespace Intsa.Pages.Boards.Notices
 
         protected override async Task OnInitializedAsync()
         {
-            await DisplayData();
+            if (string.IsNullOrEmpty(this.searchQuery))
+            {
+                await DisplayData();
+            }
+            else
+            {
+                await SearchData(); 
+            }
 
         }
 
@@ -63,6 +70,24 @@ namespace Intsa.Pages.Boards.Notices
             }
         }
 
+        private async Task SearchData()
+        {
+            if (ParentId == 0)
+            {
+                var resultSet = await NoticeRepositoryAsyncReference.SearchAllAsync(pager.PageIndex, pager.PageSize, this.searchQuery);
+                pager.RecordCount = resultSet.TotalRecords;
+                models = resultSet.Records.ToList();
+                StateHasChanged();
+            }
+            else
+            {
+                var resultSet = await NoticeRepositoryAsyncReference.SearchAllByParentIdAsync(pager.PageIndex, pager.PageSize, this.searchQuery, ParentId);
+                pager.RecordCount = resultSet.TotalRecords;
+                models = resultSet.Records.ToList();
+                StateHasChanged();
+            }
+        }
+
         protected void NameClick(int id)
         {
             NavigationManagerReference.NavigateTo($"/Boards/Notices/Details/{id}");
@@ -73,7 +98,14 @@ namespace Intsa.Pages.Boards.Notices
             pager.PageIndex = pageIndex;
             pager.PageNumber = pageIndex + 1;
 
-            await DisplayData();
+            if (string.IsNullOrEmpty(this.searchQuery))
+            {
+                await DisplayData();
+            }
+            else
+            {
+                await SearchData();
+            }
 
         }
 
@@ -133,6 +165,17 @@ namespace Intsa.Pages.Boards.Notices
             IsInlineDialogShow = false; 
             this.model = new BoardNotices();
             await DisplayData();
+        }
+
+        private string searchQuery; 
+
+        protected async void Search(string query)
+        {
+            this.searchQuery = query;
+
+            await SearchData();
+
+            StateHasChanged(); 
         }
     }
 }
