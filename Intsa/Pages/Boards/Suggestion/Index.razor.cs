@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Intsa.Pages.Boards.Notices
+namespace Intsa.Pages.Boards.Suggestion
 {
     public partial class Index
     {

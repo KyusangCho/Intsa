@@ -5,12 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\NewFolder\**" />
+    <Content Remove="Controllers\NewFolder\**" />
+    <EmbeddedResource Remove="Controllers\NewFolder\**" />
+    <None Remove="Controllers\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Intsa.Models\Intsa.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Apis\" />
-    <Folder Include="Controllers\NewFolder\" />
   </ItemGroup>
 
 

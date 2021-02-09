@@ -7,7 +7,7 @@ namespace Intsa.Models.Boards
     /// <summary>
     /// [3] Generic Repository Interface 
     /// </summary>
-    public interface ICrudRepositoryAsync<T>
+    public interface ICrudRepository<T>
     {
         Task<T> AddAsync(T model);          // 입력
         Task<List<T>> GetAllAsync();        // 출력

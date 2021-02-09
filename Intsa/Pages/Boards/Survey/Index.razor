@@ -1,0 +1,292 @@
+﻿@page "/Boards/Survey"
+@page "/Boards/Survey/Index"
+
+<ul class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">HOME</a></li>
+    <li class="breadcrumb-item">BOARDS</li>
+    <li class="breadcrumb-item active">Survey</li>
+</ul>
+
+<h1 class="page-header">
+    Survey <small>설문</small>
+</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <AuthorizeView>
+            <Authorized>
+
+            </Authorized>
+            <NotAuthorized>
+
+                @if (models == null)
+                {
+                    <p><em>Loading...</em></p>
+                    <div>
+                        <MatBlazor.MatProgressBar Indeterminate="true"></MatBlazor.MatProgressBar>
+                    </div>
+                }
+                else
+                {
+                    <div class="row mb-5">
+                        <!-- BEGIN card -->
+                        <div class="card col-3 mr-15px">
+                            <div class="card-body">
+                                <!-- title -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-fill font-weight-600 fs-16px">직무 만족도</div>
+                                    <a href="#">View report</a>
+                                </div>
+
+                                <!-- list -->
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test A</div>
+                                    </div>
+                                    <div class="col-3 text-center">247</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 4.2%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test B</div>
+                                    </div>
+                                    <div class="col-3 text-center">153</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 8.2%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test C</div>
+                                    </div>
+                                    <div class="col-3 text-center">98</div>
+                                    <div class="col-3 text-center"><span class="text-danger">-</span> 3.4%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test D</div>
+                                    </div>
+                                    <div class="col-3 text-center">75</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 1.9%</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div>Test E</div>
+                                    </div>
+                                    <div class="col-3 text-center">22</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 2.1%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END card -->
+                        <!-- BEGIN card -->
+                        <div class="card  col-3 mr-15px">
+                            <div class="card-body">
+                                <!-- title -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-fill font-weight-600 fs-16px">회사 도메인 주소</div>
+                                    <a href="#">View report</a>
+                                </div>
+
+                                <!-- list -->
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test A</div>
+                                    </div>
+                                    <div class="col-3 text-center">247</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 4.2%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test B</div>
+                                    </div>
+                                    <div class="col-3 text-center">153</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 8.2%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test C</div>
+                                    </div>
+                                    <div class="col-3 text-center">98</div>
+                                    <div class="col-3 text-center"><span class="text-danger">-</span> 3.4%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test D</div>
+                                    </div>
+                                    <div class="col-3 text-center">75</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 1.9%</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div>Test E</div>
+                                    </div>
+                                    <div class="col-3 text-center">22</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 2.1%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END card -->
+                        <!-- BEGIN card -->
+                        <div class="card col-3 mr-15px">
+                            <div class="card-body">
+                                <!-- title -->
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-fill font-weight-600 fs-16px">직원평가 만족도</div>
+                                    <a href="#">View report</a>
+                                </div>
+
+                                <!-- list -->
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test A</div>
+                                    </div>
+                                    <div class="col-3 text-center">247</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 4.2%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test B</div>
+                                    </div>
+                                    <div class="col-3 text-center">153</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 8.2%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test C</div>
+                                    </div>
+                                    <div class="col-3 text-center">98</div>
+                                    <div class="col-3 text-center"><span class="text-danger">-</span> 3.4%</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <div>Test D</div>
+                                    </div>
+                                    <div class="col-3 text-center">75</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 1.9%</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div>Test E</div>
+                                    </div>
+                                    <div class="col-3 text-center">22</div>
+                                    <div class="col-3 text-center"><span class="text-success">+</span> 2.1%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END card -->
+                    </div>
+
+                    <!-- BEGIN #responsiveTables -->
+                    <div id="responsiveTables" class="mb-5">
+
+                        <div class="card">
+                            <div class="card-header">
+                                @*<SfProgressBar @ref="ProObj1" Type="ProgressType.Linear" IsIndeterminate="true" Minimum="0" Maximum="100" TrackThickness="12" ProgressThickness="12">
+                            <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
+                        </SfProgressBar>*@
+                                <a href="/Boards/Notices/Create" class="btn btn-primary disabled">Create</a>
+                                <a href="/Boards/Notices/Manage" class="btn btn-primary disabled">Manage</a>
+                                @*<a href="/Boards/Notices/Report" class="btn btn-primary">Report</a>*@
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive table-hover">
+                                            <table class="table mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Title</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Created</th>
+                                                        <th scope="col">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                @if (models.Count == 0)
+                                                {
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="4" class="text-center">
+                                                                <p>데이터가 없습니다.</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                }
+                                                <tbody>
+                                                    @*@foreach (var m in models)
+                                            {*@
+                                                    <tr>
+                                                        <td scope="row" class="text-dark">1</td>
+                                                        <td>
+                                                            직무 만족도 설문의 건
+                                                        </td>
+                                                        <td>관리부</td>
+                                                        <td>@DateTime.Today.ToShortDateString()</td>
+                                                        <td>
+                                                            <a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
+                                                            <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
+                                                            <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="text-dark">2</td>
+                                                        <td>
+                                                            회사 도메인 주소 설문의 건
+                                                        </td>
+                                                        <td>관리부</td>
+                                                        <td>@DateTime.Today.ToShortDateString()</td>
+                                                        <td>
+                                                            <a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
+                                                            <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
+                                                            <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td scope="row" class="text-dark">3</td>
+                                                        <td>
+                                                            직원평가 만족도 설문의 건
+                                                        </td>
+                                                        <td>관리부</td>
+                                                        <td>@DateTime.Today.ToShortDateString()</td>
+                                                        <td>
+                                                            <a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
+                                                            <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
+                                                            <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>
+                                                        </td>
+                                                    </tr>
+
+
+                                                    @*}*@
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
+                                    </div>
+                                    <div class="col-md-12">
+                                        @*<Intsa.Pages.Boards.Notices.Components.SearchBox placeholder="Search ..."
+                                                                                 SearchQueryChanged="Search">
+                                </Intsa.Pages.Boards.Notices.Components.SearchBox>*@
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- END #responsiveTables -->
+                }
+
+            </NotAuthorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Administrators, Managers">
+            <a href="/Boards/Notices/Manage" class="btn btn-primary disabled">Manage</a>
+
+        </AuthorizeView>
+    </div>
+
+</div>

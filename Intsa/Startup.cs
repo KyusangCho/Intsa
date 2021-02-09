@@ -2,24 +2,15 @@ using Intsa.Areas.Identity;
 using Intsa.Data;
 using Intsa.Models.Boards;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Syncfusion.Blazor;
 using BlazorDemos.Shared;
-using System.IO;
-using Syncfusion.Licensing;
 
 namespace Intsa
 {
@@ -72,7 +63,7 @@ namespace Intsa
         }
 
         /// <summary>
-        /// �������� ���� ������ ���� ���� �ڵ� ���� ���� 
+        /// DI for Board Repository Classes & Interfaces
         /// </summary>
         /// <param name="services"></param>
         private void AddDependencyInjectionContainerForBoards(IServiceCollection services)
@@ -83,8 +74,8 @@ namespace Intsa
                     Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);  
 
 
-            // INoticeRepositoryAsync Inject: DI�����̳ʿ� ����(�������丮) ���
-            services.AddTransient<INoticeRepositoryAsync, NoticeRepositoryAsync>(); 
+            // INoticeRepositoryAsync Inject
+            services.AddTransient<INoticeRepository, NoticeRepository>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

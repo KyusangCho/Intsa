@@ -32,7 +32,7 @@ namespace Intsa.Models.Tests
             using (var context = new NoticeAppDbContext(options))
             {
                 // [A] Arrange 
-                var repository = new NoticeRepositoryAsync(context, factory);
+                var repository = new NoticeRepository(context, factory);
                 var model = new BoardNotices { Name = "[1] 관리자", Title = "공지사항입니다.", Content = "내용입니다." };    // Id: 1
 
                 // [B] Act 
@@ -55,7 +55,7 @@ namespace Intsa.Models.Tests
                 // 트랜잭션 관련 코드는 InMemoryDatabase 공급자에서 지원안함 
                 //using (var transaction = context.Database.BeginTransaction()) { transaction.Commit(); }
                 // [A] Arrange 
-                var repository = new NoticeRepositoryAsync(context, factory);
+                var repository = new NoticeRepository(context, factory);
                 var model = new BoardNotices { Name = "[2] 홍길동", Title = "공지사항입니다 2", Content = "내용입니다 2" };      // Id: 2
 
                 // [B] Act 
@@ -65,7 +65,7 @@ namespace Intsa.Models.Tests
             using (var context = new NoticeAppDbContext(options))
             {
                 // [C] Assert 
-                var repository = new NoticeRepositoryAsync(context, factory);
+                var repository = new NoticeRepository(context, factory);
                 var models = await repository.GetAllAsync();
                 Assert.AreEqual(3, models.Count()); 
             }
@@ -80,7 +80,7 @@ namespace Intsa.Models.Tests
             }
             using (var context = new NoticeAppDbContext(options))
             {
-                var repository = new NoticeRepositoryAsync(context, factory);
+                var repository = new NoticeRepository(context, factory);
                 var model = await repository.GetByIdAsync(2);
                 Assert.IsTrue(model.Name.Contains("길동"));
                 Assert.AreEqual("[2] 홍길동", model.Name);
@@ -97,7 +97,7 @@ namespace Intsa.Models.Tests
 
             using (var context = new NoticeAppDbContext(options))
             {
-                var repository = new NoticeRepositoryAsync(context, factory);
+                var repository = new NoticeRepository(context, factory);
                 var model = await repository.GetByIdAsync(2);
 
                 model.Name = "[2] 임꺽정";
@@ -122,7 +122,7 @@ namespace Intsa.Models.Tests
 
             using (var context = new NoticeAppDbContext(options))
             {
-                var repository = new NoticeRepositoryAsync(context, factory);
+                var repository = new NoticeRepository(context, factory);
                 await repository.DeleteAsync(2);
 
                 Assert.AreEqual(2, (await context.BoardNotices.CountAsync()));
@@ -142,7 +142,7 @@ namespace Intsa.Models.Tests
                 int pageIndex = 0;
                 int pageSize = 1; 
 
-                var repository = new NoticeRepositoryAsync(context, factory);
+                var repository = new NoticeRepository(context, factory);
                 var articleSet = await repository.GetAllAsync(pageIndex, pageSize);
 
                 var firstName = articleSet.Records.FirstOrDefault()?.Name;
@@ -165,7 +165,7 @@ namespace Intsa.Models.Tests
                 context.Entry(no1).State = EntityState.Modified;
                 context.SaveChanges();
 
-                var repository = new NoticeRepositoryAsync(context, factory);
+                var repository = new NoticeRepository(context, factory);
                 var r = await repository.GetStatus(parentId);
 
                 Assert.AreEqual(1, r.Item1);    // Pinned Count == 1

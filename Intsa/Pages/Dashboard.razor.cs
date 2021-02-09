@@ -10,7 +10,7 @@ namespace Intsa.Pages
     public partial class Dashboard
     {
         [Inject]
-        public INoticeRepositoryAsync NoticeRepositoryAsyncReference { get; set; }
+        public INoticeRepository NoticeRepositoryAsyncReference { get; set; }
         [Inject]
         public NavigationManager NavigationManagerReference { get; set; }
 

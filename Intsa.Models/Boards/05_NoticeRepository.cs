@@ -11,15 +11,15 @@ namespace Intsa.Models.Boards
     /// <summary>
     /// [6] Repository Class: 
     /// </summary>
-    public class NoticeRepositoryAsync : INoticeRepositoryAsync
+    public class NoticeRepository : INoticeRepository
     {
         private readonly NoticeAppDbContext _context;
         private readonly ILogger _logger;
 
-        public NoticeRepositoryAsync(NoticeAppDbContext context, ILoggerFactory loggerFactory)
+        public NoticeRepository(NoticeAppDbContext context, ILoggerFactory loggerFactory)
         {
             this._context = context;
-            this._logger = loggerFactory.CreateLogger(nameof(NoticeRepositoryAsync));
+            this._logger = loggerFactory.CreateLogger(nameof(NoticeRepository));
         }
 
         // 입력

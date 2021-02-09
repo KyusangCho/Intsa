@@ -13,7 +13,7 @@ namespace Intsa.Pages.Boards.Notices
         public int Id { get; set; }
 
         [Inject]
-        public INoticeRepositoryAsync NoticeRepositoryAsyncReference { get; set; }
+        public INoticeRepository NoticeRepositoryAsyncReference { get; set; }
 
         [Inject]
         public NavigationManager NavigationManagerReference { get; set; }

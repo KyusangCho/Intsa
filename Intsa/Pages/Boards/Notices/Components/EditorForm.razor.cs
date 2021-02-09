@@ -51,7 +51,7 @@ namespace Intsa.Pages.Boards.Notices.Components
         /// 리포지토리 클래스 참조 
         /// </summary>
         [Inject]
-        public INoticeRepositoryAsync NoticeRepositoryAsyncReference { get; set; }
+        public INoticeRepository NoticeRepositoryAsyncReference { get; set; }
         
         protected override void OnParametersSet()
         {

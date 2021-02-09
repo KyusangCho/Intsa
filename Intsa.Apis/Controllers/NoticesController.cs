@@ -1,5 +1,4 @@
-﻿using Dul.Domain.Common;
-using Intsa.Models.Boards;
+﻿using Intsa.Models.Boards;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,10 +10,10 @@ namespace Intsa.Apis.Controllers
     [Route("api/Boards/Notices")]
     public class NoticesController : ControllerBase
     {
-        private readonly INoticeRepositoryAsync _repository;
+        private readonly INoticeRepository _repository;
         private readonly ILogger _logger; 
 
-        public NoticesController(INoticeRepositoryAsync repository, ILoggerFactory loggerFactory)
+        public NoticesController(INoticeRepository repository, ILoggerFactory loggerFactory)
         {
             this._repository = repository;
             this._logger = loggerFactory.CreateLogger(nameof(NoticesController)); 

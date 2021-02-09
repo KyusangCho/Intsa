@@ -65,7 +65,7 @@ namespace Intsa.Apis
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); 
 
             // INoticeRepositoryAsync.cs Inject: DI Container에 서비스(리포지토리) 등록 
-            services.AddTransient<INoticeRepositoryAsync, NoticeRepositoryAsync>();
+            services.AddTransient<INoticeRepository, NoticeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

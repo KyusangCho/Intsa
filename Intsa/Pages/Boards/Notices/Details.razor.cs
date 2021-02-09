@@ -10,7 +10,7 @@ namespace Intsa.Pages.Boards.Notices
         public int Id { get; set; }
 
         [Inject]
-        public INoticeRepositoryAsync NoticeRepositoryAsyncReference { get; set; }
+        public INoticeRepository NoticeRepositoryAsyncReference { get; set; }
 
         protected BoardNotices model = new BoardNotices();
 
