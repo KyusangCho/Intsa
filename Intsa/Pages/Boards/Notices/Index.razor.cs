@@ -1,5 +1,6 @@
 ﻿using Intsa.Models.Boards;
 using Microsoft.AspNetCore.Components;
+using Syncfusion.Blazor.ProgressBar;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,16 @@ namespace Intsa.Pages.Boards.Notices
             PageIndex = 0, 
             PageSize = 2, 
             PagerButtonCount = 5, 
-        }; 
+        };
+
+        SfProgressBar ProObj1;
+        public async Task ProgressRefresh()
+        {
+#pragma warning disable CS0618
+            await ProObj1.Refresh();
+#pragma warning restore CS0618
+        }
+
 
         protected override async Task OnInitializedAsync()
         {

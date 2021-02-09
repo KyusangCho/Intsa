@@ -47,12 +47,21 @@ namespace Intsa
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
+            // [CORS][1] 사용등록
+            // [CORS][1][2] 기본
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin",
+                    builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            
-            services.AddSyncfusionBlazor();
             services.AddSyncfusionBlazor();
 
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
@@ -96,6 +105,8 @@ namespace Intsa
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseCors("AllowAnyOrigin"); 
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

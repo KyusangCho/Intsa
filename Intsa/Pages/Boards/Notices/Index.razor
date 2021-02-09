@@ -19,82 +19,97 @@
             </Authorized>
             <NotAuthorized>
 
-                @if (models == null) { 
+                @if (models == null)
+                {
                     <p><em>Loading...</em></p>
                     <div>
-                        <MatProgressBar Indeterminate="true"></MatProgressBar>
+                        <MatBlazor.MatProgressBar Indeterminate="true"></MatBlazor.MatProgressBar>
                     </div>
                 }
                 else
                 {
-                <!-- BEGIN #responsiveTables -->
-                <div id="responsiveTables" class="mb-5">
-                    <div class="card">
-                        <div class="card-header">
-                            <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
-                            <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-responsive table-hover">
-                                        <table class="table mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">Title</th>
-                                                    <th scope="col">Name</th>
-                                                    <th scope="col">Created</th>
-                                                    <th scope="col">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var m in models)
-                                                {
+                    <!-- BEGIN #responsiveTables -->
+                    <div id="responsiveTables" class="mb-5">
+                        <div class="card">
+                            <div class="card-header">
+                                @*<SfProgressBar @ref="ProObj1" Type="ProgressType.Linear" IsIndeterminate="true" Minimum="0" Maximum="100" TrackThickness="12" ProgressThickness="12">
+                                    <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
+                                </SfProgressBar>*@
+                                <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
+                                <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
+                                @*<a href="/Boards/Notices/Report" class="btn btn-primary">Report</a>*@
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive table-hover">
+                                            <table class="table mb-0">
+                                                <thead>
                                                     <tr>
-                                                        <td scope="row" class="text-dark">@m.Id</td>
-                                                        <td @onclick="@(()=> NameClick(m.Id))">
-                                                            <a href="/Boards/Notices/Details/@m.Id" class="text-dark">
-                                                                @m.Title
-                                                            </a>
-                                                        </td>
-                                                        <td>@m.Name</td>
-                                                        <td>@m.Created?.ToShortDateString()</td>
-                                                        <td>
-                                                            <a href="/Boards/Notices/Details/@m.Id" class="btn btn-light">Details</a>
-                                                            <a href="/Boards/Notices/Edit/@m.Id" class="btn btn-light">Edit</a>
-                                                            <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-danger">Delete</a>
-                                                        </td>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Title</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Created</th>
+                                                        <th scope="col">Action</th>
                                                     </tr>
+                                                </thead>
+                                                @if (models.Count == 0)
+                                                {
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="4" class="text-center">
+                                                                <p>데이터가 없습니다.</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
                                                 }
-                                            </tbody>
-                                        </table>
+                                                <tbody>
+                                                    @foreach (var m in models)
+                                                    {
+                                                        <tr>
+                                                            <td scope="row" class="text-dark">@m.Id</td>
+                                                            <td @onclick="@(()=> NameClick(m.Id))">
+                                                                <a href="/Boards/Notices/Details/@m.Id" class="text-dark">
+                                                                    @m.Title
+                                                                </a>
+                                                            </td>
+                                                            <td>@m.Name</td>
+                                                            <td>@m.Created?.ToShortDateString()</td>
+                                                            <td>
+                                                                <a href="/Boards/Notices/Details/@m.Id" class="btn btn-light">Details</a>
+                                                                <a href="/Boards/Notices/Edit/@m.Id" class="btn btn-light">Edit</a>
+                                                                <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-danger">Delete</a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
+                                    <div class="col-md-12">
+                                        <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <Intsa.Pages.Boards.Notices.Components.SearchBox placeholder="Search ..."
+                                                                                         SearchQueryChanged="Search">
+                                        </Intsa.Pages.Boards.Notices.Components.SearchBox>
+                                    </div>
+
                                 </div>
-                                <div class="col-md-12">
-                                    <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
-                                </div>
-                                <div class="col-md-12">
-                                    <Intsa.Pages.Boards.Notices.Components.SearchBox 
-                                               placeholder="Search ..." 
-                                               SearchQueryChanged="Search">
-                                    </Intsa.Pages.Boards.Notices.Components.SearchBox>
-                                </div>
+
 
                             </div>
 
-                            
                         </div>
-
-                     </div>
-                </div>
-                <!-- END #responsiveTables -->
+                    </div>
+                    <!-- END #responsiveTables -->
                 }
 
             </NotAuthorized>
         </AuthorizeView>
         <AuthorizeView Roles="Administrators, Managers">
             <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
+
         </AuthorizeView>
     </div>
 

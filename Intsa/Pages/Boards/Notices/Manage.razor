@@ -58,6 +58,16 @@
                                                 <th>Admin</th>
                                             </tr>
                                         </thead>
+                                        @if (models.Count == 0)
+                                        {
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="4" class="text-center">
+                                                        <p>데이터가 없습니다.</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        }
                                         <tbody>
                                             @foreach (var m in models)
                                             {
