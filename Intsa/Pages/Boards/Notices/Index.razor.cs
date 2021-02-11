@@ -1,6 +1,6 @@
 ﻿using Intsa.Models.Boards;
 using Microsoft.AspNetCore.Components;
-using Syncfusion.Blazor.ProgressBar;
+using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,17 +24,31 @@ namespace Intsa.Pages.Boards.Notices
             PagerButtonCount = 5, 
         };
 
-        SfProgressBar ProObj1;
-        public async Task ProgressRefresh()
-        {
-#pragma warning disable CS0618
-            await ProObj1.Refresh();
-#pragma warning restore CS0618
-        }
-
+        public bool VisibleProperty { get; set; } = false;
+        
+        // SignalR
+        private HubConnection hubConnection;
+        private List<string> messages = new List<string>();
+        private string userInput;
+        private string messageInput;
 
         protected override async Task OnInitializedAsync()
         {
+            #region SignalR
+            hubConnection = new HubConnectionBuilder()
+                    .WithUrl(NavigationManagerReference.ToAbsoluteUri("/noticehub"))
+                    .Build();
+
+            hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+            {
+                var encodeMsg = $"{user}: {message}";
+                messages.Add(encodeMsg);
+                StateHasChanged();
+            });
+
+            await hubConnection.StartAsync();
+            #endregion
+
             if (string.IsNullOrEmpty(this.searchQuery))
             {
                 await DisplayData(); 
@@ -43,15 +57,16 @@ namespace Intsa.Pages.Boards.Notices
             {
                 await SearchData(); 
             }
-
         }
 
         private async Task DisplayData()
         {
-            //await Task.Delay(3000); 
+            VisibleProperty = true;
+            //await Task.Delay(3000);
             var resultSet = await NoticeRepositoryAsyncReference.GetAllAsync(pager.PageIndex, pager.PageSize);
             pager.RecordCount = resultSet.TotalRecords; 
             models = resultSet.Records.ToList();
+            VisibleProperty = false; 
         }
 
         protected void NameClick(int id)
@@ -94,5 +109,18 @@ namespace Intsa.Pages.Boards.Notices
             pager.RecordCount = resultSet.TotalRecords;
             models = resultSet.Records.ToList();
         }
+
+        #region SignalR
+        Task Send() =>
+            hubConnection.SendAsync("SendMessage", userInput, messageInput);
+
+        public bool IsConnected =>
+            hubConnection.State == HubConnectionState.Connected;
+
+        public async ValueTask DisposeAsync()
+        {
+            await hubConnection.DisposeAsync();
+        } 
+        #endregion
     }
 }

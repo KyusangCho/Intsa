@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Syncfusion.Blazor;
 using BlazorDemos.Shared;
+using Microsoft.AspNetCore.ResponseCompression;
+using System.Linq;
+using Intsa.Hubs;
 
 namespace Intsa
 {
@@ -55,6 +58,12 @@ namespace Intsa
             services.AddServerSideBlazor();
             services.AddSyncfusionBlazor();
 
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
+
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddScoped<SampleService>(); 
             
@@ -81,6 +90,7 @@ namespace Intsa
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseResponseCompression(); 
 
             //Register Syncfusion license
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mzk0OTIxQDMxMzgyZTM0MmUzMGswR0VyQVBtOGRKSmNqcGM2TFkwM2RFNU1ua1FlZlJGK2FUbXJMU20xTmM9");
@@ -110,6 +120,7 @@ namespace Intsa
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
+                endpoints.MapHub<NoticeHub>("/noticehub");      // 상단 공지사항 실시간 알림
                 endpoints.MapFallbackToPage("/_Host");
 
                 endpoints.MapControllerRoute(

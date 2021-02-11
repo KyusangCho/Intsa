@@ -1,5 +1,6 @@
 ﻿@page "/Boards/Notices"
 @page "/Boards/Notices/Index"
+@implements IAsyncDisposable
 
 <ul class="breadcrumb">
     <li class="breadcrumb-item"><a href="#">HOME</a></li>
@@ -21,9 +22,12 @@
 
                 @if (models == null)
                 {
-                    <p><em>Loading...</em></p>
                     <div>
-                        <MatBlazor.MatProgressBar Indeterminate="true"></MatBlazor.MatProgressBar>
+                        <SfSpinner @bind-Visible="@VisibleProperty"
+                                   Label="Data Loading...."
+                                   Type="@SpinnerType.Bootstrap4"
+                                   Size="50">
+                        </SfSpinner>
                     </div>
                 }
                 else
@@ -33,8 +37,8 @@
                         <div class="card">
                             <div class="card-header">
                                 @*<SfProgressBar @ref="ProObj1" Type="ProgressType.Linear" IsIndeterminate="true" Minimum="0" Maximum="100" TrackThickness="12" ProgressThickness="12">
-                                    <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
-                                </SfProgressBar>*@
+                                        <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
+                                    </SfProgressBar>*@
                                 <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
                                 <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
                                 @*<a href="/Boards/Notices/Report" class="btn btn-primary">Report</a>*@
@@ -112,5 +116,31 @@
 
         </AuthorizeView>
     </div>
-
 </div>
+
+<!-- #region SignalR -->
+
+@*<div class="form-group">
+    <label>
+        User:
+        <input @bind="userInput" />
+    </label>
+</div>
+<div class="form-group">
+    <label>
+        Message:
+        <input @bind="messageInput" size="50" />
+    </label>
+</div>
+<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+
+<hr>
+
+<ul id="messagesList">
+    @foreach (var message in messages)
+    {
+        <li>@message</li>
+    }
+</ul>*@
+
+<!-- #endregion -->

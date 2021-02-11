@@ -24,15 +24,6 @@ namespace Intsa.Pages.Linemap.OrderRegister
             PagerButtonCount = 5, 
         };
 
-        SfProgressBar ProObj1;
-        public async Task ProgressRefresh()
-        {
-#pragma warning disable CS0618
-            await ProObj1.Refresh();
-#pragma warning restore CS0618
-        }
-
-
         protected override async Task OnInitializedAsync()
         {
             if (string.IsNullOrEmpty(this.searchQuery))
