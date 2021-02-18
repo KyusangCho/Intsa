@@ -1,5 +1,10 @@
 ﻿@page "/Boards/Notices"
 @page "/Boards/Notices/Index"
+
+@*@attribute [AllowAnonymous]*@
+@*@attribute [Authorize]*@
+@attribute [Authorize(Roles = "Administrators")]
+
 @implements IAsyncDisposable
 
 <ul class="breadcrumb">
