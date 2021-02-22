@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
@@ -148,7 +148,7 @@ namespace Intsa.Areas.Identity.Pages.Account.Manage
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("BlazorRoleBasedAuthorization"),
+                _urlEncoder.Encode("AspStudio"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }

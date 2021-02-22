@@ -16,7 +16,7 @@
     <title>INT, S.A.</title>
     <base href="~/" />
     <!-- ================== BEGIN core-css ================== -->
-    <link href="/css/bootstrap4.css" rel="stylesheet" />
+    <link href="_content/Syncfusion.Blazor/styles/bootstrap4.css" rel="stylesheet" />
     <link href="/templates/dashboard/assets/css/app.min.css" rel="stylesheet" />
     <!-- ================== END core-css ================== -->
 
@@ -58,18 +58,18 @@
                     </div>
                 </form>
                 <div class="menu-item dropdown">
-                    <a href="#" data-toggle="dropdown" data-display="static" class="menu-link">
+                    <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="menu-link">
                         <div class="menu-icon"><i class="fa fa-bell nav-icon"></i></div>
-                        <div class="menu-label">2</div>
+                        @*<div class="menu-label"></div>*@
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right dropdown-notification">
+                    <div class="dropdown-menu dropdown-menu-end dropdown-notification">
                         <h6 class="dropdown-header text-gray-900 mb-1">Notifications</h6>
                         <a href="#" class="dropdown-notification-item">
                             <div class="dropdown-notification-icon">
                                 <i class="fa fa-receipt fa-lg fa-fw text-success"></i>
                             </div>
                             <div class="dropdown-notification-info">
-                                <div class="title">Your store has a new order for 2 items totaling $1,299.00</div>
+                                <div class="title">Your voucher #0000 paid (total $1,299.00)</div>
                                 <div class="time">just now</div>
                             </div>
                             <div class="dropdown-notification-arrow">
@@ -81,37 +81,33 @@
                                 <i class="far fa-user-circle fa-lg fa-fw text-muted"></i>
                             </div>
                             <div class="dropdown-notification-info">
-                                <div class="title">3 new customer account is created</div>
+                                <div class="title">3 new po is created by Tom Shin (Destiny Maternity)</div>
                                 <div class="time">2 minutes ago</div>
                             </div>
                             <div class="dropdown-notification-arrow">
                                 <i class="fa fa-chevron-right"></i>
                             </div>
                         </a>
-
-                        <div class="p-2 text-center mb-n1">
+                        @*<div class="p-2 text-center mb-n1">
                             <a href="#" class="text-gray-800 text-decoration-none">See all</a>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
 
-
                 <div class="menu-item dropdown">
-                    <a href="#" data-toggle="dropdown" data-display="static" class="menu-link">
+                    <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="menu-link">
                         <div class="menu-img online">
                             <img src="/templates/dashboard/assets/img/user/user.jpg" alt="" class="mw-100 mh-100 rounded-circle" />
                         </div>
                         <div class="menu-text">@User.Identity.Name</div>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right mr-lg-3">
-                        <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">Manager User <i class="fa fa-user-circle fa-fw ml-auto text-gray-400 f-s-16"></i></a>
-                        <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password <i class="fa fa-key fa-fw ml-auto text-gray-400 f-s-16"></i></a>
-                        <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication">Two-factor authentication <i class="fa fa-key fa-fw ml-auto text-gray-400 f-s-16"></i></a>
-                        <a class="dropdown-item d-flex align-items-center" href="/CustomTemplate">Calendar <i class="fa fa-calendar-alt fa-fw ml-auto text-gray-400 f-s-16"></i></a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">Setting <i class="fa fa-wrench fa-fw ml-auto text-gray-400 f-s-16"></i></a>
+                    <div class="dropdown-menu dropdown-menu-end me-lg-3">
+                        <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">Manager User <i class="fa fa-user-circle fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                        <a class="dropdown-item d-flex align-items-center" href="/CustomTemplate">Calendar <i class="fa fa-calendar-alt fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">Setting <i class="fa fa-wrench fa-fw ms-auto text-gray-400 f-s-16"></i></a>
                         <div class="dropdown-divider"></div>
                         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post">
-                            <button type="submit" class="dropdown-item d-flex align-items-center">Log Out <i class="fa fa-toggle-off fa-fw ml-auto text-gray-400 f-s-16"></i></button>
+                            <button type="submit" class="dropdown-item d-flex align-items-center">Log Out <i class="fa fa-toggle-off fa-fw ms-auto text-gray-400 f-s-16"></i></button>
                         </form>
                     </div>
                 </div>
@@ -121,6 +117,7 @@
 
         </div>
         <!-- END #header -->
+
         <!-- BEGIN #sidebar -->
         <div id="sidebar" class="app-sidebar">
             <!-- BEGIN scrollbar -->
@@ -910,7 +907,6 @@
             <app>
                 <div>
                     <component type="typeof(App)" render-mode="ServerPrerendered" />
-
                 </div>
             </app>
         </div>

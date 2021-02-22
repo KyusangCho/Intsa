@@ -9,17 +9,24 @@
     }
 }
 
-<h2>Manage your account</h2>
-
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
+<div id="content" class="app-content" data-scrollbar="true" data-height="100%" data-skip-mobile="true">
     <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+        <div class="col-xl-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">HOME</a></li>
+                <li class="breadcrumb-item active">@ViewData["Title"]</li>
+            </ul>
+            <h1 class="page-header">
+                Manage your account <small>Change your account settings</small>
+            </h1>
+            <div class="card">
+                <partial name="_ManageNav" />
+                <div class="tab-content p-4">
+                    <div class="tab-pane active">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

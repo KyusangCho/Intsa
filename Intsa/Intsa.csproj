@@ -6,6 +6,124 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\demo\analytics.demo.js" />
+    <None Include="wwwroot\js\demo\calendar.demo.js" />
+    <None Include="wwwroot\js\demo\chart-apex.demo.js" />
+    <None Include="wwwroot\js\demo\chart-js.demo.js" />
+    <None Include="wwwroot\js\demo\dashboard.demo.js" />
+    <None Include="wwwroot\js\demo\email-compose.demo.js" />
+    <None Include="wwwroot\js\demo\form-plugins.demo.js" />
+    <None Include="wwwroot\js\demo\highlightjs.demo.js" />
+    <None Include="wwwroot\js\demo\map.demo.js" />
+    <None Include="wwwroot\js\demo\page-coming-soon.demo.js" />
+    <None Include="wwwroot\js\demo\page-gallery.demo.js" />
+    <None Include="wwwroot\js\demo\page-scrum-board.demo.js" />
+    <None Include="wwwroot\js\demo\sidebar-scrollspy.demo.js" />
+    <None Include="wwwroot\js\demo\table-plugins.demo.js" />
+    <None Include="wwwroot\js\demo\ui-modal-notification.demo.js" />
+    <None Include="wwwroot\js\demo\widgets.demo.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap\LICENSE" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+    <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+    <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\android.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\browser.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\email.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\mastercard.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\order.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\paypal.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\paypal2.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\visa.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\icon\visitor.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\page\404.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\page\coming-soon.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\page\dashboard.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\page\email.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\img\page\login.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\js\app.min.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\analytics.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\calendar.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\chart-apex.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\chart-js.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\dashboard.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\email-compose.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\form-elements.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\form-plugins.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\highlightjs.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\map.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\page-coming-soon.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\page-gallery.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\page-scrum-board.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\sidebar-scrollspy.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\table-plugins.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\ui-modal-notification.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\js\demo\widgets.demo.js" />
+    <None Include="wwwroot\templates\dashboard\assets\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\templates\dashboard\assets\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\templates\dashboard\assets\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\templates\dashboard\assets\webfonts\fa-solid-900.woff2" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\android.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\browser.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\email.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\mastercard.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\order.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\paypal.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\paypal2.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\visa.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\icon\visitor.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\page\404.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\page\coming-soon.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\page\dashboard.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\page\email.svg" />
+    <None Include="wwwroot\templates\landing\assets\img\page\login.svg" />
+    <None Include="wwwroot\templates\landing\assets\js\app.min.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\analytics.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\calendar.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\chart-apex.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\chart-js.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\dashboard.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\email-compose.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\form-elements.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\form-plugins.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\highlightjs.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\map.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\page-coming-soon.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\page-gallery.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\table-plugins.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\ui-modal-notification.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\js\demo\widgets.demo.js" />
+    <None Include="wwwroot\templates\landing\assets\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\templates\landing\assets\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\templates\landing\assets\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\templates\landing\assets\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\templates\landing\assets\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\templates\landing\assets\webfonts\fa-solid-900.woff2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BeanyPager" Version="1.0.1" />
     <PackageReference Include="Dul" Version="1.2.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.12" />
@@ -22,6 +140,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Intsa.Models\Intsa.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
 
 </Project>

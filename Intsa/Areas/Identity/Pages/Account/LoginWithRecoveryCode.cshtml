@@ -2,70 +2,34 @@
 @model LoginWithRecoveryCodeModel
 @{
     ViewData["Title"] = "Recovery code verification";
+    ViewData["AppClass"] = "app-full-height app-without-header app-full-width";
+    ViewData["AppWithoutHeader"] = true;
+    ViewData["AppWithoutSidebar"] = true;
+    ViewData["AppWithoutContainer"] = true;
 }
 
+<!-- BEGIN login -->
+<div class="login">
+	<!-- BEGIN login-content -->
+	<div class="login-content">
+		<h1 class="text-center">@ViewData["Title"]</h1>
+		<div class="text-muted text-center mb-4">
+			You have requested to log in with a recovery code. This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again.
+		</div>
+		<form method="post">
+				<div asp-validation-summary="All" class="text-danger"></div>
+				<div class="mb-3">
+						<label asp-for="Input.RecoveryCode" class="form-label"></label>
+						<input asp-for="Input.RecoveryCode" class="form-control" autocomplete="off" />
+						<span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
+				</div>
+				<button type="submit" class="btn btn-primary d-block w-100">Log in</button>
+		</form>
+	</div>
+	<!-- END login-content -->
+</div>
+<!-- END login -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <base href="~/" />
-    <!-- ================== BEGIN core-css ================== -->
-    <link href="/css/bootstrap4.css" rel="stylesheet" />
-    <link href="/templates/dashboard/assets/css/app.min.css" rel="stylesheet" />
-    <!-- ================== END core-css ================== -->
-
-</head>
-<body>
-    <!-- BEGIN #app -->
-    <div id="app" class="app app-full-height app-without-header">
-        <!-- BEGIN login -->
-        <div class="login">
-            <!-- BEGIN login-content -->
-            <div class="login-content">
-
-                <h1>@ViewData["Title"]</h1>
-                <hr />
-                <p>
-                    You have requested to log in with a recovery code. This login will not be remembered until you provide
-                    an authenticator app code at log in or disable 2FA and log in again.
-                </p>
-                <div class="row">
-                    <div class="col-md-4">
-                        <form method="post">
-                            <div asp-validation-summary="All" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="Input.RecoveryCode"></label>
-                                <input asp-for="Input.RecoveryCode" class="form-control" autocomplete="off" />
-                                <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Log in</button>
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-            <!-- END login-content -->
-        </div>
-        <!-- END login -->
-        <!-- BEGIN btn-scroll-top -->
-        <a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
-        <!-- END btn-scroll-top -->
-    </div>
-
-    <!-- END #app -->
-    <!-- ================== BEGIN core-js ================== -->
-    <script src="/templates/dashboard/assets/js/app.min.js"></script>
-    <!-- ================== END core-js ================== -->
-
-    @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
-    }
-
-</body>
-</html>
-
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

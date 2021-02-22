@@ -1,6 +1,6 @@
 /*
-Template Name: ASPSTUDIO - Responsive Bootstrap 4 Admin Template
-Version: 1.1.0
+Template Name: ASPSTUDIO - Responsive Bootstrap 5 Admin Template
+Version: 2.0.0
 Author: Sean Ngu
 Website: http://www.seantheme.com/asp-studio/
 */
@@ -89,19 +89,11 @@ var handleRenderTimepicker = function() {
 };
 
 var handleRenderColorpicker = function() {
-	$('#colorpicker-default').colorpicker();
-	$('#colorpicker-component').colorpicker();
-	$('#colorpicker-alias').colorpicker({
-		colorSelectors: {
-			'black': '#000000',
-			'white': '#ffffff',
-			'default': '#8A8A8F',
-			'primary': '#007aff',
-			'success': '#4CD964',
-			'info': '#5AC8FA',
-			'warning': '#FF9500',
-			'danger': '#FF3B30'
-		}
+	$('#colorpicker-default').spectrum({
+    showInput: true
+	});
+	$('#colorpicker-component').spectrum({
+    showInput: true
 	});
 };
 
@@ -136,50 +128,16 @@ var handleRenderTypeahead = function() {
 };
 
 var handleRenderTagsInput = function() {
-	var cities = [ 
-		{ "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    },
-		{ "value": 2 , "text": "London"      , "continent": "Europe"    },
-		{ "value": 3 , "text": "Paris"       , "continent": "Europe"    },
-		{ "value": 4 , "text": "Washington"  , "continent": "America"   },
-		{ "value": 5 , "text": "Mexico City" , "continent": "America"   },
-		{ "value": 6 , "text": "Buenos Aires", "continent": "America"   },
-		{ "value": 7 , "text": "Sydney"      , "continent": "Australia" },
-		{ "value": 8 , "text": "Wellington"  , "continent": "Australia" },
-		{ "value": 9 , "text": "Canberra"    , "continent": "Australia" },
-		{ "value": 10, "text": "Beijing"     , "continent": "Asia"      },
-		{ "value": 11, "text": "New Delhi"   , "continent": "Asia"      },
-		{ "value": 12, "text": "Kathmandu"   , "continent": "Asia"      },
-		{ "value": 13, "text": "Cairo"       , "continent": "Africa"    },
-		{ "value": 14, "text": "Cape Town"   , "continent": "Africa"    },
-		{ "value": 15, "text": "Kinshasa"    , "continent": "Africa"    }
-	];
-	var elt ='#tagsinput-category';
-	$(elt).tagsinput({
-		tagClass: function(item) {
-			switch (item.continent) {
-				case 'Europe'   : return 'bg-primary';
-				case 'America'  : return 'bg-success';
-				case 'Australia': return 'bg-black';
-				case 'Africa'   : return 'bg-pink';
-				case 'Asia'     : return 'bg-warning';
-			}
-		},
-		itemValue: 'value',
-		itemText: 'text',
-		typeahead: {
-			source: cities
+	var elt = '#jquery-tagit';
+	
+	$(elt).tagit({
+		fieldName: 'tags',
+		availableTags: ['c++', 'java', 'php', 'javascript', 'ruby', 'python', 'c'],
+		autocomplete: {
+			delay: 0, 
+			minLength: 2
 		}
 	});
-	$(elt).on('itemAdded', function(e) {
-		setTimeout(function() {
-			$('.bootstrap-tagsinput').find('input').val('');
-		}, 0);
-	});
-	$(elt).tagsinput('add', { "value": 1 , "text": "Amsterdam"   , "continent": "Europe"    });
-	$(elt).tagsinput('add', { "value": 4 , "text": "Washington"  , "continent": "America"   });
-	$(elt).tagsinput('add', { "value": 7 , "text": "Sydney"      , "continent": "Australia" });
-	$(elt).tagsinput('add', { "value": 10, "text": "Beijing"     , "continent": "Asia"      });
-	$(elt).tagsinput('add', { "value": 13, "text": "Cairo"       , "continent": "Africa"    });
 };
 
 var handleRenderBootstrapSlider = function() {
@@ -197,26 +155,6 @@ var handleRenderBootstrapSlider = function() {
 var handleRenderMaskedInput = function() {
 	$('#masked-input-date').mask('99/99/9999');
 	$('#masked-input-phone').mask('(999) 999-9999');
-};
-
-var handleRenderPasswordStrength = function() {
-	
-	var options = {};
-	options.ui = {
-		container: "#pwdstrength-container",
-		showVerdictsInsideProgressBar: true,
-		viewports: {
-			progress: ".pwstrength_viewport_progress"
-		},
-		progressExtraCssClasses: "progress-sm"
-	};
-	options.common = {
-		debug: true,
-		onLoad: function () {
-			$('#messages').text('Start typing password');
-		}
-	};
-	$('#pwstrength-default').pwstrength(options);
 };
 
 var handleRenderSummernote = function() {
@@ -256,6 +194,12 @@ var handleRenderjQueryFileUpload = function() {
 	}
 };
 
+var handleRenderSelectPicker = function() {
+	$('#ex-basic').picker();
+	$('#ex-multiselect').picker();
+	$('#ex-search').picker({ search: true });
+};
+
 
 /* Controller
 ------------------------------------------------ */
@@ -268,7 +212,7 @@ $(document).ready(function() {
 	handleRenderTagsInput();
 	handleRenderBootstrapSlider();
 	handleRenderMaskedInput();
-	handleRenderPasswordStrength();
 	handleRenderSummernote();
 	handleRenderjQueryFileUpload();
+	handleRenderSelectPicker();
 });

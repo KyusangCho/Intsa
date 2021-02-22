@@ -1,73 +1,48 @@
-﻿@page
+@page
 @model RegisterModel
 @{
-    Layout = null;
     ViewData["Title"] = "Register";
+    ViewData["AppClass"] = "app-full-height app-without-header app-full-width";
+    ViewData["AppWithoutHeader"] = true;
+    ViewData["AppWithoutSidebar"] = true;
+    ViewData["AppWithoutContainer"] = true;
 }
 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <base href="~/" />
-    <!-- ================== BEGIN core-css ================== -->
-    <link href="/css/bootstrap4.css" rel="stylesheet" />
-    <link href="/templates/dashboard/assets/css/app.min.css" rel="stylesheet" />
-    <!-- ================== END core-css ================== -->
+<!-- BEGIN register -->
+<div class="register">
+	<!-- BEGIN register-content -->
+	<div class="register-content">
+		<form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+			<h1 class="text-center">Sign Up</h1>
+			<p class="text-muted text-center">One Admin ID is all you need to access all the Admin services.</p>
+      <div asp-validation-summary="All" class="text-danger"></div>
+			<div class="mb-3">
+				<label asp-for="Input.Email" class="form-label"></label>
+				<input asp-for="Input.Email" class="form-control form-control-lg fs-15px" placeholder="e.g John Smith" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<label asp-for="Input.Password" class="form-label"></label>
+				<input asp-for="Input.Password" class="form-control form-control-lg fs-15px" value="" />
+			</div>
+			<div class="mb-3">
+				<label asp-for="Input.ConfirmPassword" class="form-label"></label>
+				<input asp-for="Input.ConfirmPassword" class="form-control form-control-lg fs-15px" value="" />
+        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+			</div>
+			<div class="mb-3">
+				<button type="submit" class="btn btn-primary btn-lg fs-15px fw-500 d-block w-100">Sign Up</button>
+			</div>
+			<div class="text-muted text-center">
+				Already have an Admin ID? <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Sign In</a>
+			</div>
+		</form>
+	</div>
+	<!-- END register-content -->
+</div>
+<!-- END register -->
 
-</head>
-<body>
-    <!-- BEGIN #app -->
-    <div id="app" class="app app-full-height app-without-header">
-        <!-- BEGIN login -->
-        <div class="login">
-            <!-- BEGIN login-content -->
-            <div class="login-content">
-
-                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                    <h4>Create a new account.</h4>
-                    <hr />
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="Input.Email"></label>
-                        <input asp-for="Input.Email" class="form-control" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Input.Password"></label>
-                        <input asp-for="Input.Password" class="form-control" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Input.ConfirmPassword"></label>
-                        <input asp-for="Input.ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Register</button>
-                </form>
-
-            </div>
-            <!-- END login-content -->
-        </div>
-        <!-- END login -->
-        <!-- BEGIN btn-scroll-top -->
-        <a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
-        <!-- END btn-scroll-top -->
-    </div>
-
-    <!-- END #app -->
-    <!-- ================== BEGIN core-js ================== -->
-    <script src="/templates/dashboard/assets/js/app.min.js"></script>
-    <!-- ================== END core-js ================== -->
-
-    @section Scripts {
-        <partial name="_ValidationScriptsPartial" />
-    }
-
-</body>
-</html>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

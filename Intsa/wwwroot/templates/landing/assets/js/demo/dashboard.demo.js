@@ -1,6 +1,6 @@
 /*
-Template Name: ASPSTUDIO - Responsive Bootstrap 4 Admin Template
-Version: 1.1.0
+Template Name: ASPSTUDIO - Responsive Bootstrap 5 Admin Template
+Version: 2.0.0
 Author: Sean Ngu
 Website: http://www.seantheme.com/asp-studio/
 */
@@ -13,11 +13,11 @@ var handleChart = function() {
 				8506, 8626, 8668, 8602, 8607, 8512, 8496, 8600, 8881, 9340
 			],
 			'dates': [
-				'13 Nov 2020', '14 Nov 2020', '15 Nov 2020', '16 Nov 2020',
-				'17 Nov 2020', '20 Nov 2020', '21 Nov 2020', '22 Nov 2020',
-				'23 Nov 2020', '24 Nov 2020', '27 Nov 2020', '28 Nov 2020',
-				'29 Nov 2020', '30 Nov 2020', '01 Dec 2020', '04 Dec 2020', 
-				'05 Dec 2020', '06 Dec 2020', '07 Dec 2020', '08 Dec 2020'
+				'13 Nov 2021', '14 Nov 2021', '15 Nov 2021', '16 Nov 2021',
+				'17 Nov 2021', '20 Nov 2021', '21 Nov 2021', '22 Nov 2021',
+				'23 Nov 2021', '24 Nov 2021', '27 Nov 2021', '28 Nov 2021',
+				'29 Nov 2021', '30 Nov 2021', '01 Dec 2021', '04 Dec 2021', 
+				'05 Dec 2021', '06 Dec 2021', '07 Dec 2021', '08 Dec 2021'
 			]
 		}
 	};
@@ -29,11 +29,11 @@ var handleChart = function() {
 			]
 		}],
 		labels: [
-			'13 Nov 2020', '14 Nov 2020', '15 Nov 2020', '16 Nov 2020',
-			'17 Nov 2020', '20 Nov 2020', '21 Nov 2020', '22 Nov 2020',
-			'23 Nov 2020', '24 Nov 2020', '27 Nov 2020', '28 Nov 2020',
-			'29 Nov 2020', '30 Nov 2020', '01 Dec 2020', '04 Dec 2020', 
-			'05 Dec 2020', '06 Dec 2020', '07 Dec 2020', '08 Dec 2020'
+			'13 Nov 2021', '14 Nov 2021', '15 Nov 2021', '16 Nov 2021',
+			'17 Nov 2021', '20 Nov 2021', '21 Nov 2021', '22 Nov 2021',
+			'23 Nov 2021', '24 Nov 2021', '27 Nov 2021', '28 Nov 2021',
+			'29 Nov 2021', '30 Nov 2021', '01 Dec 2021', '04 Dec 2021', 
+			'05 Dec 2021', '06 Dec 2021', '07 Dec 2021', '08 Dec 2021'
 		],
 		colors: [COLOR_BLUE],
 		chart: {
@@ -72,7 +72,7 @@ var handleChart = function() {
 				}
 			}],
 			xaxis: [{
-				x: new Date('23 Nov 2020').getTime(),
+				x: new Date('23 Nov 2021').getTime(),
 				strokeDashArray: 0,
 				borderColor: COLOR_GRAY_900,
 				label: {
@@ -84,8 +84,8 @@ var handleChart = function() {
 					text: 'Anno Test',
 				}
 			}, {
-				x: new Date('26 Nov 2020').getTime(),
-				x2: new Date('28 Nov 2020').getTime(),
+				x: new Date('26 Nov 2021').getTime(),
+				x2: new Date('28 Nov 2021').getTime(),
 				fillColor: COLOR_TEAL,
 				opacity: 0.4,
 				label: {
@@ -100,7 +100,7 @@ var handleChart = function() {
 				}
 			}],
 			points: [{
-				x: new Date('01 Dec 2020').getTime(),
+				x: new Date('01 Dec 2021').getTime(),
 				y: 8607.55,
 				marker: {
 					size: 8,

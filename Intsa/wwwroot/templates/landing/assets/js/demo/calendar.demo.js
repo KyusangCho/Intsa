@@ -1,6 +1,6 @@
 /*
-Template Name: ASPSTUDIO - Responsive Bootstrap 4 Admin Template
-Version: 1.1.0
+Template Name: ASPSTUDIO - Responsive Bootstrap 5 Admin Template
+Version: 2.0.0
 Author: Sean Ngu
 Website: http://www.seantheme.com/asp-studio/
 */
@@ -28,8 +28,7 @@ var handleRenderFullcalendar = function() {
 	var today = moment().startOf('day');
 	var calendarElm = document.getElementById('calendar');
 	var calendar = new FullCalendar.Calendar(calendarElm, {
-		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'bootstrap' ],
-    header: {
+    headerToolbar: {
       left: 'dayGridMonth,timeGridWeek,timeGridDay',
       center: 'title',
       right: 'prev,next today'
@@ -40,7 +39,7 @@ var handleRenderFullcalendar = function() {
 			week:     'Week',
 			day:      'Day'
     },
-    defaultView: 'dayGridMonth',
+    initialView: 'dayGridMonth',
     editable: true,
     droppable: true,
   	themeSystem: 'bootstrap',
@@ -56,7 +55,7 @@ var handleRenderFullcalendar = function() {
 			end: year + '-'+ month +'-05',
 			color: COLOR_TEAL
 		},{
-			title: 'Meet with Jess Lau',
+			title: 'Meet with Sean Ngu',
 			start: year + '-'+ month +'-02T06:00:00',
 			color: COLOR_BLUE
 		},{
@@ -76,10 +75,12 @@ var handleRenderFullcalendar = function() {
 		},{
 			title: 'Domain name due',
 			start: year + '-'+ month +'-15',
+			end: year + '-'+ month +'-15',
 			color: COLOR_BLUE
 		},{
 			title: 'Cambridge Trip',
-			start: year + '-'+ month +'-19'
+			start: year + '-'+ month +'-19',
+			end: year + '-'+ month +'-19'
 		},{
 			title: 'Visit Apple Company',
 			start: year + '-'+ month +'-22T05:00:00',

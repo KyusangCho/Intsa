@@ -1,8 +1,8 @@
 /*
-Template Name: ASPSTUDIO - Responsive Bootstrap 4 Admin Template
-Version: 1.1.0
+Template Name: STUDIO - Responsive Bootstrap 4 Admin Template
+Version: 2.0.0
 Author: Sean Ngu
-Website: http://www.seantheme.com/asp-studio/
+Website: http://www.seantheme.com/studio/
 */
 
 var handleRenderSummernote = function() {
@@ -12,9 +12,22 @@ var handleRenderSummernote = function() {
 	});
 };
 
+var handleEmailTagsInput = function() {
+	$('#email-to').tagit({
+		availableTags: ["admin2@studio.com", "admin3@studio.com", "admin4@studio.com", "admin5@studio.com", "admin6@studio.com", "admin7@studio.com", "admin8@studio.com"]
+	});
+	$('#email-cc').tagit({
+		availableTags: ["admin2@studio.com", "admin3@studio.com", "admin4@studio.com", "admin5@studio.com", "admin6@studio.com", "admin7@studio.com", "admin8@studio.com"]
+	});
+	$('#email-bcc').tagit({
+		availableTags: ["admin2@studio.com", "admin3@studio.com", "admin4@studio.com", "admin5@studio.com", "admin6@studio.com", "admin7@studio.com", "admin8@studio.com"]
+	});
+};
+
 
 /* Controller
 ------------------------------------------------ */
 $(document).ready(function() {
 	handleRenderSummernote();
+	handleEmailTagsInput();
 });

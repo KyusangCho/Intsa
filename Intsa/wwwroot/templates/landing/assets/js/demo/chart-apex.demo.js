@@ -1,6 +1,6 @@
 /*
-Template Name: ASPSTUDIO - Responsive Bootstrap 4 Admin Template
-Version: 1.1.0
+Template Name: ASPSTUDIO - Responsive Bootstrap 5 Admin Template
+Version: 2.0.0
 Author: Sean Ngu
 Website: http://www.seantheme.com/asp-studio/
 */
@@ -36,10 +36,10 @@ var handleRenderApexChart = function() {
 			width: 3
 		},
 		series: [{
-			name: 'High - 2020',
+			name: 'High - 2021',
 			data: [28, 29, 33, 36, 32, 32, 33]
 		}, {
-			name: 'Low - 2020',
+			name: 'Low - 2021',
 			data: [12, 11, 14, 18, 17, 13, 13]
 		}],
 		grid: {
@@ -316,12 +316,12 @@ var handleRenderApexChart = function() {
 		},
 		colors: [COLOR_BLUE, COLOR_TEAL, COLOR_ORANGE],
 		title: {
-			text: 'XYZ - Stock Analysis (2012 - 2020)',
+			text: 'XYZ - Stock Analysis (2012 - 2021)',
 			align: 'left',
 			offsetX: 110
 		},
 		xaxis: {
-			categories: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+			categories: [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2021, 2021],
 			axisBorder: {
 				show: true,
 				color: COLOR_GRAY_300,
