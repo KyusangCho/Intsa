@@ -1,6 +1,7 @@
 ﻿@page
 @model LoginWith2faModel
 @{
+    Layout = null;
     ViewData["Title"] = "Two-factor authentication";
     ViewData["AppClass"] = "app-full-height app-without-header app-full-width";
     ViewData["AppWithoutHeader"] = true;
@@ -9,43 +10,71 @@
 }
 
 
-<!-- BEGIN login -->
-<div class="login">
-	<!-- BEGIN login-content -->
-	<div class="login-content">
-		<h1 class="text-center">@ViewData["Title"]</h1>
-		<div class="text-muted text-center mb-4">
-			Your login is protected with an authenticator app. Enter your authenticator code below.
-		</div>
-		<form method="post" asp-route-returnUrl="@Model.ReturnUrl">
-			<input asp-for="RememberMe" type="hidden" />
-			<div asp-validation-summary="All" class="text-danger"></div>
-			<div class="mb-3">
-					<label asp-for="Input.TwoFactorCode" class="form-label"></label>
-					<input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
-					<span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-					<div class="form-check">
-							<input asp-for="Input.RememberMachine" class="form-check-input" />
-							<label asp-for="Input.RememberMachine" class="form-check-label">
-									@Html.DisplayNameFor(m => m.Input.RememberMachine)
-							</label>
-					</div>
-			</div>
-			<div class="mb-3">
-					<button type="submit" class="btn btn-primary d-block w-100">Log in</button>
-			</div>
-			<p>
-					Don't have access to your authenticator device? You can
-					<a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">log in with a recovery code</a>.
-			</p>
-		</form>
-	</div>
-	<!-- END login-content -->
-</div>
-<!-- END login -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>@ViewData["Title"]</title>
+    <base href="~/" />
+    <!-- ================== BEGIN core-css ================== -->
+    <link href="_content/Syncfusion.Blazor/styles/bootstrap4.css" rel="stylesheet" />
+    <link href="/templates/dashboard/assets/css/app.min.css" rel="stylesheet" />
+    <!-- ================== END core-css ================== -->
+</head>
+<body data-spy='scroll' data-target='#sidebar-bootstrap' data-offset='200'>
+    <!-- BEGIN #app -->
+    <div id="app" class="@ViewData["AppClass"]">
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+
+        <!-- BEGIN login -->
+        <div class="login">
+            <!-- BEGIN login-content -->
+            <div class="login-content">
+                <h1 class="text-center">@ViewData["Title"]</h1>
+                <div class="text-muted text-center mb-4">
+                    Your login is protected with an authenticator app. Enter your authenticator code below.
+                </div>
+                <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+                    <input asp-for="RememberMe" type="hidden" />
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label asp-for="Input.TwoFactorCode" class="form-label"></label>
+                        <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input asp-for="Input.RememberMachine" class="form-check-input" />
+                            <label asp-for="Input.RememberMachine" class="form-check-label">
+                                @Html.DisplayNameFor(m => m.Input.RememberMachine)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary d-block w-100">Log in</button>
+                    </div>
+                    <p>
+                        Don't have access to your authenticator device? You can
+                        <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">log in with a recovery code</a>.
+                    </p>
+                </form>
+            </div>
+            <!-- END login-content -->
+        </div>
+        <!-- END login -->
+    </div>
+    <!-- END #app -->
+    <!-- ================== BEGIN core-js ================== -->
+    <script src="/templates/dashboard/assets/js/app.min.js"></script>
+    <!-- ================== END core-js ================== -->
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
+
+
+

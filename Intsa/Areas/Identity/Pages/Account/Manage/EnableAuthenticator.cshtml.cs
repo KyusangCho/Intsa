@@ -148,7 +148,7 @@ namespace Intsa.Areas.Identity.Pages.Account.Manage
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("AspStudio"),
+                _urlEncoder.Encode("INT, S.A."),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
