@@ -40,6 +40,7 @@ namespace Intsa
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // [CORS][1] 사용등록
@@ -52,18 +53,16 @@ namespace Intsa
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
-
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
-            services.AddSyncfusionBlazor();
-
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
 
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddSyncfusionBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddScoped<SampleService>(); 
             

@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿
 @namespace Intsa.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
@@ -24,6 +24,7 @@
 <body data-spy='scroll' data-target='#sidebar-bootstrap' data-offset='200'>
     <!-- BEGIN #app -->
     <div id="app" class="app app-content-full-height">
+
         <!-- BEGIN #header -->
         <div id="header" class="app-header">
             <!-- BEGIN mobile-toggler -->
@@ -105,8 +106,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right mr-lg-3">
                         <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">Manager User <i class="fa fa-user-circle fa-fw ml-auto text-gray-400 f-s-16"></i></a>
-                        <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/ChangePassword">Password <i class="fa fa-key fa-fw ml-auto text-gray-400 f-s-16"></i></a>
-                        <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/TwoFactorAuthentication">Two-factor authentication <i class="fa fa-key fa-fw ml-auto text-gray-400 f-s-16"></i></a>
+                        <a class="dropdown-item d-flex align-items-center" href="#">Inbox <i class="fa fa-envelope fa-fw ml-auto text-gray-400 f-s-16"></i></a>
                         <a class="dropdown-item d-flex align-items-center" href="/CustomTemplate">Calendar <i class="fa fa-calendar-alt fa-fw ml-auto text-gray-400 f-s-16"></i></a>
                         <a class="dropdown-item d-flex align-items-center" href="#">Setting <i class="fa fa-wrench fa-fw ml-auto text-gray-400 f-s-16"></i></a>
                         <div class="dropdown-divider"></div>
@@ -584,12 +584,12 @@
                     <!-- #region 품질관리 -->
                     <!-- 품질관리 BEGIN menu -->
                     <!--<div class="menu-header">Quality Management</div>
-                    <div class="menu-item ">
-                        <a href="/" class="menu-link">
-                            <span class="menu-icon"><i class="fa fa-file"></i></span>
-                            <span class="menu-text"></span>
-                        </a>
-                    </div>-->
+                <div class="menu-item ">
+                    <a href="/" class="menu-link">
+                        <span class="menu-icon"><i class="fa fa-file"></i></span>
+                        <span class="menu-text"></span>
+                    </a>
+                </div>-->
                     <!-- 품질관리 END menu -->
                     <!-- #endregion -->
                     <!-- #region 인적자원관리 -->
@@ -905,37 +905,21 @@
             <!-- END mobile-sidebar-backdrop -->
         </div>
         <!-- END #sidebar -->
-        <!-- BEGIN #content -->
         <div id="content" class="app-content" data-scrollbar="true" data-height="100%" data-skip-mobile="true">
-            <app>
-                <div>
-                    <component type="typeof(App)" render-mode="ServerPrerendered" />
-
-                </div>
-            </app>
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
-        <!-- END #content -->
         <!-- BEGIN btn-scroll-top -->
         <a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
         <!-- END btn-scroll-top -->
     </div>
-    <!-- END #app -->
-    @*<div id="blazor-error-ui">
-            <environment include="Staging,Production">
-                An error has occurred. This application may no longer respond until reloaded.
-            </environment>
-            <environment include="Development">
-                An unhandled exception has occurred. See browser dev tools for details.
-            </environment>
-            <a href="" class="reload">Reload</a>
-            <a class="dismiss">🗙</a>
-        </div>*@
 
     <script src="_framework/blazor.server.js"></script>
 
     <!-- ================== BEGIN core-js ================== -->
     <script src="/templates/dashboard/assets/js/app.min.js"></script>
     <!-- ================== END core-js ================== -->
-
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
