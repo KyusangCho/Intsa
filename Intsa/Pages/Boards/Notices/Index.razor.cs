@@ -19,7 +19,7 @@ namespace Intsa.Pages.Boards.Notices
         {
             PageNumber = 1,
             PageIndex = 0, 
-            PageSize = 2, 
+            PageSize = 10, 
             PagerButtonCount = 5, 
         };
 

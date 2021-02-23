@@ -12,32 +12,34 @@
                 <div class="form-group row">
                     <label for="id" class="col-sm-1 col-form-label">Id:</label>
                     <div class="col-sm-11">
-                        <input type="text" class="form-control-plaintext" id="id" value="@model.Id" />
+                        <input type="text" class="form-control-plaintext" id="id" value="@model.Id" readonly />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="lblName" class="col-sm-1 col-form-label">Name:</label>
                     <div class="col-sm-11">
-                        <input type="text" class="form-control-plaintext" id="lblName" value="@model.Name" />
+                        <input type="text" class="form-control-plaintext" id="lblName" value="@model.Name" readonly />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="lblTitle" class="col-sm-1 col-form-label">Title:</label>
                     <div class="col-sm-11">
-                        <input type="text" class="form-control-plaintext" id="lblTitle" value="@model.Title" />
+                        <input type="text" class="form-control-plaintext" id="lblTitle" value="@model.Title" readonly />
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12">
-                        <SfRichTextEditor ShowCharCount="true" MaxLength="2000" @bind-Value="@model.Content">
+                        <SfRichTextEditor ShowCharCount="false" MaxLength="2000" @bind-Value="@model.Content" Readonly="true">
+                            <RichTextEditorToolbarSettings Enable="false" />
                         </SfRichTextEditor>
                         @*@((MarkupString)content)*@
                     </div>
                 </div>
-
                 <div class="form-group">
-                    <a href="/Boards/Notices/Edit/@model.Id" class="btn btn-primary">Edit</a>
-                    <a href="/Boards/Notices/Delete/@model.Id" class="btn btn-danger">Delete</a>
+                    <AuthorizeView Roles="Administrators">
+                        <a href="/Boards/Notices/Edit/@model.Id" class="btn btn-primary">Edit</a>
+                        <a href="/Boards/Notices/Delete/@model.Id" class="btn btn-danger">Delete</a>
+                    </AuthorizeView>
                     <a href="/Boards/Notices" class="btn btn-secondary">List</a>
                 </div>
             </div>

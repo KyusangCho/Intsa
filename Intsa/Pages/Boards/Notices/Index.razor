@@ -19,7 +19,91 @@
 
 <div class="row">
     <div class="col-md-12">
-        <AuthorizeView>
+        <AuthorizeView Roles="Users">
+            <Authorized>
+                @if (models == null)
+                {
+                    <div>
+                        <SfSpinner @bind-Visible="@VisibleProperty"
+                                   Label="Data Loading...."
+                                   Type="@SpinnerType.Bootstrap4"
+                                   Size="50">
+                        </SfSpinner>
+                    </div>
+                }
+                else
+                {
+                    <!-- BEGIN #responsiveTables -->
+                    <div id="responsiveTables" class="mb-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive ">
+                                            <table class="table table-hover mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Title</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Created</th>
+                                                    </tr>
+                                                </thead>
+                                                @if (models.Count == 0)
+                                                {
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="4" class="text-center">
+                                                                <p>데이터가 없습니다.</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                }
+                                                <tbody>
+                                                    @foreach (var m in models)
+                                                    {
+                                                        <tr>
+                                                            <td scope="row">@m.Id</td>
+                                                            <td @onclick="@(()=> NameClick(m.Id))">
+                                                                <a href="/Boards/Notices/Details/@m.Id">
+                                                                    @m.Title
+                                                                </a>
+                                                            </td>
+                                                            <td>@m.Name</td>
+                                                            <td>@m.Created?.ToShortDateString()</td>
+                                                            
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="mt-3">
+                                            <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <Intsa.Pages.Boards.Notices.Components.SearchBox placeholder="Search ..."
+                                                                                         SearchQueryChanged="Search">
+                                        </Intsa.Pages.Boards.Notices.Components.SearchBox>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- END #responsiveTables -->
+                }
+            </Authorized>
+            <NotAuthorized>
+
+            </NotAuthorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Administrators">
             <Authorized>
                 @if (models == null)
                 {
@@ -38,8 +122,8 @@
                         <div class="card">
                             <div class="card-header">
                                 @*<SfProgressBar @ref="ProObj1" Type="ProgressType.Linear" IsIndeterminate="true" Minimum="0" Maximum="100" TrackThickness="12" ProgressThickness="12">
-                            <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
-                        </SfProgressBar>*@
+                                    <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
+                                </SfProgressBar>*@
                                 <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
                                 <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
                                 @*<a href="/Boards/Notices/Report" class="btn btn-primary">Report</a>*@
@@ -47,8 +131,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="table-responsive table-hover">
-                                            <table class="table mb-0">
+                                        <div class="table-responsive ">
+                                            <table class="table table-hover mb-0">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">#</th>
@@ -72,18 +156,18 @@
                                                     @foreach (var m in models)
                                                     {
                                                         <tr>
-                                                            <td scope="row" class="text-dark">@m.Id</td>
+                                                            <td scope="row">@m.Id</td>
                                                             <td @onclick="@(()=> NameClick(m.Id))">
-                                                                <a href="/Boards/Notices/Details/@m.Id" class="text-dark">
+                                                                <a href="/Boards/Notices/Details/@m.Id">
                                                                     @m.Title
                                                                 </a>
                                                             </td>
                                                             <td>@m.Name</td>
                                                             <td>@m.Created?.ToShortDateString()</td>
                                                             <td>
-                                                                <a href="/Boards/Notices/Details/@m.Id" class="btn btn-light">Details</a>
-                                                                <a href="/Boards/Notices/Edit/@m.Id" class="btn btn-light">Edit</a>
-                                                                <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-danger">Delete</a>
+                                                                <a href="/Boards/Notices/Details/@m.Id" class="btn btn-secondary">Details</a>
+                                                                <a href="/Boards/Notices/Edit/@m.Id" class="btn btn-secondary">Edit</a>
+                                                                <a href="/Boards/Notices/Delete/@m.Id" class="btn btn-secondary">Delete</a>
                                                             </td>
                                                         </tr>
                                                     }
@@ -92,11 +176,13 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
+                                        <div class="mt-3">
+                                            <BeanyPager.BeanyPagerComponent Model="pager" PageIndexChanged="PageIndexChanged"></BeanyPager.BeanyPagerComponent>
+                                        </div>
                                     </div>
                                     <div class="col-md-12">
                                         <Intsa.Pages.Boards.Notices.Components.SearchBox placeholder="Search ..."
-                                                                                         SearchQueryChanged="Search">
+                                                                                            SearchQueryChanged="Search">
                                         </Intsa.Pages.Boards.Notices.Components.SearchBox>
                                     </div>
 
@@ -114,9 +200,6 @@
 
             </NotAuthorized>
         </AuthorizeView>
-        <AuthorizeView Roles="Administrators, Managers">
-            <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
 
-        </AuthorizeView>
     </div>
 </div>

@@ -24,15 +24,14 @@ namespace Intsa.Pages.Boards.Notices
         protected override async Task OnInitializedAsync()
         {
             var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            userName = authenticationState.User.Identity.Name; 
-
+            userName = authenticationState.User.Identity.Name;
+            model.Name = userName; 
         }
 
         protected async void FormSubmit()
         {
             int.TryParse(ParentId, out int parentId);
             model.ParentId = parentId;
-            model.Name = userName; 
             await NoticeRepositoryAsyncReference.AddAsync(model);
             NavigationManagerReference.NavigateTo("/Boards/Notices"); 
         }
