@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.RichTextEditor;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Intsa.Pages.Boards.Notices
 {
@@ -16,7 +17,15 @@ namespace Intsa.Pages.Boards.Notices
 
         public string ParentId { get; set; }
 
-        protected int[] parentIds = { 1, 2, 3 }; 
+        protected int[] parentIds = { 1, 2, 3 };
+
+        protected string userName; 
+
+        protected override async Task OnInitializedAsync()
+        {
+            var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            userName = authenticationState.User.Identity.Name; 
+        }
 
         protected async void FormSubmit()
         {
@@ -59,5 +68,6 @@ namespace Intsa.Pages.Boards.Notices
             new ToolbarItemModel() { Command = ToolbarCommand.Undo },
             new ToolbarItemModel() { Command = ToolbarCommand.Redo }
         };
+        
     }
 }

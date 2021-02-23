@@ -2,6 +2,9 @@
 
 @using Syncfusion.Blazor.RichTextEditor
 @using BlazorDemos.Shared
+@using Microsoft.AspNetCore.Identity
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject SignInManager<IdentityUser> SignInManager
 
 @inherits SampleBaseComponent;
 
@@ -15,65 +18,72 @@
             <div class="form-group">
                 <label for="txtName">Name</label>
                 <InputText id="txtName" class="form-control" placeholder="Enter Name"
-                           @bind-Value="@model.Name"></InputText>
-                <ValidationMessage For="@(()=>model.Name)" class="form-text text-muted"></ValidationMessage>
-            </div>
-            <div class="form-group">
-                <label for="txtTitle">Title</label>
-                <InputText id="txtTitle" class="form-control" placeholder="Enter Title"
-                           @bind-Value="@model.Title"></InputText>
-                <ValidationMessage For="@(()=>model.Title)" class="form-text text-muted"></ValidationMessage>
-            </div>
-            <div class="form-group">
-                <label for="txtContent">Content</label>
-
-                <div class="control-section">
-                    <div class="control-wrapper">
-                        <div class="control-section">
-                            <SfRichTextEditor ShowCharCount="true" MaxLength="2000" @bind-Value="@model.Content">
-                                <RichTextEditorToolbarSettings Items="@Tools" Type="ToolbarType.Expand" />
-                            </SfRichTextEditor>
-                        </div>
+                           @bind-Value="@userName"></InputText>
+                        <ValidationMessage For="@(()=>model.Name)" class="form-text text-muted"></ValidationMessage>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="txtTitle">Title</label>
+                        <InputText id="txtTitle" class="form-control" placeholder="Enter Title"
+                                   @bind-Value="@model.Title"></InputText>
+                        <ValidationMessage For="@(()=>model.Title)" class="form-text text-muted"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtContent">Content</label>
 
-                @*<InputTextArea id="txtContent" class="form-control" placeholder="Enter Content" rows="5"
-                               @bind-Value="@model.Content"></InputTextArea>*@
-                <ValidationMessage For="@(()=>model.Content)" class="form-text text-muted"></ValidationMessage>
+                        <div class="control-section">
+                            <div class="control-wrapper">
+                                <div class="control-section">
+                                    <SfRichTextEditor ShowCharCount="true" MaxLength="2000" Height="400" @bind-Value="@model.Content">
+                                        <RichTextEditorToolbarSettings Items="@Tools" Type="ToolbarType.Expand" />
+                                    </SfRichTextEditor>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<InputTextArea id="txtContent" class="form-control" placeholder="Enter Content" rows="5"
+                            @bind-Value="@model.Content"></InputTextArea>*@
+                        <ValidationMessage For="@(()=>model.Content)" class="form-text text-muted"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label for="lstCategory">Type</label>
+                        <InputSelect @bind-Value="@ParentId" class="form-control" id="lstCategory">
+                            <option value="">--Select Type--</option>
+                            @foreach (var p in parentIds)
+                            {
+                                if (p.Equals(1))
+                                {
+                                    <option value="@p">General</option>
+                                }
+                                if (p.Equals(2))
+                                {
+                                    <option value="@p">Important</option>
+                                }
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=> ParentId)" class="form-text text-muted"></ValidationMessage>
+                    </div>
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="/Boards/Notices" class="btn btn-secondary">List</a>
+                    </div>
+                </EditForm>
             </div>
-            <div class="form-group">
-                <label for="lstCategory">Parent</label>
-                <InputSelect @bind-Value="@ParentId" class="form-control" id="lstCategory">
-                    <option value="">--Select Parent--</option>
-                    @foreach (var p in parentIds)
-                    {
-                        <option value="@p">@p</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(()=> ParentId)" class="form-text text-muted"></ValidationMessage>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="/Boards/Notices" class="btn btn-secondary">List</a>
-            </div>
-        </EditForm>
-    </div>
-</div>
-<style>
-    .e-code-mirror::before {
-        content: '\e345';
-    }
+        </div>
+        <style>
+            .e-code-mirror::before {
+                content: '\e345';
+            }
 
-    .e-html-preview::before {
-        content: '\e350';
-    }
+            .e-html-preview::before {
+                content: '\e350';
+            }
 
-    .CodeMirror-linenumber,
-    .CodeMirror-gutters {
-        display: none;
-    }
+            .CodeMirror-linenumber,
+            .CodeMirror-gutters {
+                display: none;
+            }
 
-    .sb-header {
-        z-index: 100;
-    }
-</style>
+            .sb-header {
+                z-index: 100;
+            }
+        </style>
