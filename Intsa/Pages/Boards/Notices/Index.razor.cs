@@ -1,6 +1,5 @@
 ﻿using Intsa.Models.Boards;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,28 +25,10 @@ namespace Intsa.Pages.Boards.Notices
 
         public bool VisibleProperty { get; set; } = false;
         
-        // SignalR
-        private HubConnection hubConnection;
-        private List<string> messages = new List<string>();
-        private string userInput;
-        private string messageInput;
 
         protected override async Task OnInitializedAsync()
         {
-            #region SignalR
-            hubConnection = new HubConnectionBuilder()
-                    .WithUrl(NavigationManagerReference.ToAbsoluteUri("/noticehub"))
-                    .Build();
-
-            hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
-            {
-                var encodeMsg = $"{user}: {message}";
-                messages.Add(encodeMsg);
-                StateHasChanged();
-            });
-
-            await hubConnection.StartAsync();
-            #endregion
+            
 
             if (string.IsNullOrEmpty(this.searchQuery))
             {
@@ -110,17 +91,8 @@ namespace Intsa.Pages.Boards.Notices
             models = resultSet.Records.ToList();
         }
 
-        #region SignalR
-        Task Send() =>
-            hubConnection.SendAsync("SendMessage", userInput, messageInput);
-
-        public bool IsConnected =>
-            hubConnection.State == HubConnectionState.Connected;
-
         public async ValueTask DisposeAsync()
         {
-            await hubConnection.DisposeAsync();
         } 
-        #endregion
     }
 }

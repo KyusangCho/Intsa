@@ -52,7 +52,11 @@
 else
 {
     <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-default me-2">Setup authenticator app</a>
-    <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-default me-2">Reset authenticator app</a>
+
+    if (User.IsInRole("Administrators"))    // 관리자만 2FA 리셋 가능 
+    {
+        <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-default me-2">Reset authenticator app</a>
+    }
 }
 </div>
 
