@@ -26,25 +26,57 @@
             </div>
             <div class="form-group">
                 <label for="txtContent">Content</label>
-                <InputTextArea id="txtContent" class="form-control" placeholder="Enter Content" rows="5"
-                               @bind-Value="@model.Content"></InputTextArea>
+                <div class="control-section">
+                    <div class="control-wrapper">
+                        <div class="control-section">
+                            <SfRichTextEditor ShowCharCount="true" MaxLength="2000" Height="400" @bind-Value="@model.Content">
+                                <RichTextEditorToolbarSettings Items="@Tools" Type="ToolbarType.Expand" />
+                            </SfRichTextEditor>
+                        </div>
+                    </div>
+                </div>
                 <ValidationMessage For="@(()=>model.Content)" class="form-text text-muted"></ValidationMessage>
             </div>
             <div class="form-group">
-                <label for="lstCategory">Parent</label>
+                <label for="lstCategory">Type</label>
                 <InputSelect @bind-Value="@ParentId" class="form-control" id="lstCategory">
-                    <option value="">--Select Parent--</option>
+                    <option value="">--Select Type--</option>
                     @foreach (var p in parentIds)
                     {
-                        <option value="@p">@p</option>
+                        if (p.Equals(1))
+                        {
+                            <option value="@p">General</option>
+                        }
+                        if (p.Equals(2))
+                        {
+                            <option value="@p">Important</option>
+                        }
                     }
                 </InputSelect>
                 <ValidationMessage For="@(()=> ParentId)" class="form-text text-muted"></ValidationMessage>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <a href="/Boards/Notices" class="btn btn-secondary">List</a>
             </div>
         </EditForm>
     </div>
 </div>
+<style>
+    .e-code-mirror::before {
+        content: '\e345';
+    }
+
+    .e-html-preview::before {
+        content: '\e350';
+    }
+
+    .CodeMirror-linenumber,
+    .CodeMirror-gutters {
+        display: none;
+    }
+
+    .sb-header {
+        z-index: 100;
+    }
+</style>
