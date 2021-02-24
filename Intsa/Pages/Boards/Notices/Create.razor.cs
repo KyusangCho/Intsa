@@ -1,4 +1,5 @@
 ﻿using Intsa.Models.Boards;
+using Intsa.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.RichTextEditor;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace Intsa.Pages.Boards.Notices
             int.TryParse(ParentId, out int parentId);
             model.ParentId = parentId;
             await NoticeRepositoryAsyncReference.AddAsync(model);
+            Socketlabs.SendMessage(model.Title, model.Content, "");     // 전체메일 발송 
             NavigationManagerReference.NavigateTo("/Boards/Notices"); 
         }
 
@@ -69,6 +71,7 @@ namespace Intsa.Pages.Boards.Notices
             new ToolbarItemModel() { Command = ToolbarCommand.Undo },
             new ToolbarItemModel() { Command = ToolbarCommand.Redo }
         };
+        
         
     }
 }

@@ -11,8 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Syncfusion.Blazor;
 using BlazorDemos.Shared;
-using Microsoft.AspNetCore.ResponseCompression;
-using System.Linq;
 //using Intsa.Hubs;
 
 namespace Intsa
