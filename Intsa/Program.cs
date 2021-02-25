@@ -21,8 +21,6 @@ namespace Intsa
                     webBuilder.UseStartup<Startup>();
                 });
 
-
-
         #region SyncFusion 
         public class SampleListType
         {
