@@ -45,14 +45,14 @@
                         <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" />
                         <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
                     </div>
-                    <div class="mb-3">
+                    @*<div class="mb-3">
                         <div class="form-check">
                             <input asp-for="Input.RememberMachine" class="form-check-input" />
                             <label asp-for="Input.RememberMachine" class="form-check-label">
                                 @Html.DisplayNameFor(m => m.Input.RememberMachine)
                             </label>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary d-block w-100">Log in</button>
                     </div>

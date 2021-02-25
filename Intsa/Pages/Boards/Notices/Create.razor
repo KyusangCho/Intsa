@@ -1,6 +1,7 @@
 ﻿@page "/Boards/Notices/Create"
 
-@using Syncfusion.Blazor.RichTextEditor
+@*@using Syncfusion.Blazor.RichTextEditor*@
+ 
 @using BlazorDemos.Shared
 @using Microsoft.AspNetCore.Identity
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -19,34 +20,35 @@
                 <label for="txtName">Name</label>
                 <InputText id="txtName" class="form-control" placeholder="Enter Name"
                            @bind-Value="@model.Name"></InputText>
-                        <ValidationMessage For="@(()=>model.Name)" class="form-text text-muted"></ValidationMessage>
-                    </div>
-                    <div class="form-group">
-                        <label for="txtTitle">Title</label>
-                        <InputText id="txtTitle" class="form-control" placeholder="Enter Title"
-                                   @bind-Value="@model.Title"></InputText>
-                        <ValidationMessage For="@(()=>model.Title)" class="form-text text-muted"></ValidationMessage>
-                    </div>
-                    <div class="form-group">
-                        <label for="txtContent">Content</label>
-
+                <ValidationMessage For="@(()=>model.Name)" class="form-text text-muted"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label for="txtTitle">Title</label>
+                <InputText id="txtTitle" class="form-control" placeholder="Enter Title"
+                           @bind-Value="@model.Title"></InputText>
+                <ValidationMessage For="@(()=>model.Title)" class="form-text text-muted"></ValidationMessage>
+            </div>
+            <div class="form-group">
+                <label for="txtContent">Content</label>
+                <div class="control-section">
+                    <div class="control-wrapper">
                         <div class="control-section">
-                            <div class="control-wrapper">
-                                <div class="control-section">
-                                    <SfRichTextEditor ShowCharCount="true" MaxLength="2000" Height="400" @bind-Value="@model.Content">
-                                        <RichTextEditorToolbarSettings Items="@Tools" Type="ToolbarType.Expand" />
-                                    </SfRichTextEditor>
-                                </div>
-                            </div>
+                            <SfRichTextEditor ShowCharCount="true" MaxLength="2000" Height="400" @bind-Value="@model.Content">
+                                <RichTextEditorToolbarSettings Items="@Tools" Type="ToolbarType.Expand" />
+                            </SfRichTextEditor>
                         </div>
-
-                        @*<InputTextArea id="txtContent" class="form-control" placeholder="Enter Content" rows="5"
-                            @bind-Value="@model.Content"></InputTextArea>*@
-                        <ValidationMessage For="@(()=>model.Content)" class="form-text text-muted"></ValidationMessage>
                     </div>
-                    <div class="form-group">
-                        <label for="lstCategory">Type</label>
-                        <InputSelect @bind-Value="@ParentId" class="form-control" id="lstCategory">
+                </div>
+
+                @*<InputTextArea id="txtContent" class="form-control" placeholder="Enter Content" rows="5"
+            @bind-Value="@model.Content"></InputTextArea>*@
+                <ValidationMessage For="@(()=>model.Content)" class="form-text text-muted"></ValidationMessage>
+            </div>
+            <div class="form-group mt-2 mb-3">
+                <div class="rows">
+                    <div class="col-md-6">
+                        <label for="lstCategory">Notice Type</label>
+                        <InputSelect @bind-Value="@ParentId" class="form-select" id="lstCategory">
                             <option value="">--Select Type--</option>
                             @foreach (var p in parentIds)
                             {
@@ -62,11 +64,25 @@
                         </InputSelect>
                         <ValidationMessage For="@(()=> ParentId)" class="form-text text-muted"></ValidationMessage>
                     </div>
-                    <div class="form-group mt-3">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <a href="/Boards/Notices" class="btn btn-secondary">List</a>
+                    <div class="col-md-5">
+                        <div class="form-check form-switch">
+                            <input type="checkbox" class="form-check-input" id="customSwitch1" disabled>
+                            <label class="form-check-label" for="customSwitch1">Send Email for All INT</label>
+                        </div>
                     </div>
-                </EditForm>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lstCategory">Attach files</label>
+                <SfUploader AutoUpload="true" AllowedExtensions=".doc, docx, .xls, xlsx, .pdf">
+                    <UploaderEvents ValueChange="OnChange"></UploaderEvents>
+                </SfUploader>
+            </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="/Boards/Notices" class="btn btn-secondary">List</a>
+            </div>
+        </EditForm>
             </div>
         </div>
         <style>

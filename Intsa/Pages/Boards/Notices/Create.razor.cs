@@ -2,8 +2,10 @@
 using Intsa.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.RichTextEditor;
+using Syncfusion.Blazor.Inputs; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Intsa.Pages.Boards.Notices
 {
@@ -34,8 +36,37 @@ namespace Intsa.Pages.Boards.Notices
             int.TryParse(ParentId, out int parentId);
             model.ParentId = parentId;
             await NoticeRepositoryAsyncReference.AddAsync(model);
-            Socketlabs.SendMessage(model.Title, model.Content, "");     // 전체메일 발송 
+            
+            //Socketlabs.SendMessage(model.Title, model.Content, "");     // 전체메일 발송 
+            
             NavigationManagerReference.NavigateTo("/Boards/Notices"); 
+        }
+
+        private void OnChange(UploadChangeEventArgs args)
+        {
+            //foreach (var file in args.Files)
+            //{
+                var path = args.Files[0].FileInfo.FileSource;
+                System.Console.WriteLine(path);
+
+                AmazonS3.Main(args.Files[0].FileInfo.Name, path); 
+
+                //FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
+                //file.Stream.WriteTo(filestream);
+                //filestream.Close();
+                //file.Stream.Close();
+            //}
+        }
+
+        private void onRemove(RemovingEventArgs args)
+        {
+            foreach (var removeFile in args.FilesData)
+            {
+                if (File.Exists(Path.Combine(@"rootPath", removeFile.Name)))
+                {
+                    File.Delete(Path.Combine(@"rootPath", removeFile.Name)); 
+                }
+            }
         }
 
         private List<ToolbarItemModel> Tools = new List<ToolbarItemModel>()
