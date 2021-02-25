@@ -63,7 +63,7 @@ namespace Intsa
                 //options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 //options.Cookie.Name = "YourAppCookieName";
                 //options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
                 //options.LoginPath = "/Identity/Account/Login";
                 //// ReturnUrlParameter requires 
                 ////using Microsoft.AspNetCore.Authentication.Cookies;
@@ -121,7 +121,7 @@ namespace Intsa
             //app.UseResponseCompression(); 
 
             //Register Syncfusion license
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("@31382e342e30Og3cthaUVpi8tNf89OKRI4gLSL4F60Ux92VCd8CZSIY=");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDA0NDI5QDMxMzgyZTM0MmUzME42eHIrNDArcVcwclg4WUkybmF2V253NXBJeHh6cGRKMzNYZFBYRHh6eWM9");
 
             if (env.IsDevelopment())
             {

@@ -46,7 +46,7 @@
             </div>
             <div class="form-group mt-2 mb-3">
                 <div class="rows">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label for="lstCategory">Notice Type</label>
                         <InputSelect @bind-Value="@ParentId" class="form-select" id="lstCategory">
                             <option value="">--Select Type--</option>
@@ -64,7 +64,7 @@
                         </InputSelect>
                         <ValidationMessage For="@(()=> ParentId)" class="form-text text-muted"></ValidationMessage>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-12">
                         <div class="form-check form-switch">
                             <input type="checkbox" class="form-check-input" id="customSwitch1" disabled>
                             <label class="form-check-label" for="customSwitch1">Send Email for All INT</label>
