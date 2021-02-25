@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Syncfusion.Blazor;
 using BlazorDemos.Shared;
+using System;
 //using Intsa.Hubs;
 
 namespace Intsa
@@ -56,6 +57,36 @@ namespace Intsa
             //    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
             //        new[] { "application/octet-stream" });
             //});
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                //options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                //options.Cookie.Name = "YourAppCookieName";
+                //options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+                //options.LoginPath = "/Identity/Account/Login";
+                //// ReturnUrlParameter requires 
+                ////using Microsoft.AspNetCore.Authentication.Cookies;
+                //options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                //options.SlidingExpiration = true;
+            });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Lockout.MaxFailedAccessAttempts = 10;                           // 시도횟수 
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);      // 시간 
+            });
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 4;
+                options.Password.RequiredUniqueChars = 2;
+            }); 
+
 
             services.AddControllersWithViews();
             services.AddRazorPages();
