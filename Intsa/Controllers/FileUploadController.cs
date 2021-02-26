@@ -27,25 +27,48 @@ namespace Intsa.Controllers
             long size = 0;
             try
             {
-                foreach (var file in UploadFiles)
-                {
-                    var filename = ContentDispositionHeaderValue
-                            .Parse(file.ContentDisposition)
-                            .FileName
-                            .Trim('"');
-                    filename = hostingEnv.ContentRootPath + $@"\{filename}";
-                    size += (int)file.Length;
-                    if (!System.IO.File.Exists(filename))
-                    {
-                        AmazonS3.Main(file.FileName, filename);
+                //foreach (var file in UploadFiles)
+                //{
+                var fileName = Path.GetFileName(UploadFiles[0].FileName);
 
-                        //using (FileStream fs = System.IO.File.Create(filename))
-                        //{
-                        //    file.CopyTo(fs);
-                        //    fs.Flush();
-                        //}
+                IFormFile file = UploadFiles[0];
+                string name = file.FileName;
+                string fullName = Path.Combine(Path.GetTempPath(), name);
+                string fileKey = string.Concat(Path.GetFileNameWithoutExtension(fullName), "_", 
+                                               DateTime.Now.ToString("yyMMddHHmmddsss"), 
+                                               Path.GetExtension(fullName)); 
+                    //var filename = ContentDispositionHeaderValue
+                    //        .Parse(file.ContentDisposition)
+                    //        .FileName
+                    //        .Trim('"');
+                    //filename = hostingEnv.ContentRootPath + $@"\{filename}";
+
+                if (UploadFiles != null)
+                {
+                    if (System.IO.File.Exists(fullName))
+                    {
+                        System.IO.File.Delete(fullName);
+                    }
+
+                    if (!System.IO.File.Exists(fullName))
+                    {
+                        using (FileStream fsSource = new FileStream(Path.Combine(Path.GetTempPath(), fileName), FileMode.Create))
+                        {
+                            UploadFiles[0].CopyTo(fsSource);
+                            fsSource.Close();
+                        }
+                        AmazonS3.Main(fileKey, Path.Combine(Path.GetTempPath(), fileName));       // 아마존 S3에 저장 
+                        System.IO.File.Delete(fullName);
                     }
                 }
+                    
+                    //using (FileStream fs = System.IO.File.Create(filename))
+                    //    {
+                    //        file.CopyTo(fs);
+                    //        fs.Flush();
+                    //    }
+                    //}
+                //}
             }
             catch (Exception e)
             {

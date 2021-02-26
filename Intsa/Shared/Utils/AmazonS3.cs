@@ -8,23 +8,32 @@ using System.Threading.Tasks;
 
 namespace Intsa.Shared.Utils
 {
+    /// <summary>
+    /// AmazonS3 파일 업로드 처리 
+    /// </summary>
     public class AmazonS3
     {
         private const string bucketName = "int.boards";
         private static string keyName = "*** provide a name for the uploaded object ***";
         private static string filePath = "*** provide the full path name of the file to upload ***";
-        // Specify your bucket region (an example region is shown).
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USEast1;
         private static IAmazonS3 s3Client;
-
+        
         public static void Main(string key, string path)
         {
             keyName = key;
             filePath = path;
-            BasicAWSCredentials basicCredentials =
-            new BasicAWSCredentials("AKIAY5DOEBAZYSY45EUK", "V25a4WHd+QoMlEomPn/LPghiTOTXJ7BzqeQynIks");
+
+            string accessKey = ""; 
+            string secretKey = ""; 
+
+            if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/UploadS3accessKey.txt"))
+                accessKey = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/UploadS3accessKey.txt").Trim();
+            if (File.Exists(System.IO.Directory.GetCurrentDirectory() + "/UploadS3secretKey.txt"))
+                secretKey = System.IO.File.ReadAllText(System.IO.Directory.GetCurrentDirectory() + "/UploadS3secretKey.txt").Trim();
+
+            BasicAWSCredentials basicCredentials = new BasicAWSCredentials(accessKey, secretKey); 
             s3Client = new AmazonS3Client(basicCredentials, bucketRegion);
-            //s3Client = new AmazonS3Client(bucketRegion);
 
             UploadFileAsync().Wait();
         }
@@ -34,25 +43,7 @@ namespace Intsa.Shared.Utils
             try
             {
                 var fileTransferUtility = new TransferUtility(s3Client);
-                //TransferUtilityUploadRequest request = new TransferUtilityUploadRequest()
-                //{
-                //    BucketName = bucketName,
-                //    Key = keyName,
-                //    FilePath = filePath,
-                //};
-                //await fileTransferUtility.UploadAsync(request);
-                //return true;
-
-
-
-                // Option 1. Upload a file. The file name is used as the object key name.
-                //await fileTransferUtility.UploadAsync(filePath, bucketName);
-                //Console.WriteLine("Upload 1 completed");
-
-                //// Option 2. Specify object key name explicitly.
-                //await fileTransferUtility.UploadAsync(filePath, bucketName, keyName);
-                //Console.WriteLine("Upload 2 completed");
-
+                
                 // Option 3. Upload data from a type of System.IO.Stream.
                 using (var fileToUpload =
                     new FileStream(filePath, FileMode.Open, FileAccess.Read))
@@ -61,21 +52,6 @@ namespace Intsa.Shared.Utils
                 }
                 //Console.WriteLine("Upload 3 completed");
 
-                // Option 4. Specify advanced settings.
-                //var fileTransferUtilityRequest = new TransferUtilityUploadRequest
-                //{
-                //    BucketName = bucketName,
-                //    FilePath = filePath,
-                //    StorageClass = S3StorageClass.StandardInfrequentAccess,
-                //    PartSize = 6291456, // 6 MB.
-                //    Key = keyName,
-                //    CannedACL = S3CannedACL.PublicRead
-                //};
-                //fileTransferUtilityRequest.Metadata.Add("param1", "Value1");
-                //fileTransferUtilityRequest.Metadata.Add("param2", "Value2");
-
-                //await fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
-                //Console.WriteLine("Upload 4 completed");
             }
             catch (AmazonS3Exception e)
             {

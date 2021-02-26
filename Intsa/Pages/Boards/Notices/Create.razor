@@ -74,9 +74,8 @@
             </div>
             <div class="form-group">
                 <label for="lstCategory">Attach files</label>
-                <SfUploader ID="UploadFiles" AutoUpload="true" AllowedExtensions=".doc, docx, .xls, xlsx, .pdf">
+                <SfUploader ID="UploadFiles" AutoUpload="true" AllowedExtensions=".doc, docx, .xls, xlsx, .pdf" Multiple="false" MaxFileSize=5000000>
                     <UploaderAsyncSettings SaveUrl="api/FileUpload/Save" RemoveUrl="api/FileUpload/Remove"></UploaderAsyncSettings>
-                    @*<UploaderEvents ValueChange="OnChange"></UploaderEvents>*@
                 </SfUploader>
             </div>
             <div class="form-group mt-3">
