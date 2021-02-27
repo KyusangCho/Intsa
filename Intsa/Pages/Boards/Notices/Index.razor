@@ -1,5 +1,6 @@
 ﻿@page "/Boards/Notices"
 @page "/Boards/Notices/Index"
+@using Syncfusion.Blazor.Spinner
 
 @*@attribute [AllowAnonymous]*@
 @*@attribute [Authorize]*@
@@ -71,7 +72,7 @@
                                                             </td>
                                                             <td>@m.Name</td>
                                                             <td>@m.Created?.ToShortDateString()</td>
-                                                            
+
                                                         </tr>
                                                     }
                                                 </tbody>
@@ -122,8 +123,8 @@
                         <div class="card">
                             <div class="card-header">
                                 @*<SfProgressBar @ref="ProObj1" Type="ProgressType.Linear" IsIndeterminate="true" Minimum="0" Maximum="100" TrackThickness="12" ProgressThickness="12">
-                                    <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
-                                </SfProgressBar>*@
+                                        <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
+                                    </SfProgressBar>*@
                                 <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
                                 <a href="/Boards/Notices/Manage" class="btn btn-primary">Manage</a>
                                 @*<a href="/Boards/Notices/Report" class="btn btn-primary">Report</a>*@
@@ -182,7 +183,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <Intsa.Pages.Boards.Notices.Components.SearchBox placeholder="Search ..."
-                                                                                            SearchQueryChanged="Search">
+                                                                                         SearchQueryChanged="Search">
                                         </Intsa.Pages.Boards.Notices.Components.SearchBox>
                                     </div>
 

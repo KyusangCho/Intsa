@@ -1,5 +1,6 @@
 ﻿@page "/TreasuryPlan"
 
+@using Syncfusion.Blazor.Schedule
 @using Syncfusion.Blazor.Calendars
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Inputs
@@ -70,7 +71,7 @@
         <CellTemplate>
             <div class="templatewrap">
                 @{
-                    @if((int)(context as TemplateContext).Date.Month == 2 && (int)(context as TemplateContext).Date.Day == 15)
+                    @if ((int)(context as TemplateContext).Date.Month == 2 && (int)(context as TemplateContext).Date.Day == 15)
                     {
                         <div class="caption">Thanksgiving day</div>
                     }
