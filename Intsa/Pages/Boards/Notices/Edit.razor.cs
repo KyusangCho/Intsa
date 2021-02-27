@@ -26,6 +26,7 @@ namespace Intsa.Pages.Boards.Notices
         protected int[] parentIds = { 1, 2, 3 };
 
         protected string content = "";
+        private bool Resize = true;
 
         protected override async Task OnInitializedAsync()
         {
