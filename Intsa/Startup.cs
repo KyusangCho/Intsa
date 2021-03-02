@@ -122,7 +122,7 @@ namespace Intsa
             //app.UseResponseCompression(); 
 
             //Register Syncfusion license
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDA0NDI5QDMxMzgyZTM0MmUzME42eHIrNDArcVcwclg4WUkybmF2V253NXBJeHh6cGRKMzNYZFBYRHh6eWM9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NDA2MDczQDMxMzgyZTM0MmUzMGp5RE1Md3RZM1FSZklhMHRMNmhyNi82MTJyU0x5dUxneHJ4R1hpMGJ4Zkk9");
 
             if (env.IsDevelopment())
             {
