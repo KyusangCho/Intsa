@@ -1,106 +1,219 @@
 ﻿@page "/CustomTemplate"
 
+@using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Schedule
-@using Syncfusion.Blazor.Calendars
-@using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Inputs
+@using System.Globalization
+@using Syncfusion.Blazor.Data
 
-<SfSchedule TValue="AppointmentData" Height="100%" @bind-SelectedDate="@CurrentDate" @bind-CurrentView="@CurrentView">
-    <ScheduleTemplates>
-        <EditorTemplate>
-            <table class="custom-event-editor" width="100%" cellpadding="5">
-                <tbody>
-                    <tr>
-                        <td class="e-textlabel">Summary</td>
-                        <td colspan="4">
-                            <SfTextBox @bind-Value="@((context as AppointmentData).Subject)"></SfTextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="e-textlabel">Status</td>
-                        <td colspan="4">
-                            <SfDropDownList ID="EventType" DataSource="@StatusData" Placeholder="Choose statas" @bind-Value="@((context as AppointmentData).EventType)">
-                                <DropDownListFieldSettings Value="Id"></DropDownListFieldSettings>
-                            </SfDropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="e-textlabel">From</td>
-                        <td colspan="4">
-                            <SfDateTimePicker @bind-Value="@((context as AppointmentData).StartTime)"></SfDateTimePicker>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="e-textlabel">To</td>
-                        <td colspan="4">
-                            <SfDateTimePicker @bind-Value="@((context as AppointmentData).EndTime)"></SfDateTimePicker>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="e-textlabel">Reason</td>
-                        <td colspan="4">
-                            <SfTextBox Multiline="true" @bind-Value="@((context as AppointmentData).Description)"></SfTextBox>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </EditorTemplate>
-    </ScheduleTemplates>
-    <ScheduleViews>
-        <ScheduleView Option="View.Week" StartHour="07:00" EndHour="17:00"></ScheduleView>
-        <ScheduleView Option="View.Month" MaxEventsPerRow="2" ShowWeekend="true"></ScheduleView>
-        <ScheduleView Option="View.Year"></ScheduleView>
-    </ScheduleViews>
-    <ScheduleEventSettings DataSource="@DataSource">
-    </ScheduleEventSettings>
-</SfSchedule>
+<div class="rows">
+    <div class="col-md-12 mb-3">
+        <button type="button" class="btn btn-sm btn-black">사무실</button>
+        <button type="button" class="btn btn-sm btn-success">1본공장</button>
+        <button type="button" class="btn btn-sm btn-warning">2본공장</button>
+        <button type="button" class="btn btn-sm btn-primary">3본공장</button>
+        <button type="button" class="btn btn-sm btn-purple">본나염공장</button>
+        <button type="button" class="btn btn-sm btn-danger">공통</button>
+    </div>
+    <div class="col-md-12">
+        <div class="content-wrapper">
+            <SfSchedule TValue="AppointmentData" Width="100%" Height="650px" EnableAutoRowHeight="true"
+                        @bind-SelectedDate="@CurrentDate"
+                        @bind-CurrentView="CurrentView">
+                <ScheduleHeaderRows>
+                    <ScheduleHeaderRow Option="HeaderRowType.Month">
+                        <Template>
+                            <div class="date-text">@(getMonthText((context as TemplateContext).Date))</div>
+                        </Template>
+                    </ScheduleHeaderRow>
+                </ScheduleHeaderRows>
+                <ScheduleResources>
+                    <ScheduleResource TItem="ResourceData" TValue="int" DataSource="@CenterData" Field="CenterId" Title="Center" Name="Center" TextField="Text" IdField="Id" ColorField="Color"></ScheduleResource>
+                </ScheduleResources>
+                <ScheduleViews>
+                    <ScheduleView Option="View.Week" StartHour="07:00" EndHour="17:00"></ScheduleView>
+                    <ScheduleView Option="View.Month" MaxEventsPerRow="2" ShowWeekend="true" >
+                        <ScheduleViewTimeScale Enable="false" Interval="@this.viewInterval"></ScheduleViewTimeScale>
+                    </ScheduleView>
+                    @*<ScheduleView Option="View.Year"></ScheduleView>*@
+                </ScheduleViews>
+                <ScheduleEventSettings DataSource="@DataSource" AllowAdding="false" AllowDeleting="false" AllowEditing="false"></ScheduleEventSettings>
+            </SfSchedule>
+        </div>
+    </div>
+</div>
+
+    @code{
+        View CurrentView = View.Month;  // 현재 뷰 지정
+        DateTime CurrentDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+        private int viewInterval { get; set; } = 60;
+        @*static int[] WorkDays = new int[] { 1, 2, 3, 4, 5, 6 };*@
+
+        public bool MargretChecked { get; set; } = true;
+        public bool RobertChecked { get; set; } = true;
+        public bool LauraChecked { get; set; } = true;
+        public string MargretId { get; set; } = "1";
+        public string RobertId { get; set; } = "2";
+        public string LauraId { get; set; } = "3";
+        public dynamic predicate;
+        public Query ScheduleQuery { get; set; } = null;
 
 
-@code {
+        public void OnChange(ChangeEventArgs<bool> args)
+        {
+            predicate = null;
+            if (MargretChecked)
+            {
+                if (predicate != null)
+                {
+                    predicate = predicate.Or("OwnerId", "equal", Convert.ToInt32(MargretId));
+                }
+                else
+                {
+                    predicate = new WhereFilter() { Field = "OwnerId", Operator = "equal", value = Convert.ToInt32(MargretId) };
+                }
+            }
+            if (RobertChecked)
+            {
+                if (predicate != null)
+                {
+                    predicate = predicate.Or("OwnerId", "equal", Convert.ToInt32(RobertId));
+                }
+                else
+                {
+                    predicate = new WhereFilter() { Field = "OwnerId", Operator = "equal", value = Convert.ToInt32(RobertId) };
+                }
+            }
+            if (LauraChecked)
+            {
+                if (predicate != null)
+                {
+                    predicate = predicate.Or("OwnerId", "equal", Convert.ToInt32(LauraId));
+                }
+                else
+                {
+                    predicate = new WhereFilter() { Field = "OwnerId", Operator = "equal", value = Convert.ToInt32(LauraId) };
+                }
+            }
+            if (predicate == null)
+            {
+                predicate = new WhereFilter() { Field = "OwnerId", Operator = "notequal", value = Convert.ToInt32(MargretId) }.And("OwnerId", "notequal", Convert.ToInt32(RobertId)).And("OwnerId", "notequal", Convert.ToInt32(LauraId));
+            }
+            ScheduleQuery = new Query().Where(predicate);
+        }
 
-    View CurrentView = View.Month;  // 현재 뷰 지정
-    DateTime CurrentDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);     // 기본날짜 지정
-    public class DDFields
-    {
-        public string Id { get; set; }
-        public string Text { get; set; }
-    }
+        List<AppointmentData> DataSource = new List<AppointmentData>
+        {
+            #region Mar
+		    new AppointmentData { Id = 1, IsAllDay = true, Subject = "소방훈련", StartTime = new DateTime(2021, 3, 2, 7, 00, 0) , EndTime = new DateTime(2021, 3, 2, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 2, IsAllDay = true, Subject = "급여 지급일", StartTime = new DateTime(2021, 3, 5, 7, 00, 0) , EndTime = new DateTime(2021, 3, 5, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 3, IsAllDay = true, Subject = "급여 지급일", StartTime = new DateTime(2021, 3, 5, 7, 00, 0) , EndTime = new DateTime(2021, 3, 5, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 4, IsAllDay = true, Subject = "급여 지급일", StartTime = new DateTime(2021, 3, 5, 7, 00, 0) , EndTime = new DateTime(2021, 3, 5, 17, 0, 0), CenterId = 4 },
+            new AppointmentData { Id = 5, IsAllDay = true, Subject = "급여 지급일", StartTime = new DateTime(2021, 3, 5, 7, 00, 0) , EndTime = new DateTime(2021, 3, 5, 17, 0, 0), CenterId = 5 },
+                                          
+            new AppointmentData { Id = 6, IsAllDay = true, Subject = "3월 월간회의 영업부", StartTime = new DateTime(2021, 3, 9, 7, 00, 0) , EndTime = new DateTime(2021, 3, 9, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 7, IsAllDay = true, Subject = "3월 월간회의 공장 및 관리부", StartTime = new DateTime(2021, 3, 10, 7, 00, 0) , EndTime = new DateTime(2021, 3, 10, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 8, IsAllDay = true, Subject = "IGSS 주관 무료 예방 접종 예정", StartTime = new DateTime(2021, 3, 12, 7, 00, 0) , EndTime = new DateTime(2021, 3, 12, 17, 0, 0), CenterId = 2 },
+                                          
+            new AppointmentData { Id = 9, IsAllDay = true, Subject = "Hanes Brands 공장평가 예정", StartTime = new DateTime(2021, 3, 15, 7, 00, 0) , EndTime = new DateTime(2021, 3, 15, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 10,IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 3, 19, 7, 00, 0) , EndTime = new DateTime(2021, 3, 19, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 11,IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 3, 19, 7, 00, 0) , EndTime = new DateTime(2021, 3, 19, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 12,IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 3, 19, 7, 00, 0) , EndTime = new DateTime(2021, 3, 19, 17, 0, 0), CenterId = 4 },
+            new AppointmentData { Id = 13,IsAllDay = true,  Subject = "공장 방역", StartTime = new DateTime(2021, 3, 20, 7, 00, 0) , EndTime = new DateTime(2021, 3, 20, 17, 0, 0), CenterId = 2 },
+                                           
+            new AppointmentData { Id = 14,IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 3, 22, 7, 00, 0) , EndTime = new DateTime(2021, 3, 22, 17, 0, 0), CenterId = 5 },
+            new AppointmentData { Id = 15,IsAllDay = true,  Subject = "원사팀 편직처 재물조사", StartTime = new DateTime(2021, 3, 23, 7, 00, 0) , EndTime = new DateTime(2021, 3, 23, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 16,IsAllDay = true,  Subject = "노사회의", StartTime = new DateTime(2021, 3, 25, 7, 00, 0) , EndTime = new DateTime(2021, 3, 25, 17, 0, 0), CenterId = 2 },
+                                         
+            new AppointmentData { Id = 17,IsAllDay = true,  Subject = "노사회의", StartTime = new DateTime(2021, 3, 31, 7, 00, 0) , EndTime = new DateTime(2021, 3, 31, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 18,IsAllDay = true,  Subject = "노사회의", StartTime = new DateTime(2021, 3, 31, 7, 00, 0) , EndTime = new DateTime(2021, 3, 31, 17, 0, 0), CenterId = 5 }, 
+	        #endregion
 
-    List<DDFields> StatusData = new List<DDFields>()
-    {
-        new DDFields(){ Id = "New", Text = "New"},
-        new DDFields(){ Id = "Requested", Text = "Requested"},
-        new DDFields(){ Id = "Confirmed", Text = "Confirmed"},
-    }; 
+            #region Apr
+		    new AppointmentData { Id = 19, IsAllDay = true,  Subject = "부활절", StartTime = new DateTime(2021, 4, 1, 7, 00, 0) , EndTime = new DateTime(2021, 4, 1, 17, 0, 0), CenterId = 6 },
+            new AppointmentData { Id = 20, IsAllDay = true,  Subject = "부활절", StartTime = new DateTime(2021, 4, 2, 7, 00, 0) , EndTime = new DateTime(2021, 4, 2, 17, 0, 0), CenterId = 6 },
+            new AppointmentData { Id = 21, IsAllDay = true,  Subject = "부활절", StartTime = new DateTime(2021, 4, 3, 7, 00, 0) , EndTime = new DateTime(2021, 4, 3, 17, 0, 0), CenterId = 6 },
+                                           
+            new AppointmentData { Id = 22, IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 4, 5, 7, 00, 0) , EndTime = new DateTime(2021, 4, 5, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 23, IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 4, 6, 7, 00, 0) , EndTime = new DateTime(2021, 4, 6, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 24, IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 4, 5, 7, 00, 0) , EndTime = new DateTime(2021, 4, 5, 17, 0, 0), CenterId = 4 },
+            new AppointmentData { Id = 25, IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 4, 7, 7, 00, 0) , EndTime = new DateTime(2021, 4, 7, 17, 0, 0), CenterId = 5 },
+            new AppointmentData { Id = 26, IsAllDay = true,  Subject = "1분기 본사 회계감사 (FTC)", StartTime = new DateTime(2021, 4, 5, 7, 00, 0) , EndTime = new DateTime(2021, 4, 5, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 27, IsAllDay = true,  Subject = "4월 월간회의(영업부)", StartTime = new DateTime(2021, 4, 8, 7, 00, 0) , EndTime = new DateTime(2021, 4, 8, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 28, IsAllDay = true,  Subject = "4월 월간회의(공장/관리부)", StartTime = new DateTime(2021, 4, 9, 7, 00, 0) , EndTime = new DateTime(2021, 4, 9, 17, 0, 0), CenterId = 1 },
+                                           
+            new AppointmentData { Id = 29, IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 4, 20, 7, 00, 0) , EndTime = new DateTime(2021, 4, 20, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 30, IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 4, 21, 7, 00, 0) , EndTime = new DateTime(2021, 4, 21, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 31, IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 4, 20, 7, 00, 0) , EndTime = new DateTime(2021, 4, 20, 17, 0, 0), CenterId = 4 },
+            new AppointmentData { Id = 32, IsAllDay = true,  Subject = "급여 지급일", StartTime = new DateTime(2021, 4, 22, 7, 00, 0) , EndTime = new DateTime(2021, 4, 22, 17, 0, 0), CenterId = 5 },
+            new AppointmentData { Id = 33, IsAllDay = true,  Subject = "사무실 소독", StartTime = new DateTime(2021, 4, 24, 7, 00, 0) , EndTime = new DateTime(2021, 4, 24, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 34, IsAllDay = true,  Subject = "18주년 창립기념일", StartTime = new DateTime(2021, 4, 25, 7, 00, 0) , EndTime = new DateTime(2021, 4, 25, 17, 0, 0), CenterId = 6 },
+            new AppointmentData { Id = 35, IsAllDay = true,  Subject = "1/4분기 정산 및 재고재물 조사 마감", StartTime = new DateTime(2021, 4, 26, 7, 00, 0) , EndTime = new DateTime(2021, 4, 26, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 36, IsAllDay = true,  Subject = "원사팀 편직처 재물조사", StartTime = new DateTime(2021, 4, 27, 7, 00, 0) , EndTime = new DateTime(2021, 4, 27, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 37, IsAllDay = true,  Subject = "노사회의", StartTime = new DateTime(2021, 4, 29, 7, 00, 0) , EndTime = new DateTime(2021, 4, 29, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 38, IsAllDay = true,  Subject = "노사회의", StartTime = new DateTime(2021, 4, 30, 7, 00, 0) , EndTime = new DateTime(2021, 4, 30, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 39, IsAllDay = true,  Subject = "노사회의", StartTime = new DateTime(2021, 4, 30, 7, 00, 0) , EndTime = new DateTime(2021, 4, 30, 17, 0, 0), CenterId = 4 },
+            new AppointmentData { Id = 40, IsAllDay = true,  Subject = "노사회의", StartTime = new DateTime(2021, 4, 30, 7, 00, 0) , EndTime = new DateTime(2021, 4, 30, 17, 0, 0), CenterId = 5 }, 
+	        #endregion
 
-    #region Validation
+            new AppointmentData { Id = 41, Subject = "노동절", IsAllDay = true, StartTime = new DateTime(2021, 5, 1, 7, 00, 0) , EndTime = new DateTime(2021, 5, 1, 17, 0, 0), CenterId = 6 },
+            new AppointmentData { Id = 42, Subject = "Amatitlan의 날", IsAllDay = true, StartTime = new DateTime(2021, 5, 3, 7, 00, 0) , EndTime = new DateTime(2021, 5, 3, 17, 0, 0), CenterId = 3 },
 
-    static Dictionary<string, object> ValidationMessages = new Dictionary<string, object>() { { "regex", "Special character(s) not allowed in this field" } };
-    ValidationRules ValidationRules = new ValidationRules { Required = true };
-    ValidationRules LocationValidationRules = new ValidationRules { Required = true, RegexPattern = "^[a-zA-Z0-9-]*$", Messages = ValidationMessages };
-    ValidationRules DescriptionValidationRules = new ValidationRules { Required = true, MinLength = 5, MaxLength = 500 };
+            new AppointmentData { Id = 43, Subject = "급여 지급일", IsAllDay = true, StartTime = new DateTime(2021, 5, 5, 7, 00, 0) , EndTime = new DateTime(2021, 5, 5, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 44, Subject = "급여 지급일", IsAllDay = true, StartTime = new DateTime(2021, 5, 6, 7, 00, 0) , EndTime = new DateTime(2021, 5, 6, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 45, Subject = "급여 지급일", IsAllDay = true, StartTime = new DateTime(2021, 5, 5, 7, 00, 0) , EndTime = new DateTime(2021, 5, 5, 17, 0, 0), CenterId = 4 },
+            new AppointmentData { Id = 46, Subject = "급여 지급일", IsAllDay = true, StartTime = new DateTime(2021, 5, 7, 7, 00, 0) , EndTime = new DateTime(2021, 5, 7, 17, 0, 0), CenterId = 5 },
 
-    #endregion
+            new AppointmentData { Id = 47, Subject = "상반기 정기감사", IsAllDay = true, StartTime = new DateTime(2021, 5, 10, 7, 00, 0) , EndTime = new DateTime(2021, 5, 10, 17, 0, 0), CenterId = 5 },
+            new AppointmentData { Id = 48, Subject = "5월 월간회의(영업부)", IsAllDay = true, StartTime = new DateTime(2021, 5, 11, 7, 00, 0) , EndTime = new DateTime(2021, 5, 11, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 49, Subject = "5월 월간회의(공장/관리부)", IsAllDay = true, StartTime = new DateTime(2021, 5, 12, 7, 00, 0) , EndTime = new DateTime(2021, 5, 12, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 50, Subject = "상반기 정기감사", IsAllDay = true, StartTime = new DateTime(2021, 5, 14, 7, 00, 0) , EndTime = new DateTime(2021, 5, 14, 17, 0, 0), CenterId = 2 },
 
-    List<AppointmentData> DataSource = new List<AppointmentData>    // 데이터 소스지정
-{
-        new AppointmentData { Id = 1, Subject = "Paris", StartTime = new DateTime(2020, 2, 13, 10, 0, 0) , EndTime = new DateTime(2020, 2, 13, 12, 0, 0), EventType = "Confirmed"},
-        new AppointmentData { Id = 2, Subject = "Germany", StartTime = new DateTime(2020, 2, 15, 10, 0, 0) , EndTime = new DateTime(2020, 2, 15, 12, 0, 0), EventType = "New"},
-        new AppointmentData { Id = 3, Subject = "Meeting", StartTime = new DateTime(2020, 2, 9, 9, 30, 0) , EndTime = new DateTime(2020, 2, 9, 11, 30, 0), EventType = "Requested"},
-        new AppointmentData { Id = 4, Subject = "Vacation", StartTime = new DateTime(2020, 2, 14, 11, 30, 0) , EndTime = new DateTime(2020, 2, 14, 13, 0, 0), EventType = "Confirmed"}
+            new AppointmentData { Id = 51, Subject = "폐수처리분석", IsAllDay = true, StartTime = new DateTime(2021, 5, 17, 7, 00, 0) , EndTime = new DateTime(2021, 5, 17, 17, 0, 0), CenterId = 5 },
+            new AppointmentData { Id = 52, Subject = "상반기 정기감사", IsAllDay = true, StartTime = new DateTime(2021, 5, 19, 7, 00, 0) , EndTime = new DateTime(2021, 5, 19, 17, 0, 0), CenterId = 5 },
+            new AppointmentData { Id = 53, Subject = "급여 지급일", IsAllDay = true, StartTime = new DateTime(2021, 5, 20, 7, 00, 0) , EndTime = new DateTime(2021, 5, 20, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 54, Subject = "급여 지급일", IsAllDay = true, StartTime = new DateTime(2021, 5, 21, 7, 00, 0) , EndTime = new DateTime(2021, 5, 21, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 55, Subject = "급여 지급일", IsAllDay = true, StartTime = new DateTime(2021, 5, 20, 7, 00, 0) , EndTime = new DateTime(2021, 5, 20, 17, 0, 0), CenterId = 4 },
+            new AppointmentData { Id = 56, Subject = "급여 지급일", IsAllDay = true, StartTime = new DateTime(2021, 5, 21, 7, 00, 0) , EndTime = new DateTime(2021, 5, 21, 17, 0, 0), CenterId = 5 },
+
+            new AppointmentData { Id = 57, Subject = "원사팀 편직처 재물조사 ", IsAllDay = true, StartTime = new DateTime(2021, 5, 25, 7, 00, 0) , EndTime = new DateTime(2021, 5, 25, 17, 0, 0), CenterId = 1 },
+            new AppointmentData { Id = 58, Subject = "노사회의", IsAllDay = true, StartTime = new DateTime(2021, 5, 27, 7, 00, 0) , EndTime = new DateTime(2021, 5, 27, 17, 0, 0), CenterId = 2 },
+            new AppointmentData { Id = 59, Subject = "상반기 정기감사", IsAllDay = true, StartTime = new DateTime(2021, 5, 28, 7, 00, 0) , EndTime = new DateTime(2021, 5, 28, 17, 0, 0), CenterId = 4 },
+
+            new AppointmentData { Id = 60, Subject = "노사회의", IsAllDay = true, StartTime = new DateTime(2021, 5, 31, 7, 00, 0) , EndTime = new DateTime(2021, 5, 31, 17, 0, 0), CenterId = 3 },
+            new AppointmentData { Id = 61, Subject = "노사회의", IsAllDay = true, StartTime = new DateTime(2021, 5, 31, 7, 00, 0) , EndTime = new DateTime(2021, 5, 31, 17, 0, 0), CenterId = 5 },
+        };
+
+        public List<ResourceData> CenterData { get; set; } = new List<ResourceData> {
+        new ResourceData{ Text = "사무실", Id= 1, Color = "#333333" },
+        new ResourceData{ Text = "1본공장", Id= 2, Color = "#339933" },
+        new ResourceData{ Text = "2본공장", Id= 3, Color = "#ff6633" },
+        new ResourceData{ Text = "3본공장", Id= 4, Color = "#1e90ff" },
+        new ResourceData{ Text = "본나염공장", Id= 5, Color = "#990099" },
+        new ResourceData{ Text = "공통", Id= 6, Color = "#FF0000" }, 
     };
+        public class AppointmentData
+        {
+            public int Id { get; set; }
+            public string Subject { get; set; }
+            public string Location { get; set; }
+            public DateTime StartTime { get; set; }
+            public DateTime EndTime { get; set; }
+            public string Description { get; set; }
+            public bool IsAllDay { get; set; }
+            public string RecurrenceRule { get; set; }
+            public string RecurrenceException { get; set; }
+            public Nullable<int> RecurrenceID { get; set; }
+            public int CenterId { get; set; }
+        }
+        public class ResourceData
+        {
+            public int Id { get; set; }
+            public string Text { get; set; }
+            public string Color { get; set; }
+        }
 
-
-
-    public class AppointmentData
-    {
-        public int Id { get; set; }
-        public string Subject { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public string Description { get; set; }
-        public string EventType { get; set; }
-
+        public static string getMonthText(DateTime date)
+        {
+            return date.ToString("MMMM", CultureInfo.InvariantCulture);
+        }
     }
-
-}

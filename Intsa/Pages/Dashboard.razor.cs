@@ -24,6 +24,8 @@ namespace Intsa.Pages
             PagerButtonCount = 5,
         };
 
+        public bool VisibleProperty { get; set; } = false;
+
         protected override async Task OnInitializedAsync()
         {
             await DisplayData();
@@ -32,10 +34,11 @@ namespace Intsa.Pages
 
         private async Task DisplayData()
         {
-            //await Task.Delay(3000); 
+            VisibleProperty = true;
             var resultSet = await NoticeRepositoryAsyncReference.GetAllAsync(pager.PageIndex, pager.PageSize);
             pager.RecordCount = resultSet.TotalRecords;
             models = resultSet.Records.ToList();
+            VisibleProperty = false;
         }
 
         protected void NameClick(int id)

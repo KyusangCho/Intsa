@@ -65,7 +65,7 @@ namespace Intsa.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            returnUrl = returnUrl ?? Url.Content("~/");
+            returnUrl = returnUrl ?? Url.Content("~/Dashboard");
 
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)

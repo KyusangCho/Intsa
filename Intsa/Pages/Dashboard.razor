@@ -1,5 +1,6 @@
-﻿@page "/Dashboard" 
-@namespace Intsa.Pages 
+﻿@page "/Dashboard"
+@namespace Intsa.Pages
+@using Syncfusion.Blazor.Spinner
 
 <h3>Dashboard</h3>
 
@@ -61,40 +62,36 @@
                                 <td>
                                     <div class="nav-wizards-container">
                                         <nav class="nav nav-wizards-1 mb-2">-->
-                                            <!-- completed -->
-                                            <!--<div class="nav-item col">
-                                                <a class="nav-link completed" href="#">
-                                                    <div class="nav-no">-</div>
-                                                    <div class="nav-text">Tom Shin</div>
-                                                </a>
-                                            </div>-->
-
-                                            <!-- active -->
-                                            <!--<div class="nav-item col">
-                                                <a class="nav-link completed" href="#">
-                                                    <div class="nav-no">-</div>
-                                                    <div class="nav-text">Chris Lee</div>
-                                                </a>
-                                            </div>-->
-
-                                            <!-- disabled -->
-                                            <!--<div class="nav-item col">
-                                                <a class="nav-link active" href="#">
-                                                    <div class="nav-no">12</div>
-                                                    <div class="nav-text">Chris Lee</div>
-                                                </a>
-                                            </div>-->
-
-                                            <!-- disabled -->
-                                            <!--<div class="nav-item col">
-                                                <a class="nav-link disabled" href="#">
-                                                    <div class="nav-no">0</div>
-                                                    <div class="nav-text">Chris Lee</div>
-                                                </a>
-                                            </div>-->
-
-                                            <!-- disabled -->
-                                            <!--<div class="nav-item col">
+                            <!-- completed -->
+                            <!--<div class="nav-item col">
+                                <a class="nav-link completed" href="#">
+                                    <div class="nav-no">-</div>
+                                    <div class="nav-text">Tom Shin</div>
+                                </a>
+                            </div>-->
+                            <!-- active -->
+                            <!--<div class="nav-item col">
+                                <a class="nav-link completed" href="#">
+                                    <div class="nav-no">-</div>
+                                    <div class="nav-text">Chris Lee</div>
+                                </a>
+                            </div>-->
+                            <!-- disabled -->
+                            <!--<div class="nav-item col">
+                                <a class="nav-link active" href="#">
+                                    <div class="nav-no">12</div>
+                                    <div class="nav-text">Chris Lee</div>
+                                </a>
+                            </div>-->
+                            <!-- disabled -->
+                            <!--<div class="nav-item col">
+                                <a class="nav-link disabled" href="#">
+                                    <div class="nav-no">0</div>
+                                    <div class="nav-text">Chris Lee</div>
+                                </a>
+                            </div>-->
+                            <!-- disabled -->
+                            <!--<div class="nav-item col">
                                                 <a class="nav-link disabled" href="#">
                                                     <div class="nav-no">0</div>
                                                     <div class="nav-text">Chris Lee</div>
@@ -114,7 +111,7 @@
         </div>
         <!-- END card -->
     </div>
-    <!-- 좌측 결재 진행사항 END col-6 --> 
+    <!-- 좌측 결재 진행사항 END col-6 -->
     <!-- BEGIN col-6 -->
     <div class="col-xl-5">
 
@@ -135,23 +132,23 @@
                         <!-- product-1 -->
                         @*<div class="d-flex align-items-center mb-0">
 
-                            <div class="flex-grow-1">
-                                <div>
-                                    <div class="text-dark fs-10px font-weight-600">Material Management</div>
-                                    <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
+                                <div class="flex-grow-1">
+                                    <div>
+                                        <div class="text-dark fs-10px font-weight-600">Material Management</div>
+                                        <div class="text-dark font-weight-600">2011602-01 / TRIM20135131</div>
+                                        <div class="fs-13px">2020.05.21 13:34</div>
+                                    </div>
+                                </div>
+                                <div class="pl-3 text-center">
+                                    <div class="text-danger fs-10px font-weight-600">Rejected by</div>
+                                    <div class="text-dark font-weight-600">Chris Lee</div>
                                     <div class="fs-13px">2020.05.21 13:34</div>
                                 </div>
-                            </div>
-                            <div class="pl-3 text-center">
-                                <div class="text-danger fs-10px font-weight-600">Rejected by</div>
-                                <div class="text-dark font-weight-600">Chris Lee</div>
-                                <div class="fs-13px">2020.05.21 13:34</div>
-                            </div>
-                        </div>*@
+                            </div>*@
 
                     </div>
                     <!-- END card-body -->
-                    
+
                 </div>
                 <!-- 결재 반려목록 END card -->
             </div>
@@ -162,40 +159,57 @@
                         <h5 class="mb-1 flex-grow-1">
                             <a href="/Boards/Notices" class="text-white text-decoration-none">Notice</a>
                         </h5>
-                        <a href="#" class="text-white text-decoration-none">See All</a>
+                        <a href="/Boards/Notices" class="text-white text-decoration-none">See All</a>
                     </div>
 
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="table-responsive table-hover">
-                                    <table class="table mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Title</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Created</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @*@foreach (var m in models)
-                            {
-                                <tr>
-                                    <td scope="row" class="text-dark">@m.Id</td>
-                                    <td @onclick="@(()=> NameClick(m.Id))">
-                                        <a href="/Boards/Notices/Details/@m.Id" class="text-dark">
-                                            @m.Title
-                                        </a>
-                                    </td>
-                                    <td>@m.Name</td>
-                                    <td>@m.Created?.ToShortDateString()</td>
 
-                                </tr>
-                            }*@
-                                        </tbody>
-                                    </table>
-                                </div>
+                                @if (models == null)
+                                {
+                                    <div>
+                                        <SfSpinner @bind-Visible="@VisibleProperty"
+                                                   Label="Data Loading...."
+                                                   Type="@SpinnerType.Bootstrap4"
+                                                   Size="50">
+                                        </SfSpinner>
+                                    </div>
+                                }
+                                else
+                                {
+
+                                    <div class="table-responsive table-hover">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">Created</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var m in models)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <a href="/Boards/Notices/Details/@m.Id" class="text-dark text-decoration-none" @onclick="@(()=> NameClick(m.Id))">
+                                                                @m.Title &nbsp;
+                                                            </a>
+                                                            @if (m.Created > DateTime.Today.AddDays(-10))
+                                                            {
+                                                                <span class="badge bg-primary">New</span>
+                                                            }
+                                                        </td>
+                                                        <td>@m.Created?.ToShortDateString()</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+
+
+
                             </div>
                         </div>
                     </div>
