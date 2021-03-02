@@ -23,7 +23,7 @@
 </head>
 <body data-spy='scroll' data-target='#sidebar-bootstrap' data-offset='200'>
     <!-- BEGIN #app -->
-    <div id="app" class="app app-content-full-height">
+    <div id="app" class="app app-content-full-width">
         <!-- BEGIN #header -->
         <div id="header" class="app-header">
             <!-- BEGIN mobile-toggler -->
@@ -920,18 +920,24 @@
                     <component type="typeof(App)" render-mode="ServerPrerendered" />
                 </div>
             </app>
+
+            <!-- BEGIN btn-scroll-top -->
+            <a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
+            <!-- END btn-scroll-top -->
         </div>
         <!-- END #content -->
-        <!-- BEGIN btn-scroll-top -->
-        <a href="#" data-click="scroll-top" class="btn-scroll-top fade"><i class="fa fa-arrow-up"></i></a>
-        <!-- END btn-scroll-top -->
+        
     </div>
     <!-- END #app -->
-    
     <script src="_framework/blazor.server.js"></script>
-
-    <!-- ================== BEGIN core-js ================== -->
+    
+    <script>
+        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+            document.location.reload();
+    }
+    </script>
     <script src="/templates/dashboard/assets/js/app.min.js"></script>
+    <!-- ================== BEGIN core-js ================== -->
     <!-- ================== END core-js ================== -->
 
 </body>
