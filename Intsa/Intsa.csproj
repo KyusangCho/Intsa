@@ -151,6 +151,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BlazorInputFile\BlazorInputFile.csproj" />
     <ProjectReference Include="..\Intsa.Models\Intsa.Models.csproj" />
   </ItemGroup>
 
@@ -160,6 +161,10 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 
 </Project>

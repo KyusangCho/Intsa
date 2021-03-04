@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{BE95E7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Intsa.Apis", "Intsa.Apis\Intsa.Apis.csproj", "{988D1F28-050E-4CF4-992B-41C36B5696D6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{CE484D6E-889D-424E-8838-B2BA47F4342D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorInputFile", "BlazorInputFile\BlazorInputFile.csproj", "{5F1403CA-D1B4-474C-8D4C-4888A5F55E14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,12 +47,17 @@ Global
 		{988D1F28-050E-4CF4-992B-41C36B5696D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{988D1F28-050E-4CF4-992B-41C36B5696D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{988D1F28-050E-4CF4-992B-41C36B5696D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F1403CA-D1B4-474C-8D4C-4888A5F55E14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F1403CA-D1B4-474C-8D4C-4888A5F55E14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F1403CA-D1B4-474C-8D4C-4888A5F55E14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F1403CA-D1B4-474C-8D4C-4888A5F55E14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{988D1F28-050E-4CF4-992B-41C36B5696D6} = {BE95E7B6-2E67-49F6-B00D-642A1F29DE70}
+		{5F1403CA-D1B4-474C-8D4C-4888A5F55E14} = {CE484D6E-889D-424E-8838-B2BA47F4342D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A7E17BA-0B04-4FE6-B1DC-E0AB811C6A12}

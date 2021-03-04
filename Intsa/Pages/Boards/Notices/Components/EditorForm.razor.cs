@@ -1,6 +1,9 @@
-﻿using Intsa.Models.Boards;
+﻿using BlazorInputFile;
+using Intsa.Models.Boards;
+using Intsa.Services;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Linq;
 
 namespace Intsa.Pages.Boards.Notices.Components
 {
@@ -64,6 +67,21 @@ namespace Intsa.Pages.Boards.Notices.Components
 
         protected async void CreateOrEditClick()
         {
+            #region 파일 업로드 
+            var file = selectedFiles.FirstOrDefault();
+            var fileName = "";
+            int fileSize = 0; 
+
+            if (file != null)
+            {
+                fileName = file.Name;
+                fileSize = Convert.ToInt32(file.Size); 
+                await FileUploadServiceReference.UploadAsync(file);
+                
+            }
+
+            #endregion
+
             if (!int.TryParse(parentId, out int newParentId))
             {
                 newParentId = 0; 
@@ -84,5 +102,15 @@ namespace Intsa.Pages.Boards.Notices.Components
             }
             //IsShow = false; 
         }
+
+        [Inject]
+        public IFileUploadService FileUploadServiceReference { get; set; }
+
+        private IFileListEntry[] selectedFiles;
+        protected void HandleSelection(IFileListEntry[] files)
+        {
+            this.selectedFiles = files;
+        }
+
     }
 }

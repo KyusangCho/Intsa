@@ -11,5 +11,10 @@
 	[Created] datetime default(getdate()) null,		-- 생성일 
 	[ModifiedBy] nvarchar(255) null,				-- 수정자
 	[Modified] datetime null,						-- 수정일 
+
+	-- [2] 자료실 게시판 관련 주요 컬럼
+	FileName	nvarchar(255)	null,	-- 파일명
+	FileSize	Int	Default 0,			-- 파일크기 
+	DownCount	Int	Default 0,			-- 다운수 
 )
 Go 

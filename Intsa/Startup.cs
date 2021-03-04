@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Syncfusion.Blazor;
 using BlazorDemos.Shared;
 using System;
+using Intsa.Services;
 //using Intsa.Hubs;
 
 namespace Intsa
@@ -96,8 +97,9 @@ namespace Intsa
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddScoped<SampleService>(); 
             
-            AddDependencyInjectionContainerForBoards(services); 
+            AddDependencyInjectionContainerForBoards(services);
 
+            services.AddScoped<IFileUploadService, FileUploadService>(); 
         }
 
         /// <summary>

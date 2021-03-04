@@ -30,12 +30,12 @@
                         <a href="/Boards/Notices/Create" class="btn btn-primary">Create</a>
                         <AuthorizeView>
                             <Authorized>
-                            </Authorized>
-                            <NotAuthorized>
-                                <a href="/Boards/Notices" class="btn btn-primary">List</a>
                                 <input type="button" name="btnCreate" value="Create with Modal"
                                        class="btn btn-primary"
                                        @onclick="ShowEditorForm" />
+                            </Authorized>
+                            <NotAuthorized>
+                                <a href="/Boards/Notices" class="btn btn-primary">List</a>
                             </NotAuthorized>
                         </AuthorizeView>
                         <AuthorizeView Roles="Administrators, Managers">

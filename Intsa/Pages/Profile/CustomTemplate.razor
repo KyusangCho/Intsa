@@ -12,7 +12,7 @@
         <button type="button" class="btn btn-sm btn-warning">2본공장</button>
         <button type="button" class="btn btn-sm btn-primary">3본공장</button>
         <button type="button" class="btn btn-sm btn-purple">본나염공장</button>
-        <button type="button" class="btn btn-sm btn-danger">공통</button>
+        <button type="button" class="btn btn-sm btn-danger">휴무</button>
     </div>
     <div class="col-md-12">
         <div class="content-wrapper">
@@ -181,6 +181,9 @@
 
             new AppointmentData { Id = 60, Subject = "노사회의", IsAllDay = true, StartTime = new DateTime(2021, 5, 31, 7, 00, 0) , EndTime = new DateTime(2021, 5, 31, 17, 0, 0), CenterId = 3 },
             new AppointmentData { Id = 61, Subject = "노사회의", IsAllDay = true, StartTime = new DateTime(2021, 5, 31, 7, 00, 0) , EndTime = new DateTime(2021, 5, 31, 17, 0, 0), CenterId = 5 },
+
+
+
         };
 
         public List<ResourceData> CenterData { get; set; } = new List<ResourceData> {
