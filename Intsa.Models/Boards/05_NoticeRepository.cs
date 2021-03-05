@@ -113,7 +113,6 @@ namespace Intsa.Models.Boards
                     .ToListAsync();
 
             return new PagingResult<BoardNotices>(models, totalRecords);
-
         }
 
         // 고정상태 (전체중에 몇개) 

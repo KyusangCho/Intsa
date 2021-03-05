@@ -29,7 +29,6 @@ namespace Intsa.Pages
         protected override async Task OnInitializedAsync()
         {
             await DisplayData();
-
         }
 
         private async Task DisplayData()
@@ -37,7 +36,12 @@ namespace Intsa.Pages
             VisibleProperty = true;
             var resultSet = await NoticeRepositoryAsyncReference.GetAllAsync(pager.PageIndex, pager.PageSize);
             pager.RecordCount = resultSet.TotalRecords;
-            models = resultSet.Records.ToList();
+            
+            if (resultSet.Records != null)
+            {
+                models = resultSet.Records.ToList();
+            }
+
             VisibleProperty = false;
         }
 

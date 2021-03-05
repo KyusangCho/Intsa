@@ -178,7 +178,6 @@
                                 }
                                 else
                                 {
-
                                     <div class="table-responsive table-hover">
                                         <table class="table mb-0">
                                             <thead>
@@ -187,29 +186,39 @@
                                                     <th scope="col">Created</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                @foreach (var m in models)
-                                                {
+                                            @if (models.Count == 0)
+                                            {
+                                                <tbody>
                                                     <tr>
-                                                        <td>
-                                                            <a href="/Boards/Notices/Details/@m.Id" class="text-dark text-decoration-none" @onclick="@(()=> NameClick(m.Id))">
-                                                                @m.Title &nbsp;
-                                                            </a>
-                                                            @if (m.Created > DateTime.Today.AddDays(-10))
-                                                            {
-                                                                <span class="badge bg-primary">New</span>
-                                                            }
+                                                        <td colspan="4" class="text-center">
+                                                            <p>데이터가 없습니다.</p>
                                                         </td>
-                                                        <td>@m.Created?.ToShortDateString()</td>
                                                     </tr>
-                                                }
-                                            </tbody>
+                                                </tbody>
+                                            }
+                                            else
+                                            {
+                                                <tbody>
+                                                    @foreach (var m in models)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <a href="/Boards/Notices/Details/@m.Id" class="text-dark text-decoration-none" @onclick="@(()=> NameClick(m.Id))">
+                                                                    @m.Title &nbsp;
+                                                                </a>
+                                                                @if (m.Created > DateTime.Today.AddDays(-10))
+                                                                {
+                                                                    <span class="badge bg-primary">New</span>
+                                                                }
+                                                            </td>
+                                                            <td>@m.Created?.ToShortDateString()</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            }
                                         </table>
                                     </div>
                                 }
-
-
-
                             </div>
                         </div>
                     </div>
