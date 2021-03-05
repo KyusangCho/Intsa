@@ -152,6 +152,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BlazorInputFile\BlazorInputFile.csproj" />
+    <ProjectReference Include="..\Cafe.Shared\Cafe.Shared.csproj" />
     <ProjectReference Include="..\Intsa.Models\Intsa.Models.csproj" />
   </ItemGroup>
 

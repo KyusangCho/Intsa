@@ -67,17 +67,22 @@ namespace Intsa.Pages.Boards.Notices.Components
 
         protected async void CreateOrEditClick()
         {
-            #region 파일 업로드 
+            #region 파일 업로드 관련 추가 
+
             var file = selectedFiles.FirstOrDefault();
             var fileName = "";
             int fileSize = 0; 
 
             if (file != null)
             {
+                //file.Name = $"{DateTime.Now.ToString("yyyyMMddHHmmss")}{file.Name}"; 
                 fileName = file.Name;
                 fileSize = Convert.ToInt32(file.Size); 
                 await FileUploadServiceReference.UploadAsync(file);
-                
+
+                Model.FileName = fileName; 
+                Model.FileSize = fileSize; 
+
             }
 
             #endregion
@@ -87,6 +92,7 @@ namespace Intsa.Pages.Boards.Notices.Components
                 newParentId = 0; 
             }
             Model.ParentId = newParentId; 
+            
 
             if (Model.Id == 0)
             {

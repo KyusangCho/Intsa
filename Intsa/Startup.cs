@@ -13,6 +13,8 @@ using Syncfusion.Blazor;
 using BlazorDemos.Shared;
 using System;
 using Intsa.Services;
+using Cafe.Shared;
+using Intsa.Managers;
 //using Intsa.Hubs;
 
 namespace Intsa
@@ -100,6 +102,7 @@ namespace Intsa
             AddDependencyInjectionContainerForBoards(services);
 
             services.AddScoped<IFileUploadService, FileUploadService>(); 
+            services.AddScoped<IFileStorageManager, FileStorageManager>(); 
         }
 
         /// <summary>
