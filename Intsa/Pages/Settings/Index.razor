@@ -1,7 +1,5 @@
 ﻿@page "/Settings"
 
-<h3>Settings</h3>
-
 <!-- BEGIN #content -->
 <!-- BEGIN row -->
 <div class="row justify-content-center">
@@ -23,7 +21,7 @@
                                     <div class="text-gray-700">Default</div>
                                 </div>
                                 <div class="width-100">
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
+                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100 disabled">Edit</a>
                                 </div>
                             </div>
                             <div class="list-group-item d-flex align-items-center">
@@ -32,7 +30,7 @@
                                     <div class="text-gray-700">10</div>
                                 </div>
                                 <div>
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
+                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100 disabled">Edit</a>
                                 </div>
                             </div>
                             <div class="list-group-item d-flex align-items-center">
@@ -41,7 +39,7 @@
                                     <div class="text-gray-700">Bootstrap4</div>
                                 </div>
                                 <div>
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
+                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100 disabled">Edit</a>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
+                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100 disabled">Edit</a>
                                 </div>
                             </div>
                             
@@ -81,64 +79,6 @@
                     </div>
                 </div>
                 <!-- END #notifications -->
-                <!-- BEGIN #email 각 메뉴별 메일알림설정 -->
-                <div id="privacyAndSecurity" class="mb-5">
-                    <h4><i class="far fa-copyright fa-fw"></i> Privacy and security</h4>
-                    <p>Limit the account visibility and the security settings for your website.</p>
-                    <div class="card">
-                        <div class="list-group list-group-flush">
-                            <div class="list-group-item d-flex align-items-center">
-                                <div class="flex-fill">
-                                    <div>Who can see your future posts?</div>
-                                    <div class="text-gray-700 d-flex align-items-center">
-                                        Friends only
-                                    </div>
-                                </div>
-                                <div>
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex align-items-center">
-                                <div class="flex-fill">
-                                    <div>Photo tagging</div>
-                                    <div class="text-gray-700 d-flex align-items-center">
-                                        <i class="fa fa-circle fs-8px fa-fw text-success mr-1"></i> Enabled
-                                    </div>
-                                </div>
-                                <div>
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex align-items-center">
-                                <div class="flex-fill">
-                                    <div>Location information</div>
-                                    <div class="text-gray-700 d-flex align-items-center">
-                                        <i class="fa fa-circle fs-8px fa-fw text-muted mr-1"></i> Disabled
-                                    </div>
-                                </div>
-                                <div>
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
-                                </div>
-                            </div>
-                            <div class="list-group-item d-flex align-items-center">
-                                <div class="flex-fill">
-                                    <div>Firewall</div>
-                                    <div class="text-gray-700 d-block d-xl-flex align-items-center">
-                                        <div class="d-flex align-items-center"><i class="fa fa-circle fs-8px fa-fw text-muted mr-1"></i> Disabled</div>
-                                        <span class="bg-warning-transparent-1 text-warning ml-xl-3 mt-1 d-inline-block mt-xl-0 px-1 rounded-sm">
-                                            <i class="fa fa-exclamation-circle text-warning fs-12px mr-1"></i>
-                                            <span class="text-warning">Please enable the firewall for your website</span>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- END #email -->
                 <!-- BEGIN #languages 언어설정 -->
                 <div id="languages" class="mb-5">
                     <h4><i class="fa fa-language fa-fw"></i> Languages</h4>
@@ -153,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100">Edit</a>
+                                    <a href="#modalEdit" data-toggle="modal" class="btn btn-default width-100 disabled">Edit</a>
                                 </div>
                             </div>
                             
@@ -175,7 +115,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <a href="#" class="btn btn-default width-100">Reset</a>
+                                    <a href="#" class="btn btn-default width-100 disabled">Reset</a>
                                 </div>
                             </div>
                         </div>
@@ -191,12 +131,7 @@
                     <nav class="nav">
                         <a class="nav-link" href="#general" data-toggle="scroll-to">General</a>
                         <a class="nav-link" href="#notifications" data-toggle="scroll-to">Notifications</a>
-                        <a class="nav-link" href="#privacyAndSecurity" data-toggle="scroll-to">Privacy and security</a>
-                        <a class="nav-link" href="#payment" data-toggle="scroll-to">Payment</a>
-                        <a class="nav-link" href="#shipping" data-toggle="scroll-to">Shipping</a>
-                        <a class="nav-link" href="#mediaAndFiles" data-toggle="scroll-to">Media and Files</a>
                         <a class="nav-link" href="#languages" data-toggle="scroll-to">Languages</a>
-                        <a class="nav-link" href="#system" data-toggle="scroll-to">System</a>
                         <a class="nav-link" href="#resetSettings" data-toggle="scroll-to">Reset settings</a>
                     </nav>
                 </nav>

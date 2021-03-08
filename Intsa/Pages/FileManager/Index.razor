@@ -11,11 +11,15 @@
     Files <small>파일관리 및 공유</small>
 </h1>
 
-
+<SfFileManager TValue="FileManagerDirectoryContent">
+    <FileManagerAjaxSettings Url="#">
+    </FileManagerAjaxSettings>
+    <FileManagerToolbarSettings Items="@Items"></FileManagerToolbarSettings>
+</SfFileManager>
 
 
 
 @code { 
-
+    public string[] Items = new string[] { "NewFolder", "Upload", "Delete", "Download", "OneDrive에서 보기", "관련문서 보기", "선택된 File번호로 묶음보기"}; 
 
     }
