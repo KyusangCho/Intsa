@@ -132,6 +132,38 @@
                         </a>
                     </div>
 
+                    <!-- #region 게시판 -->
+
+                    <div class="menu-item has-sub">
+                        <a href="#" class="menu-link">
+                            <span class="menu-icon">
+                                <i class="fa fa-book-reader"></i>
+                                @*<span class="menu-icon-label"></span>*@
+                            </span>
+                            <span class="menu-text">Boards</span>
+                            <span class="menu-caret"><b class="caret"></b></span>
+                        </a>
+                        <div class="menu-submenu">
+                            <div class="menu-item">
+                                <a href="/Boards/Notices" class="menu-link">
+                                    <span class="menu-text">Notice</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Boards/Suggestion" class="menu-link">
+                                    <span class="menu-text">Suggestions</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="/Boards/Survey" class="menu-link">
+                                    <span class="menu-text">Survey</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- #endregion -->
+
                     @if (User.IsInRole("Administrators"))
                     {
                         <!-- #region 영업관리 -->
@@ -367,7 +399,7 @@
                                     </a>
                                     <div class="menu-submenu">
                                         <div class="menu-item">
-                                            <a href="#" class="menu-link">
+                                            <a href="/Materials/PurchaseRequisition/Yarn" class="menu-link">
                                                 <span class="menu-text">Yarn</span>
                                             </a>
                                         </div>
@@ -388,48 +420,48 @@
                                         <span class="menu-text">Purchase Order</span>
                                         <span class="menu-caret"><b class="caret"></b></span>
                                     </a>
-                                        <div class="menu-submenu">
-                                            <div class="menu-item">
-                                                <a href="#" class="menu-link">
-                                                    <span class="menu-text">Yarn</span>
-                                                </a>
-                                            </div>
-                                            <div class="menu-item">
-                                                <a href="#" class="menu-link">
-                                                    <span class="menu-text">Fabric</span>
-                                                </a>
-                                            </div>
-                                            <div class="menu-item">
-                                                <a href="#" class="menu-link">
-                                                    <span class="menu-text">Trim</span>
-                                                </a>
-                                            </div>
+                                    <div class="menu-submenu">
+                                        <div class="menu-item">
+                                            <a href="#" class="menu-link">
+                                                <span class="menu-text">Yarn</span>
+                                            </a>
                                         </div>
-                                    
+                                        <div class="menu-item">
+                                            <a href="#" class="menu-link">
+                                                <span class="menu-text">Fabric</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-item">
+                                            <a href="#" class="menu-link">
+                                                <span class="menu-text">Trim</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="menu-item has-sub">
                                     <a href="#" class="menu-link">
                                         <span class="menu-text">Movement Management</span>
                                         <span class="menu-caret"><b class="caret"></b></span>
                                     </a>
-                                        <div class="menu-submenu">
-                                            <div class="menu-item">
-                                                <a href="#" class="menu-link">
-                                                    <span class="menu-text">Yarn</span>
-                                                </a>
-                                            </div>
-                                            <div class="menu-item">
-                                                <a href="#" class="menu-link">
-                                                    <span class="menu-text">Fabric</span>
-                                                </a>
-                                            </div>
-                                            <div class="menu-item">
-                                                <a href="#" class="menu-link">
-                                                    <span class="menu-text">Trim</span>
-                                                </a>
-                                            </div>
+                                    <div class="menu-submenu">
+                                        <div class="menu-item">
+                                            <a href="#" class="menu-link">
+                                                <span class="menu-text">Yarn</span>
+                                            </a>
                                         </div>
-                                    
+                                        <div class="menu-item">
+                                            <a href="#" class="menu-link">
+                                                <span class="menu-text">Fabric</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-item">
+                                            <a href="#" class="menu-link">
+                                                <span class="menu-text">Trim</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="menu-item has-sub">
                                     <a href="#" class="menu-link">
@@ -452,7 +484,7 @@
                                                 <span class="menu-text">Trim</span>
                                             </a>
                                         </div>
-                                    </div>                                   
+                                    </div>
                                 </div>
                                 <div class="menu-item">
                                     <a href="#" class="menu-link">
@@ -606,41 +638,14 @@
                             <span class="menu-caret"><b class="caret"></b></span>
                         </a>
                         <div class="menu-submenu">
-                            <!-- #region 게시판 -->
-
-                            <div class="menu-item has-sub">
-                                <a href="#" class="menu-link">
-                                    <span class="menu-icon">
-                                        <i class="fa fa-book-reader"></i>
-                                        @*<span class="menu-icon-label"></span>*@
-                                    </span>
-                                    <span class="menu-text">Boards</span>
-                                    <span class="menu-caret"><b class="caret"></b></span>
-                                </a>
-                                <div class="menu-submenu">
-                                    <div class="menu-item">
-                                        <a href="/Boards/Notices" class="menu-link">
-                                            <span class="menu-text">Notice</span>
-                                        </a>
-                                    </div>
-                                    <div class="menu-item">
-                                        <a href="/Boards/Suggestion" class="menu-link">
-                                            <span class="menu-text">Suggestions</span>
-                                        </a>
-                                    </div>
-                                    <div class="menu-item">
-                                        <a href="/Boards/Survey" class="menu-link">
-                                            <span class="menu-text">Survey</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- #endregion -->
-
                             <div class="menu-item">
                                 <a href="#" class="menu-link">
                                     <span class="menu-text">Payroll Personal</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="#" class="menu-link">
+                                    <span class="menu-text">Annual Leave</span>
                                 </a>
                             </div>
                             <div class="menu-item">
