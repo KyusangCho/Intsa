@@ -1,4 +1,5 @@
 ﻿using Intsa.Models.Boards;
+using Intsa.Pages.Materials.PurchaseRequisition.Yarn.Components;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,40 @@ namespace Intsa.Pages.Materials.PurchaseRequisition.Yarn
         public NavigationManager NavigationManagerReference { get; set; }
 
         protected List<BoardNotices> models;
+
+        public EditorForm EditorFormReference { get; set; }
+        //public DeleteDialog DeleteDialogReference { get; set; }
+
+        protected BoardNotices model = new BoardNotices();
+
+        public string EditorFormTitle { get; set; } = "Request Yarn";
+
+        protected void ShowEditorForm()
+        {
+            EditorFormTitle = "Request Yarn";
+            this.model = new BoardNotices();
+            EditorFormReference.Show();
+        }
+
+        protected void EditBy(BoardNotices model)
+        {
+            EditorFormTitle = "Edit Request Yarn";
+            this.model = model;
+            EditorFormReference.Show();
+        }
+
+        protected void DeleteBy(BoardNotices model)
+        {
+            this.model = model;
+            //DeleteDialogReference.Show();
+        }
+
+        protected async void CreateOrEdit()
+        {
+            EditorFormReference.Hide();
+            await DisplayData();
+
+        }
 
         protected BeanyPager.BeanyPagerBase pager = new BeanyPager.BeanyPagerBase()
         {
