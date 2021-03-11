@@ -28,11 +28,11 @@ namespace Intsa.Pages.Boards.Survey
         {
             if (string.IsNullOrEmpty(this.searchQuery))
             {
-                await DisplayData(); 
+                await DisplayData();
             }
             else
             {
-                await SearchData(); 
+                await SearchData();
             }
 
         }
@@ -41,7 +41,7 @@ namespace Intsa.Pages.Boards.Survey
         {
             //await Task.Delay(3000); 
             var resultSet = await NoticeRepositoryAsyncReference.GetAllAsync(pager.PageIndex, pager.PageSize);
-            pager.RecordCount = resultSet.TotalRecords; 
+            pager.RecordCount = resultSet.TotalRecords;
             models = resultSet.Records.ToList();
         }
 

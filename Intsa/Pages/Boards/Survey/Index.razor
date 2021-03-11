@@ -13,12 +13,8 @@
 
 <div class="row">
     <div class="col-md-12">
-        <AuthorizeView>
+        <AuthorizeView Roles="Administrators">
             <Authorized>
-
-            </Authorized>
-            <NotAuthorized>
-
                 @if (models == null)
                 {
                     <p><em>Loading...</em></p>
@@ -180,10 +176,9 @@
                         <div class="card">
                             <div class="card-header">
                                 @*<SfProgressBar @ref="ProObj1" Type="ProgressType.Linear" IsIndeterminate="true" Minimum="0" Maximum="100" TrackThickness="12" ProgressThickness="12">
-                            <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
-                        </SfProgressBar>*@
-                                <a href="/Boards/Notices/Create" class="btn btn-primary disabled">Create</a>
-                                <a href="/Boards/Notices/Manage" class="btn btn-primary disabled">Manage</a>
+                                <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
+                            </SfProgressBar>*@
+                                <a href="#" class="btn btn-primary disabled">Create</a>
                                 @*<a href="/Boards/Notices/Report" class="btn btn-primary">Report</a>*@
                             </div>
                             <div class="card-body">
@@ -212,7 +207,7 @@
                                                 }
                                                 <tbody>
                                                     @*@foreach (var m in models)
-                                            {*@
+                                                {*@
                                                     <tr>
                                                         <td scope="row" class="text-dark">1</td>
                                                         <td>
@@ -221,9 +216,9 @@
                                                         <td>관리부</td>
                                                         <td>@DateTime.Today.ToShortDateString()</td>
                                                         <td>
-                                                            <a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
-                                                            <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
-                                                            <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>
+                                                            @*<a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
+                                                        <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
+                                                        <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>*@
                                                         </td>
                                                     </tr>
 
@@ -235,9 +230,9 @@
                                                         <td>관리부</td>
                                                         <td>@DateTime.Today.ToShortDateString()</td>
                                                         <td>
-                                                            <a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
-                                                            <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
-                                                            <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>
+                                                            @*<a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
+                                                        <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
+                                                        <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>*@
                                                         </td>
                                                     </tr>
 
@@ -249,9 +244,9 @@
                                                         <td>관리부</td>
                                                         <td>@DateTime.Today.ToShortDateString()</td>
                                                         <td>
-                                                            <a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
-                                                            <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
-                                                            <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>
+                                                            @*<a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
+                                                        <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
+                                                        <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>*@
                                                         </td>
                                                     </tr>
 
@@ -266,8 +261,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         @*<Intsa.Pages.Boards.Notices.Components.SearchBox placeholder="Search ..."
-                                                                                 SearchQueryChanged="Search">
-                                </Intsa.Pages.Boards.Notices.Components.SearchBox>*@
+                                                                                     SearchQueryChanged="Search">
+                                    </Intsa.Pages.Boards.Notices.Components.SearchBox>*@
                                     </div>
 
                                 </div>
@@ -279,10 +274,14 @@
                     </div>
                     <!-- END #responsiveTables -->
                 }
+            </Authorized>
+            <NotAuthorized>
+
+
 
             </NotAuthorized>
         </AuthorizeView>
-        <AuthorizeView Roles="Administrators, Managers">
+        <AuthorizeView Roles="Administrators">
             <a href="/Boards/Notices/Manage" class="btn btn-primary disabled">Manage</a>
 
         </AuthorizeView>

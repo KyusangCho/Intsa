@@ -1,0 +1,284 @@
+﻿@page "/Systems/ProjectStatus"
+
+@using Syncfusion.Blazor.Kanban
+
+<SfKanban CssClass="kanban-overview" TValue="TasksModel" KeyField="Status" DataSource="Tasks">
+    @*<KanbanColumns>
+        <KanbanColumn HeaderText="Backlog" KeyField="@(new List<string>() {"Open"})"></KanbanColumn>
+        <KanbanColumn HeaderText="In Progress" KeyField="@(new List<string>() {"InProgress"})"></KanbanColumn>
+        <KanbanColumn HeaderText="Testing" KeyField="@(new List<string>() {"Testing"})"></KanbanColumn>
+        <KanbanColumn HeaderText="Done" KeyField="@(new List<string>() {"Close"})"></KanbanColumn>
+    </KanbanColumns>*@
+    <KanbanColumns>
+        @foreach (ColumnModel item in columnData)
+        {
+            <KanbanColumn HeaderText="@item.HeaderText" KeyField="@item.KeyField" AllowToggle="@item.AllowToggle">
+                <Template>
+                    @{
+                        KanbanColumn column = (KanbanColumn)context;
+                        <div class="header-template-wrap">
+                            <div class="header-icon e-icons @column.KeyField[0]"></div>
+                            <div class="header-text">@column.HeaderText</div>
+                        </div>
+                    }
+                </Template>
+            </KanbanColumn>
+        }
+    </KanbanColumns>
+    <KanbanCardSettings ContentField="Summary" HeaderField="Title" SelectionType="@SelectionType.Multiple">
+        <Template>
+            @{
+                TasksModel card = (TasksModel)context;
+                <div class="card-template">
+                    <div class="e-card-header">
+                        <div class="e-card-header-caption">
+                            <div class="e-card-header-title e-tooltip-text">@card.Title</div>
+                        </div>
+                    </div>
+                    <div class="e-card-content">
+                        <div class="e-text e-tooltip-text">@card.Summary</div>
+                    </div>
+                    <div class="e-card-footer">
+                        <div class="e-card-avatar">
+                            @{
+                                string[] AssigneeName = card.Assignee.Split();
+                                foreach (string assignee in AssigneeName)
+                                {
+                                    @assignee.Substring(0, 1).ToUpper()
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </Template>
+    </KanbanCardSettings>
+    <KanbanCardSettings ShowHeader="false" HeaderField="Id" ContentField="Summary"></KanbanCardSettings>
+    @*<KanbanSwimlaneSettings KeyField="Assignee"></KanbanSwimlaneSettings>*@
+</SfKanban>
+
+<style type="text/css">
+    .e-kanban .header-template-wrap {
+        display: inline-flex;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+        .e-kanban .header-template-wrap .header-icon {
+            font-family: 'Kanban priority icons';
+            margin-top: 3px;
+            width: 10%;
+        }
+
+        .e-kanban .header-template-wrap .header-text {
+            margin-left: 15px;
+        }
+
+    .e-kanban.e-rtl .header-template-wrap .header-text {
+        margin-right: 15px;
+    }
+
+    .e-kanban.e-rtl .e-card-avatar {
+        left: 12px;
+        right: auto;
+    }
+
+    .e-kanban .e-card-avatar {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        background: gainsboro;
+        color: #6b6b6b;
+        border-radius: 50%;
+        position: absolute;
+        right: 12px;
+        bottom: 10px;
+        font-size: 12px;
+        font-weight: 400;
+        padding: 10px 0px 0px 1px;
+    }
+
+    .e-kanban .Open::before {
+        content: '\e700';
+        color: #0251cc;
+        font-size: 16px;
+    }
+
+    .e-kanban .InProgress::before {
+        content: '\e703';
+        color: #ea9713;
+        font-size: 16px;
+    }
+
+    .e-kanban .e-image img {
+        background: #ececec;
+        border: 1px solid #c8c8c8;
+        border-radius: 50%;
+    }
+
+    .e-kanban .Review::before {
+        content: '\e701';
+        color: #8e4399;
+        font-size: 16px;
+    }
+
+    .e-kanban .Close::before {
+        content: '\e702';
+        color: #63ba3c;
+        font-size: 16px;
+    }
+
+    .e-kanban .e-card .e-card-tag {
+        background: #ececec;
+        color: #6b6b6b;
+        margin-right: 5px;
+        line-height: 1.1;
+        font-size: 13px;
+        border-radius: 3px;
+        padding: 4px;
+    }
+
+    .e-kanban .e-card-footer {
+        display: flex;
+        padding: 0px 12px 12px;
+        line-height: 1;
+        height: 35px;
+    }
+
+    .card-template.Low {
+        border-left: 3px solid #ffd600
+    }
+
+    .card-template.High {
+        border-left: 3px solid #990099
+    }
+
+    .card-template.Normal {
+        border-left: 3px solid #66cc33
+    }
+
+    .card-template.Critical {
+        border-left: 3px solid #cc0000
+    }
+
+    .e-kanban.e-rtl .card-template {
+        border-left: none
+    }
+
+        .e-kanban.e-rtl .card-template.Low {
+            border-right: 3px solid #ffd600
+        }
+
+        .e-kanban.e-rtl .card-template.High {
+            border-right: 3px solid #990099
+        }
+
+        .e-kanban.e-rtl .card-template.Normal {
+            border-right: 3px solid #66cc33
+        }
+
+        .e-kanban.e-rtl .card-template.Critical {
+            border-right: 3px solid #cc0000
+        }
+
+    @@font-face {
+        font-family: 'Kanban priority icons';
+        src: url(data:application/x-font-ttf;charset=utf-8;base64,AAEAAAAKAIAAAwAgT1MvMj1tSfUAAAEoAAAAVmNtYXDnE+dkAAABlAAAADxnbHlmg4weAgAAAdwAAAhQaGVhZBfH57sAAADQAAAANmhoZWEIVQQGAAAArAAAACRobXR4FAAAAAAAAYAAAAAUbG9jYQNeBi4AAAHQAAAADG1heHABGAFgAAABCAAAACBuYW1lH65UOQAACiwAAALNcG9zdFsyKlEAAAz8AAAAUgABAAAEAAAAAFwEAAAAAAAD+AABAAAAAAAAAAAAAAAAAAAABQABAAAAAQAA7pb8lF8PPPUACwQAAAAAANpY0WMAAAAA2ljRYwAAAAAD+AP4AAAACAACAAAAAAAAAAEAAAAFAVQACQAAAAAAAgAAAAoACgAAAP8AAAAAAAAAAQQAAZAABQAAAokCzAAAAI8CiQLMAAAB6wAyAQgAAAIABQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUGZFZABA5wDnAwQAAAAAXAQAAAAAAAABAAAAAAAABAAAAAQAAAAEAAAABAAAAAQAAAAAAAACAAAAAwAAABQAAwABAAAAFAAEACgAAAAEAAQAAQAA5wP//wAA5wD//wAAAAEABAAAAAEAAgADAAQAAAAAAMwCBgKSBCgABAAAAAAD+AP4ACEAQwBlAKkAAAEfBw8HIS8HPwclHwcPByEvBz8HJR8HDwchLwc/BycRHw8hPw8RLw8hDw4CXgcGBQUEAwEBAQEDBAUFBgf+hgYGBQUEAwEBAQEDBAUFBgYCOAYGBQUEAwEBAQEDBAUFBgb9yAYGBQUEAwEBAQEDBAUFBgYCOAYGBQUEAwEBAQEDBAUFBgb9yAYGBQUEAwEBAQEDBAUFBgbcAQIDBQUHCAkKCgsMDQ0ODQLgDQ4NDQwLCgoJCAcFBQMCAQECAwUFBwgJCgoLDA0NDg39IA0ODQ0MCwoKCQgHBQUDAgFDAQEDBAUFBgYHBgUFBAMBAQEBAwQFBQYHBgYFBQQDAQG9AQEDBAUFBgcGBgUFBAMBAQEBAwQFBQYGBwYFBQQDAQG9AQEDBAUFBgYHBgUFBAMBAQEBAwQFBQYHBgYFBQQDAQGz/SANDg0NDAsKCgkIBwUFAwIBAQIDBQUHCAkKCgsMDQ0ODQLgDQ4NDQwLCgoJCAcFBQMCAQECAwUFBwgJCgoLDA0NDgAABAAAAAAD+AP4AD8AggDUARgAAAEfBw8PLw41Pw8fBicPDx8PMz8OLxAHNzMfEhUPESsBLxA9AT8UJREfDyE/DxEvDyEPDgJlCAcGBgQCAgEBAgMEBQcHCAkJCwsMDAwNDgwNDAsLCgkICAYFAwMBAQMDBQUHBwgJCQoLCwwMDA4MDAwLCgqEDg8PDw4PDw8VFBQUExMTEhUWFhYXFxgYEhMSERISEREUEBEREBESERkZGRgXFxcXEA8QEBAREREWFxYVFhUWFhIeFAsXGBkYGRkYGSATExISEhIRBQMBAgICHBkaGhscGx0UExMTExMTExoUFRQVFBUVHBoaGhkYGRkEAgIDGBQVFhYXFxcREREQEREQEQ8ODv4aAQIDBQUHCAkKCgsMDQ0ODQLgDQ4NDQwLCgoJCAcFBQMCAQECAwUFBwgJCgoLDA0NDg39IA0ODQ0MCwoKCQgHBQUDAgJXCQoKCwsMDAwNDAwMCgsJCQgHBgUEAwIBAQIDBQUHCAkJCgsMCw0MDQwLDAoLCQkJBwcGBQQCAgEBAgMEBQYIWQMEBQYGBwgJDg4PERETExUYFxUTEhAPDgkIBwUFAwEBAgIEBQYHCA0QEBMUFhcaEREQDw8NDQ0PDQsJCAYEAwEBMAIEBggJDA4PFg8PERESFBQHBwYGBgUEIBsZFhUTERAJCAYGBAMCAgQFBggJChAREhUWGBoeCAUFBAYHGxcVFBMREQ8KCQgHBgYEBAMCAYT9IA0ODQ0MCwoKCQgHBQUDAgEBAgMFBQcICQoKCwwNDQ4NAuANDg0NDAsKCgkIBwUFAwIBAQIDBQUHCAkKCgsMDQ0OAAIAAAAAA/gD+AArAG8AAAEfAhUPAwEPAy8INT8GMx8DAT8DHwIlER8PIT8PES8PIQ8OAvMEAwIBAQME/r8FBQYGBgYFBXkEAwEBAgMEBQUGBgYGBgViASoFBgYGBgYF/RoBAgMFBQcICQoKCwwNDQ4NAuANDg0NDAsKCgkIBwUFAwIBAQIDBQUHCAkKCgsMDQ0ODf0gDQ4NDQwLCgoJCAcFBQMCArQFBgYGBgYFBf7FBAMBAQEBAwR2BQUGBgYGBgUEAwEBAgMEYAElBAMBAQEBA7j9IA0ODQ0MCwoKCQgHBQUDAgEBAgMFBQcICQoKCwwNDQ4NAuANDg0NDAsKCgkIBwUFAwIBAQIDBQUHCAkKCgsMDQ0OAAAJAAAAAAP4A/gAIQBDAGUAhwCpAMsA7QEPAVMAAAEVDwcvBzU/Bx8GNx8EDwYrAS8GPQE/BTsBHwEFHwMPBysBLwU9AT8GOwEfASUfBw8HIy8HPwchHwcPByMvBz8HJR8DDwcrAS8FPQE/BjsBHwEFHwMdAQ8FKwEvBz8GOwEfASUVDwcvBzU/Bx8GJREfDyE/DxEvDyEPDgIgAQIDBAQGBgYGBgYEBAMCAQECAwQEBgYGBgYGBAQDAopiBAMCAQECAwQFBQYGBgYFBWIEAwICAwQFBQYGBgYF/t8EAwIBAQIDBGIFBQYGBgYFBQQDAgIDBGIFBQYGBgYFAdwHBgUFBAMBAQEBAwQFBQYHigYGBgQEAwIBAQIDBAQGBgb+YAYGBgQEAwIBAQIDBAQGBgaKBwYFBQQDAQEBAQMEBQUGBwJlBAMCAQECAwRiBQUGBgYGBQUEAwICAwRiBQUGBgYGBf4bYgQDAgIDBAUFBgYGBgUFYgQDAgEBAgMEBQUGBgYGBQEEAQIDBAQGBgYGBgYEBAMCAQECAwQEBgYGBgYGBAQDAv3pAQIDBQUHCAkKCgsMDQ0ODQLgDQ4NDQwLCgoJCAcFBQMCAQECAwUFBwgJCgoLDA0NDg39IA0ODQ0MCwoKCQgHBQUDAgEwigcGBQUEAwEBAQEDBAUFBgeKBgYGBAQDAgEBAgMEBAYGTWIFBQYGBgYFBQQDAgIDBGIFBQYGBgYFBQQDAgIDBAUFBgYGBgUFYgQDAgIDBAUFBgYGBgUFYgQDAgIDmQECAwQEBgYGBgYGBAQDAgEBAgMEBAYGBgYGBgQEAwIBAQIDBAQGBgYGBgYEBAMCAQECAwQEBgYGBgYGBAQDAgHrBQUGBgYGBQViBAMCAgMEBQUGBgYGBQViBAMCAgMEYgUFBgYGBgUFBAMCAgMEYgUFBgYGBgUFBAMCAgNLigYGBgQEAwIBAQIDBAQGBgaKBwYFBQQDAQEBAQMEBQUGD/0gDQ4NDQwLCgoJCAcFBQMCAQECAwUFBwgJCgoLDA0NDg0C4A0ODQ0MCwoKCQgHBQUDAgEBAgMFBQcICQoKCwwNDQ4AAAAAEgDeAAEAAAAAAAAAAQAAAAEAAAAAAAEAFQABAAEAAAAAAAIABwAWAAEAAAAAAAMAFQAdAAEAAAAAAAQAFQAyAAEAAAAAAAUACwBHAAEAAAAAAAYAFQBSAAEAAAAAAAoALABnAAEAAAAAAAsAEgCTAAMAAQQJAAAAAgClAAMAAQQJAAEAKgCnAAMAAQQJAAIADgDRAAMAAQQJAAMAKgDfAAMAAQQJAAQAKgEJAAMAAQQJAAUAFgEzAAMAAQQJAAYAKgFJAAMAAQQJAAoAWAFzAAMAAQQJAAsAJAHLIEthbmJhbiBwcmlvcml0eSBpY29uc1JlZ3VsYXJLYW5iYW4gcHJpb3JpdHkgaWNvbnNLYW5iYW4gcHJpb3JpdHkgaWNvbnNWZXJzaW9uIDEuMEthbmJhbiBwcmlvcml0eSBpY29uc0ZvbnQgZ2VuZXJhdGVkIHVzaW5nIFN5bmNmdXNpb24gTWV0cm8gU3R1ZGlvd3d3LnN5bmNmdXNpb24uY29tACAASwBhAG4AYgBhAG4AIABwAHIAaQBvAHIAaQB0AHkAIABpAGMAbwBuAHMAUgBlAGcAdQBsAGEAcgBLAGEAbgBiAGEAbgAgAHAAcgBpAG8AcgBpAHQAeQAgAGkAYwBvAG4AcwBLAGEAbgBiAGEAbgAgAHAAcgBpAG8AcgBpAHQAeQAgAGkAYwBvAG4AcwBWAGUAcgBzAGkAbwBuACAAMQAuADAASwBhAG4AYgBhAG4AIABwAHIAaQBvAHIAaQB0AHkAIABpAGMAbwBuAHMARgBvAG4AdAAgAGcAZQBuAGUAcgBhAHQAZQBkACAAdQBzAGkAbgBnACAAUwB5AG4AYwBmAHUAcwBpAG8AbgAgAE0AZQB0AHIAbwAgAFMAdAB1AGQAaQBvAHcAdwB3AC4AcwB5AG4AYwBmAHUAcwBpAG8AbgAuAGMAbwBtAAAAAAIAAAAAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQECAQMBBAEFAQYACFRvZG9saXN0BlJldmlldwlDb21wbGV0ZWQIUHJvZ3Jlc3MAAAAA) format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    [class^="sf-icon-"],
+    [class*=" sf-icon-"] {
+        font-family: 'Kanban priority icons' !important;
+        speak: none;
+        font-size: 55px;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+</style>
+
+@code {
+    public class TasksModel
+    {
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string Status { get; set; }
+        public string Summary { get; set; }
+        public string Assignee { get; set; }
+    }
+
+    private List<ColumnModel> columnData = new List<ColumnModel>() {
+        new ColumnModel(){ HeaderText= "To Do", KeyField= new List<string>() { "Open" }, AllowToggle= true },
+        new ColumnModel(){ HeaderText= "In Progress", KeyField= new List<string>() { "InProgress" }, AllowToggle= true },
+        new ColumnModel(){ HeaderText= "Testing", KeyField= new List<string>() { "Testing" }, AllowToggle= true },
+        new ColumnModel(){ HeaderText= "Done", KeyField= new List<string>() { "Close" }, AllowToggle= true }
+    };
+
+    public List<TasksModel> Tasks = new List<TasksModel>()
+{
+        new TasksModel { Id = "Task 1", Title = "Task-1", Status = "Close", Summary = "사용자 로그인", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 2", Title = "Task-2", Status = "Close", Summary = "사용자 2FA 설정", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 3", Title = "Task-3", Status = "Close", Summary = "사용자 프로필 수정", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 4", Title = "Task-4", Status = "Testing", Summary = "사용자 개인별 설정", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 5", Title = "Task-5", Status = "Close", Summary = "캘린더 사무실&공장 ", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 6", Title = "Task-6", Status = "Testing", Summary = "캘린더 팀별", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 7", Title = "Task-7", Status = "Testing", Summary = "캘린더 개인별", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 8", Title = "Task-8", Status = "InProgress", Summary = "원사관리 요청 ", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 9", Title = "Task-9", Status = "InProgress", Summary = "원사관리 발주", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 10", Title = "Task-10", Status = "InProgress", Summary = "원사관리 입출고", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 11", Title = "Task-11", Status = "InProgress", Summary = "원사관리 작지량 등록", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 12", Title = "Task-12", Status = "InProgress", Summary = "원사관리 생지 입출고", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 13", Title = "Task-13", Status = "Close", Summary = "시스템 환경설정(VM/DB/File)", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 14", Title = "Task-14", Status = "Testing", Summary = "시스템 작업로깅", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 15", Title = "Task-15", Status = "InProgress", Summary = "전자결재 템플릿", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 16", Title = "Task-16", Status = "Close", Summary = "전자결재 프레임워크", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 17", Title = "Task-17", Status = "Testing", Summary = "전자결재 진행상태", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 18", Title = "Task-18", Status = "Review", Summary = "시스템 SignalR 알림", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 19", Title = "Task-19", Status = "Close", Summary = "경리 전표리딩", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 20", Title = "Task-20", Status = "InProgress", Summary = "경리 자금계획 캘린더", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 21", Title = "Task-21", Status = "Open", Summary = "경리 수표발행", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 22", Title = "Task-22", Status = "Open", Summary = "생산 시간별 현황", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 23", Title = "Task-23", Status = "Open", Summary = "경리 공장별 Factura처리(FEL/No#)", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 24", Title = "Task-24", Status = "Testing", Summary = "영업 파일관리", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 25", Title = "Task-25", Status = "Open", Summary = "영업 오더현황", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 26", Title = "Task-26", Status = "Open", Summary = "영업 선적현황", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 27", Title = "Task-27", Status = "Open", Summary = "영업오더 Summary", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 28", Title = "Task-28", Status = "Open", Summary = "영업오더 Monthly현황", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 29", Title = "Task-29", Status = "Open", Summary = "영업 주간현황", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 30", Title = "Task-30", Status = "Open", Summary = "영업 월간현황", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 31", Title = "Task-31", Status = "Open", Summary = "영업 오더카드", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 32", Title = "Task-32", Status = "Testing", Summary = "게시판 공지사항", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 33", Title = "Task-33", Status = "Testing", Summary = "게시판 건의사항", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 34", Title = "Task-34", Status = "Testing", Summary = "게시판 설문조사", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 35", Title = "Task-35", Status = "Open", Summary = "인사 급여관리", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 36", Title = "Task-36", Status = "Open", Summary = "인사 개인별 급여현황", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 37", Title = "Task-37", Status = "Open", Summary = "인사 전체 급여현황", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 38", Title = "Task-38", Status = "Open", Summary = "인사 개인별 연차관리", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 39", Title = "Task-39", Status = "Open", Summary = "인사 연차 사용 품의", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 40", Title = "Task-40", Status = "Close", Summary = "시스템 배치프로세싱", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 41", Title = "Task-41", Status = "InProgress", Summary = "시스템 파일매니저(Onedrive/S3/개인파일)", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 42", Title = "Task-42", Status = "Close", Summary = "시스템 조직관리 비용센터", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 43", Title = "Task-43", Status = "Close", Summary = "시스템 조직관리 부서", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 44", Title = "Task-44", Status = "Close", Summary = "시스템 조직관리 팀", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 45", Title = "Task-45", Status = "Close", Summary = "시스템 조직관리 사용자", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 46", Title = "Task-46", Status = "Close", Summary = "시스템 권한관리", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 47", Title = "Task-47", Status = "Close", Summary = "시스템 바이어 등록관리", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 48", Title = "Task-48", Status = "Close", Summary = "시스템 거래처 등록관리", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 49", Title = "Task-49", Status = "Close", Summary = "시스템 코드 원사코드", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 50", Title = "Task-50", Status = "Close", Summary = "시스템 코드 기타", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 51", Title = "Task-51", Status = "Close", Summary = "시스템 코드 사이즈", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 52", Title = "Task-52", Status = "Close", Summary = "시스템 코드 사이즈그룹", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 53", Title = "Task-53", Status = "Close", Summary = "시스템 바이어별 오더템플릿", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 54", Title = "Task-54", Status = "Close", Summary = "시스템 코드 회계계정", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 55", Title = "Task-55", Status = "Close", Summary = "시스템 환율", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 56", Title = "Task-56", Status = "Close", Summary = "시스템 달력 주간일정", Assignee = "Bryan Cho" },
+        new TasksModel { Id = "Task 57", Title = "Task-57", Status = "Close", Summary = "시스템 달력 월간일정", Assignee = "Bryan Cho" },
+
+    };
+}

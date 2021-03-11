@@ -15,10 +15,6 @@
     <div class="col-md-12">
         <AuthorizeView>
             <Authorized>
-
-            </Authorized>
-            <NotAuthorized>
-
                 @if (models == null)
                 {
                     <p><em>Loading...</em></p>
@@ -32,8 +28,8 @@
                         <div class="card">
                             <div class="card-header">
                                 @*<SfProgressBar @ref="ProObj1" Type="ProgressType.Linear" IsIndeterminate="true" Minimum="0" Maximum="100" TrackThickness="12" ProgressThickness="12">
-                                    <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
-                                </SfProgressBar>*@
+                            <ProgressBarAnimation Enable="true" Duration="2000" Delay="0"></ProgressBarAnimation>
+                        </SfProgressBar>*@
                                 <a href="/Boards/Notices/Create" class="btn btn-primary disabled">Create</a>
                                 <a href="/Boards/Notices/Manage" class="btn btn-primary disabled">Manage</a>
                                 @*<a href="/Boards/Notices/Report" class="btn btn-primary">Report</a>*@
@@ -64,20 +60,20 @@
                                                 }
                                                 <tbody>
                                                     @*@foreach (var m in models)
-                                                    {*@
-                                                        <tr>
-                                                            <td scope="row" class="text-dark">1</td>
-                                                            <td>
-                                                                단기간 내 획기적인 매출 증대를 위한 제안 건
-                                                            </td>
-                                                            <td>편인철</td>
-                                                            <td>@DateTime.Today.ToShortDateString()</td>
-                                                            <td>
-                                                                <a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
-                                                                <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
-                                                                <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>
-                                                            </td>
-                                                        </tr>
+                                            {*@
+                                                    <tr>
+                                                        <td scope="row" class="text-dark">1</td>
+                                                        <td>
+                                                            단기간 내 획기적인 매출 증대를 위한 제안 건
+                                                        </td>
+                                                        <td>편인철</td>
+                                                        <td>@DateTime.Today.ToShortDateString()</td>
+                                                        <td>
+                                                            <a href="/Boards/Notices/Details" class="btn btn-light disabled">Details</a>
+                                                            <a href="/Boards/Notices/Edit" class="btn btn-light disabled">Edit</a>
+                                                            <a href="/Boards/Notices/Delete" class="btn btn-danger disabled">Delete</a>
+                                                        </td>
+                                                    </tr>
                                                     @*}*@
                                                 </tbody>
                                             </table>
@@ -88,8 +84,8 @@
                                     </div>
                                     <div class="col-md-12">
                                         @*<Intsa.Pages.Boards.Notices.Components.SearchBox placeholder="Search ..."
-                                                                                         SearchQueryChanged="Search">
-                                        </Intsa.Pages.Boards.Notices.Components.SearchBox>*@
+                                                                                 SearchQueryChanged="Search">
+                                </Intsa.Pages.Boards.Notices.Components.SearchBox>*@
                                     </div>
 
                                 </div>
@@ -102,6 +98,10 @@
                     <!-- END #responsiveTables -->
                 }
 
+            </Authorized>
+            <NotAuthorized>
+
+                
             </NotAuthorized>
         </AuthorizeView>
         <AuthorizeView Roles="Administrators, Managers">
