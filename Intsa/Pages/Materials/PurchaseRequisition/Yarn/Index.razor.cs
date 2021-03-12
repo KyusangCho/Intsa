@@ -18,17 +18,26 @@ namespace Intsa.Pages.Materials.PurchaseRequisition.Yarn
         protected List<BoardNotices> models;
 
         public EditorForm EditorFormReference { get; set; }
+        public UploadExcel UploadExcelReference { get; set; }
         //public DeleteDialog DeleteDialogReference { get; set; }
 
         protected BoardNotices model = new BoardNotices();
 
         public string EditorFormTitle { get; set; } = "Request Yarn";
+        public string UploadFormTitle { get; set; } = "";
 
         protected void ShowEditorForm()
         {
             EditorFormTitle = "Request Yarn";
             this.model = new BoardNotices();
             EditorFormReference.Show();
+        }
+
+        protected void UploadExcel()
+        {
+            UploadFormTitle = "Upload Excel";
+            this.model = new BoardNotices();
+            UploadExcelReference.Show();
         }
 
         protected void EditBy(BoardNotices model)
@@ -48,7 +57,12 @@ namespace Intsa.Pages.Materials.PurchaseRequisition.Yarn
         {
             EditorFormReference.Hide();
             await DisplayData();
+        }
 
+        protected async void UploadExcelData()
+        {
+            UploadExcelReference.Hide();
+            await DisplayData();
         }
 
         protected BeanyPager.BeanyPagerBase pager = new BeanyPager.BeanyPagerBase()

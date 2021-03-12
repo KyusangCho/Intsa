@@ -34,6 +34,10 @@
                                 <input type="button" name="btnCreate" value="Create"
                                        class="btn btn-primary"
                                        @onclick="ShowEditorForm" />
+                                <a href="https://s3.amazonaws.com/int.boards/WebTemplate_Material_Purchase_Requisition.xlsx" class="btn btn-default">Template Download</a>
+                                <input type="button" name="btnExcel" value="Upload Excel"
+                                       class="btn btn-default"
+                                       @onclick="UploadExcel"/>
                                 @*<a href="/Boards/Notices/Report" class="btn btn-primary">Report</a>*@
                             </div>
                             <div class="card-body">
@@ -74,6 +78,7 @@
                                                         <td scope="row" class="text-dark">1</td>
                                                         <td>TEAM1A</td>
                                                         <td>JASON WOO</td>
+                                                        <td>3/3/2021</td>
                                                         <td>EXPRESS</td>
                                                         <td>YR-2021-000017</td>
                                                         <td>PRODUCTION</td>
@@ -128,3 +133,10 @@
                                                   EditCallback="CreateOrEdit">
     <EditorFormTitle>@EditorFormTitle</EditorFormTitle>
 </Intsa.Pages.Materials.PurchaseRequisition.Yarn.Components.EditorForm>
+
+<Intsa.Pages.Materials.PurchaseRequisition.Yarn.Components.UploadExcel @ref="UploadExcelReference"
+                                                                      Model="model"
+                                                                      CreateCallback="UploadExcelData"
+                                                                      EditCallback="UploadExcelData">
+    <EditorFormTitle>@UploadFormTitle</EditorFormTitle>
+</Intsa.Pages.Materials.PurchaseRequisition.Yarn.Components.UploadExcel>

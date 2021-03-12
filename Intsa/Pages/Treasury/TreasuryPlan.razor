@@ -109,7 +109,7 @@
     </ScheduleTemplates>
     <ScheduleViews>
         <ScheduleView Option="View.Week" StartHour="08:00" EndHour="17:00"></ScheduleView>
-        <ScheduleView Option="View.Month" ShowWeekend="false"></ScheduleView>
+        <ScheduleView Option="View.Month" ShowWeekend="true"></ScheduleView>
     </ScheduleViews>
     <ScheduleEventSettings DataSource="@DataSource">
     </ScheduleEventSettings>
@@ -142,6 +142,8 @@
         new DDFields(){ Id = "New", Text = "New"},
         new DDFields(){ Id = "Requested", Text = "Requested"},
         new DDFields(){ Id = "Confirmed", Text = "Confirmed"},
+        new DDFields(){ Id = "Planned", Text = "Planned"},
+        new DDFields(){ Id = "Paid", Text = "Paid"},
     };
 
     #region Validation
@@ -155,10 +157,10 @@
 
     List<AppointmentData> DataSource = new List<AppointmentData>    // 데이터 소스지정
 {
-        new AppointmentData { Id = 1, Subject = "Paris", StartTime = new DateTime(2020, 2, 13, 10, 0, 0) , EndTime = new DateTime(2020, 2, 13, 12, 0, 0), EventType = "Confirmed"},
-        new AppointmentData { Id = 2, Subject = "Germany", StartTime = new DateTime(2020, 2, 15, 10, 0, 0) , EndTime = new DateTime(2020, 2, 15, 12, 0, 0), EventType = "New"},
-        new AppointmentData { Id = 3, Subject = "Meeting", StartTime = new DateTime(2020, 2, 9, 9, 30, 0) , EndTime = new DateTime(2020, 2, 9, 11, 30, 0), EventType = "Requested"},
-        new AppointmentData { Id = 4, Subject = "Vacation", StartTime = new DateTime(2020, 2, 14, 11, 30, 0) , EndTime = new DateTime(2020, 2, 14, 13, 0, 0), EventType = "Confirmed"}
+        new AppointmentData { Id = 1, IsAllDay=true, Subject = "KNITOPIA / $7,320", StartTime = new DateTime(2021, 3, 13, 10, 0, 0) , EndTime = new DateTime(2021, 3, 13, 12, 0, 0), EventType = "Planned"},
+        new AppointmentData { Id = 2, IsAllDay=true, Subject = "KILSUNG GUATEMALA / $15,320", StartTime = new DateTime(2021, 3, 15, 10, 0, 0) , EndTime = new DateTime(2021, 3, 15, 12, 0, 0), EventType = "Planned"},
+        new AppointmentData { Id = 3, IsAllDay=true, Subject = "KYOUNG GI / $11,050", StartTime = new DateTime(2021, 3, 9, 9, 30, 0) , EndTime = new DateTime(2021, 3, 9, 11, 30, 0), EventType = "Paid"},
+        new AppointmentData { Id = 4, IsAllDay=true, Subject = "JS TEXTILE / $8,900", StartTime = new DateTime(2021, 3, 24, 11, 30, 0) , EndTime = new DateTime(2021, 3, 24, 13, 0, 0), EventType = "Confirmed"}
     };
 
 
@@ -166,6 +168,7 @@
     public class AppointmentData
     {
         public int Id { get; set; }
+        public bool IsAllDay { get; set; }
         public string Subject { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

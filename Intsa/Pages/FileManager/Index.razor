@@ -1,5 +1,7 @@
 ﻿@page "/FileManager"
 @using Syncfusion.Blazor.FileManager
+@inject IJSRuntime JsRuntime;
+@inherits BlazorDemos.Shared.SampleBaseComponent;
 
 <ul class="breadcrumb">
     <li class="breadcrumb-item"><a href="#">HOME</a></li>
@@ -11,15 +13,19 @@
     Files <small>파일관리 및 공유</small>
 </h1>
 
-<SfFileManager TValue="FileManagerDirectoryContent">
-    <FileManagerAjaxSettings Url="#">
-    </FileManagerAjaxSettings>
-    <FileManagerToolbarSettings Items="@Items"></FileManagerToolbarSettings>
-</SfFileManager>
+<div class="control-section">
+    <SfFileManager TValue="FileManagerDirectoryContent">
+        <FileManagerAjaxSettings Url="https://ej2-aspcore-service.azurewebsites.net/api/FileManager/FileOperations"
+                                 UploadUrl="https://ej2-aspcore-service.azurewebsites.net/api/FileManager/Upload"
+                                 DownloadUrl="https://ej2-aspcore-service.azurewebsites.net/api/FileManager/Download"
+                                 GetImageUrl="https://ej2-aspcore-service.azurewebsites.net/api/FileManager/GetImage">
+        </FileManagerAjaxSettings>
+        <FileManagerToolbarSettings Items="@Items"></FileManagerToolbarSettings>
+    </SfFileManager>
+</div>
 
 
+@code {
+    public string[] Items = new string[] { "NewFolder", "Upload", "Delete", "Download", "OneDrive에서 보기", "관련된 문서보기", "선택된 문서 File번호로 묶음보기", "선택파일 공유" };
 
-@code { 
-    public string[] Items = new string[] { "NewFolder", "Upload", "Delete", "Download", "OneDrive에서 보기", "관련문서 보기", "선택된 File번호로 묶음보기"}; 
-
-    }
+}

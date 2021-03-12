@@ -26,7 +26,7 @@ namespace Intsa.Pages
 
         protected void ShowEditorForm()
         {
-            FormTitle = "Approval";
+            FormTitle = "Approval / A.T.IMPRESORA, S. A. / Trim";
             this.model = new BoardNotices();
             EditorFormReference.Show();
         }

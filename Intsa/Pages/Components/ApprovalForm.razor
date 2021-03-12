@@ -10,6 +10,52 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
+                    <div class="nav-wizards-container">
+                        <nav class="nav nav-wizards-3 mb-2">
+                            <!-- completed -->
+                            <div class="nav-item col">
+                                <a class="nav-link completed" href="#">
+                                    <div class="nav-dot"></div>
+                                    <div class="nav-text">
+                                        Mary Kim
+                                        <br /><span class="badge bg-success">3/3/2021</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- active -->
+                            <div class="nav-item col">
+                                <a class="nav-link completed" href="#">
+                                    <div class="nav-dot"></div>
+                                    <div class="nav-text">
+                                        Jason Woo
+                                        <br /><span class="badge bg-success">3/4/2021</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- disabled -->
+                            <div class="nav-item col">
+                                <a class="nav-link active" href="#">
+                                    <div class="nav-dot"></div>
+                                    <div class="nav-text">
+                                        Steven Hong
+                                        <br /><span class="badge bg-danger">Pending</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="nav-item col">
+                                <a class="nav-link disabled" href="#">
+                                    <div class="nav-dot"></div>
+                                    <div class="nav-text">T.H. Lee</div>
+                                </a>
+                            </div>
+
+                        </nav>
+                    </div>
+
                     <EditForm Model="Model" OnValidSubmit="CreateOrEditClick">
                         <DataAnnotationsValidator></DataAnnotationsValidator>
                         <ValidationSummary></ValidationSummary>
@@ -21,99 +67,132 @@
                             </div>
                         }
 
-                        <div class="card-group">
-                            <div class="card border-0 m-2">
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Department</b></label>
-                                    <InputText id="txtName" class="form-control" placeholder=""
-                                               @bind-Value="@Model.Name"></InputText>
-                                    <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-group">
+                                    <div class="card border-0 m-2">
+                                        <div class="form-group">
+                                            <label for="txtName" class="fs-12px text-muted mb-1"><b>부서</b></label>
+                                            <InputText id="txtName" class="form-control" placeholder="Sales"
+                                                       @bind-Value="@Model.Name"></InputText>
+                                            <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtName" class="fs-12px text-muted mb-1"><b>팀</b></label>
+                                            <InputText id="txtTitle" class="form-control" placeholder="Team 1A"
+                                                       @bind-Value="@Model.Title"></InputText>
+                                            <ValidationMessage For="@(()=>Model.Title)" class="form-text text-muted"></ValidationMessage>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtName" class="fs-12px text-muted mb-1"><b>작성자</b></label>
+                                            <InputText id="txtName" class="form-control disabled" placeholder="Mary Kim"
+                                                       @bind-Value="@Model.Name"></InputText>
+                                            <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
+                                        </div>
+
+                                    </div>
+                                    <div class="card border-0 m-2">
+                                        <div class="form-group">
+                                            <label for="txtName" class="fs-12px text-muted mb-1"><b>작성일</b></label>
+                                            <InputText id="txtName" class="form-control" placeholder="3/2/2021"
+                                                       @bind-Value="@Model.Name"></InputText>
+                                            <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtName" class="fs-12px text-muted mb-1"><b>상신일</b></label>
+                                            <InputText id="txtName" class="form-control" placeholder="3/3/2021"
+                                                       @bind-Value="@Model.Name"></InputText>
+                                            <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtName" class="fs-12px text-muted mb-1"><b>최종결재일</b></label>
+                                            <InputText id="txtName" class="form-control" placeholder="3/4/2021"
+                                                       @bind-Value="@Model.Name"></InputText>
+                                            <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
+                                        </div>
+                                    </div>
+                                    <div class="card border-0 m-2">
+                                        <div class="form-group">
+                                            <label for="txtName" class="fs-12px text-muted mb-1"><b>바이어</b></label>
+                                            <InputSelect @bind-Value="@parentId" class="form-control" id="lstCategory">
+                                                <option value="">-- Select --</option>
+                                                @foreach (var p in parentIds)
+                                                    {
+                                                    <option value="@p" selected>Express</option>
+                                                    }
+                                            </InputSelect>
+                                            <ValidationMessage For="@(()=> parentId)" class="form-text text-muted"></ValidationMessage>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtName" class="fs-12px text-muted mb-1"><b>거래처</b></label>
+                                            <InputSelect @bind-Value="@parentId" class="form-control" id="lstCategory">
+                                                <option value="">-- Select --</option>
+                                                @foreach (var p in parentIds)
+                                                    {
+                                                    <option value="@p" selected>A.T.IMPRESORA, S. A.</option>
+                                                    }
+                                            </InputSelect>
+                                            <ValidationMessage For="@(()=> parentId)" class="form-text text-muted"></ValidationMessage>
+                                        </div>
+
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Team</b></label>
-                                    <InputText id="txtTitle" class="form-control" placeholder=""
-                                               @bind-Value="@Model.Title"></InputText>
-                                    <ValidationMessage For="@(()=>Model.Title)" class="form-text text-muted"></ValidationMessage>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Create</b></label>
-                                    <InputText id="txtName" class="form-control disabled" placeholder=""
-                                               @bind-Value="@Model.Name"></InputText>
-                                    <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
+                            </div>
+                            <div class="card-body">
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button collapsed fs-12px text-muted" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                                첨부파일 #1
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <a href="#" class="text-decoration-none">첨부파일#1.pdf</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed fs-12px text-muted" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                                첨부파일 #2
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <a href="#" class="text-decoration-none">첨부파일#2.xlsx</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed fs-12px text-muted" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                                첨부파일 #3
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <a href="#" class="text-decoration-none">첨부파일#3.jpg</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                            </div>
-                            <div class="card border-0 m-2">
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Handler</b></label>
-                                    <InputText id="txtName" class="form-control" placeholder=""
-                                               @bind-Value="@Model.Name"></InputText>
-                                    <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Purpose of Use</b></label>
-                                    <InputText id="txtName" class="form-control" placeholder=""
-                                               @bind-Value="@Model.Name"></InputText>
-                                    <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Delivery</b></label>
-                                    <InputText id="txtName" class="form-control" placeholder=""
-                                               @bind-Value="@Model.Name"></InputText>
-                                    <ValidationMessage For="@(()=>Model.Name)" class="form-text text-muted"></ValidationMessage>
-                                </div>
-                            </div>
-                            <div class="card border-0 m-2">
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Buyer</b></label>
-                                    <InputSelect @bind-Value="@parentId" class="form-control" id="lstCategory">
-                                        <option value="">-- Select --</option>
-                                        @foreach (var p in parentIds)
-                                            {
-                                            <option value="@p">@p</option>
-                                            }
-                                    </InputSelect>
-                                    <ValidationMessage For="@(()=> parentId)" class="form-text text-muted"></ValidationMessage>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Supplier</b></label>
-                                    <InputSelect @bind-Value="@parentId" class="form-control" id="lstCategory">
-                                        <option value="">-- Select --</option>
-                                        @foreach (var p in parentIds)
-                                            {
-                                            <option value="@p">@p</option>
-                                            }
-                                    </InputSelect>
-                                    <ValidationMessage For="@(()=> parentId)" class="form-text text-muted"></ValidationMessage>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Delivery Place</b></label>
-                                    <InputSelect @bind-Value="@parentId" class="form-control" id="lstCategory">
-                                        <option value="">-- Select --</option>
-                                        @foreach (var p in parentIds)
-                                            {
-                                            <option value="@p">@p</option>
-                                            }
-                                    </InputSelect>
-                                    <ValidationMessage For="@(()=> parentId)" class="form-text text-muted"></ValidationMessage>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="rows">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>Remark</b></label>
+                                <div class="form-group mt-2">
+                                    <label for="txtName" class="fs-12px text-muted mb-1"><b>비고 및 반려사유 등</b></label>
                                     <InputTextArea id="txtContent" class="form-control" placeholder="" rows="5"
                                                    @bind-Value="@Model.Content"></InputTextArea>
                                     <ValidationMessage For="@(()=>Model.Content)" class="form-text text-muted"></ValidationMessage>
                                 </div>
+
                                 <div class="form-group mt-2">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                    <button type="button" class="btn btn-secondary" @onclick="Hide">Close</button>
+                                    <button type="submit" class="btn btn-primary">승인</button>
+                                    <button type="button" class="btn btn-danger">반려</button>
+                                    <button type="button" class="btn btn-secondary" @onclick="Hide">취소</button>
                                 </div>
                             </div>
                         </div>
+
                     </EditForm>
                 </div>
             </div>
