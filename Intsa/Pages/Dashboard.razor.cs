@@ -1,6 +1,6 @@
 ﻿using Intsa.Models.Boards;
 using Microsoft.AspNetCore.Components;
-using System;
+using Intsa.Pages.Components;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +15,42 @@ namespace Intsa.Pages
         public NavigationManager NavigationManagerReference { get; set; }
 
         protected List<BoardNotices> models;
+
+
+        public ApprovalForm EditorFormReference { get; set; }
+        //public DeleteDialog DeleteDialogReference { get; set; }
+
+        protected BoardNotices model = new BoardNotices();
+
+        public string FormTitle { get; set; } = "Approval";
+
+        protected void ShowEditorForm()
+        {
+            FormTitle = "Approval";
+            this.model = new BoardNotices();
+            EditorFormReference.Show();
+        }
+
+        protected void EditBy(BoardNotices model)
+        {
+            FormTitle = "Edit Approval";
+            this.model = model;
+            EditorFormReference.Show();
+        }
+
+        protected void DeleteBy(BoardNotices model)
+        {
+            this.model = model;
+            //DeleteDialogReference.Show();
+        }
+
+        protected async void CreateOrEdit()
+        {
+            EditorFormReference.Hide();
+            await DisplayData();
+
+        }
+
 
         protected BeanyPager.BeanyPagerBase pager = new BeanyPager.BeanyPagerBase()
         {
