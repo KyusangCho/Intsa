@@ -101,8 +101,10 @@ namespace Intsa
             
             AddDependencyInjectionContainerForBoards(services);
 
-            services.AddScoped<IFileUploadService, FileUploadService>(); 
-            services.AddScoped<IFileStorageManager, FileStorageManager>(); 
+            services.AddScoped<IFileUploadService, FileUploadService>();
+
+            //services.AddTransient<IFileStorageManager, BlobStorageManager>();  // Cloud Upload
+            services.AddTransient<IFileStorageManager, FileStorageManager>();  // Local Upload
         }
 
         /// <summary>

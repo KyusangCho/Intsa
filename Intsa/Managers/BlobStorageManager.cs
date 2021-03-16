@@ -1,21 +1,13 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Cafe.Shared;
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Cafe.Shared;
 
 namespace Intsa.Managers
 {
-    public class FileStorageManager : IFileStorageManager
+    public class BlobStorageManager : IFileStorageManager
     {
-        private readonly IWebHostEnvironment _environment;
-
-        public FileStorageManager(IWebHostEnvironment environment)
-        {
-            this._environment = environment;
-        }
-
-
         public Task<bool> DeleteAsync(string fileName, string folderPath)
         {
             throw new NotImplementedException();
@@ -41,12 +33,9 @@ namespace Intsa.Managers
             throw new NotImplementedException();
         }
 
-        public async Task<string> UploadAsync(byte[] bytes, string fileName, string folderPath, bool overwrite)
+        public Task<string> UploadAsync(byte[] bytes, string fileName, string folderPath, bool overwrite)
         {
-            var path = Path.Combine(_environment.WebRootPath, "files");         // 웹사이트 루트 > files 폴더에 없로드 
-            await File.WriteAllBytesAsync(Path.Combine(path, fileName), bytes); // byte 배열 저장 
-            return fileName; 
+            throw new NotImplementedException();
         }
-
     }
 }

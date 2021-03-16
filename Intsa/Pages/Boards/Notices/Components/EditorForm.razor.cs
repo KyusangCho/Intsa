@@ -1,9 +1,12 @@
-﻿using BlazorInputFile;
+﻿using Microsoft.AspNetCore.Components;
 using Intsa.Models.Boards;
-using Intsa.Services;
-using Microsoft.AspNetCore.Components;
 using System;
+using Intsa.Services;
+using BlazorInputFile;
 using System.Linq;
+using Cafe.Shared; 
+using System.IO;
+using Intsa.Managers;
 
 namespace Intsa.Pages.Boards.Notices.Components
 {
@@ -77,8 +80,14 @@ namespace Intsa.Pages.Boards.Notices.Components
             {
                 //file.Name = $"{DateTime.Now.ToString("yyyyMMddHHmmss")}{file.Name}"; 
                 fileName = file.Name;
-                fileSize = Convert.ToInt32(file.Size); 
-                await FileUploadServiceReference.UploadAsync(file);
+                fileSize = Convert.ToInt32(file.Size);
+                //await FileUploadServiceReference.UploadAsync(file);
+
+                var ms = new MemoryStream();
+                await file.Data.CopyToAsync(ms);    // 파일 데이터를 메모리스트림으로 변환 
+
+                // upload 하기전 memorystream을 byte 배열로 다시변환 
+                await FileStorageManager.UploadAsync(ms.ToArray(), file.Name, "", true); 
 
                 Model.FileName = fileName; 
                 Model.FileSize = fileSize; 
@@ -117,6 +126,9 @@ namespace Intsa.Pages.Boards.Notices.Components
         {
             this.selectedFiles = files;
         }
+
+        [Inject]
+        public IFileStorageManager FileStorageManager { get; set; }
 
     }
 }
