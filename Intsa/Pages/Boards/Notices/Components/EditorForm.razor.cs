@@ -7,6 +7,7 @@ using System.Linq;
 using Cafe.Shared; 
 using System.IO;
 using Intsa.Managers;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Intsa.Pages.Boards.Notices.Components
 {
@@ -83,11 +84,15 @@ namespace Intsa.Pages.Boards.Notices.Components
                 fileSize = Convert.ToInt32(file.Size);
                 //await FileUploadServiceReference.UploadAsync(file);
 
-                var ms = new MemoryStream();
-                await file.Data.CopyToAsync(ms);    // 파일 데이터를 메모리스트림으로 변환 
+                //[A] 바이트 형태 
+                //var ms = new MemoryStream();
+                //await file.Data.CopyToAsync(ms);    // 파일 데이터를 메모리스트림으로 변환 
+                //// upload 하기전 memorystream을 byte 배열로 다시변환 
+                //await FileStorageManager.UploadAsync(ms.ToArray(), file.Name, "", true); 
 
-                // upload 하기전 memorystream을 byte 배열로 다시변환 
-                await FileStorageManager.UploadAsync(ms.ToArray(), file.Name, "", true); 
+                //[B] Stream형태 
+                string folderPath = Path.Combine(WebHostEnvironment.WebRootPath, "files");
+                await FileStorageManager.UploadAsync(file.Data, file.Name, folderPath, true); 
 
                 Model.FileName = fileName; 
                 Model.FileSize = fileSize; 
@@ -129,6 +134,9 @@ namespace Intsa.Pages.Boards.Notices.Components
 
         [Inject]
         public IFileStorageManager FileStorageManager { get; set; }
+
+        [Inject]
+        public IWebHostEnvironment WebHostEnvironment { get; set; }
 
     }
 }

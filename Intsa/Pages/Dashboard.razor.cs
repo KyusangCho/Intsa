@@ -1,9 +1,11 @@
 ﻿using Intsa.Models.Boards;
+
 using Microsoft.AspNetCore.Components;
 using Intsa.Pages.Components;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Intsa.Pages
 {
@@ -64,6 +66,15 @@ namespace Intsa.Pages
 
         protected override async Task OnInitializedAsync()
         {
+
+            //if ((AuthorizationService.AuthorizeAsync(context.User, "TwoFactorEnabled")).Result.Succeeded)
+            //{
+            //}
+            //else
+            //{
+            //    NavigationManagerReference.NavigateTo("/Boards/Notices"); 
+            //}
+
             await DisplayData();
         }
 

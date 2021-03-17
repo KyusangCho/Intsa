@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace Cafe.Shared
 {
@@ -9,6 +10,7 @@ namespace Cafe.Shared
         /// </summary>
         /// <returns>New FileName</returns>
         Task<string> UploadAsync(byte[] bytes, string fileName, string folderPath, bool overwrite);
+        Task<string> UploadAsync(Stream stream, string fileName, string folderPath, bool overwrite);
 
         /// <summary>
         /// File(Blob) Download

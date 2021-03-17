@@ -1,6 +1,7 @@
 ﻿using Cafe.Shared;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,6 +35,11 @@ namespace Intsa.Managers
         }
 
         public Task<string> UploadAsync(byte[] bytes, string fileName, string folderPath, bool overwrite)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> UploadAsync(Stream stream, string fileName, string folderPath, bool overwrite)
         {
             throw new NotImplementedException();
         }

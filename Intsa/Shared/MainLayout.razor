@@ -1,7 +1,8 @@
 ﻿@inherits LayoutComponentBase
-
+@using Microsoft.AspNetCore.Authorization
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject IAuthorizationService AuthorizationService
 
 @Body
 
@@ -14,7 +15,15 @@
 
         if (!user.Identity.IsAuthenticated)
         {
-            NavigationManager.NavigateTo("Identity/Account/Login"); 
+            NavigationManager.NavigateTo("Identity/Account/Login");
+        }
+        else
+        {
+            if (!(AuthorizationService.AuthorizeAsync(user, "TwoFactorEnabled")).Result.Succeeded)
+            {
+                NavigationManager.NavigateTo("Identity/Account/Manage/TwoFactorAuthentication");
+                
+            }
         }
     }
 

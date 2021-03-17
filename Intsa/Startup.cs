@@ -15,6 +15,7 @@ using System;
 using Intsa.Services;
 using Cafe.Shared;
 using Intsa.Managers;
+using Microsoft.AspNetCore.Authorization;
 //using Intsa.Hubs;
 
 namespace Intsa
@@ -97,6 +98,14 @@ namespace Intsa
             services.AddServerSideBlazor();
             services.AddSyncfusionBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, AdditionalUserClaimsPrincipalFactory>();
+            //services.AddSingleton<AuthorizationHandlerContext>(); 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("TwoFactorEnabled",
+                    x => x.RequireClaim("TwoFactorEnabled", "true")
+                );
+            });
             services.AddScoped<SampleService>(); 
             
             AddDependencyInjectionContainerForBoards(services);
