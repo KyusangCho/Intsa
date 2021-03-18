@@ -4,10 +4,7 @@ using System;
 using Intsa.Services;
 using BlazorInputFile;
 using System.Linq;
-using Cafe.Shared; 
-using System.IO;
-using Intsa.Managers;
-using Microsoft.AspNetCore.Hosting;
+using Cafe.Shared;
 
 namespace Intsa.Pages.Boards.Notices.Components
 {
@@ -91,8 +88,8 @@ namespace Intsa.Pages.Boards.Notices.Components
                 //await FileStorageManager.UploadAsync(ms.ToArray(), file.Name, "", true); 
 
                 //[B] Stream형태 
-                string folderPath = Path.Combine(WebHostEnvironment.WebRootPath, "files");
-                await FileStorageManager.UploadAsync(file.Data, file.Name, folderPath, true); 
+                //string folderPath = Path.Combine(WebHostEnvironment.WebRootPath, "files");
+                await FileStorageManager.UploadAsync(file.Data, file.Name, "", true); 
 
                 Model.FileName = fileName; 
                 Model.FileSize = fileSize; 
@@ -134,9 +131,5 @@ namespace Intsa.Pages.Boards.Notices.Components
 
         [Inject]
         public IFileStorageManager FileStorageManager { get; set; }
-
-        [Inject]
-        public IWebHostEnvironment WebHostEnvironment { get; set; }
-
     }
 }

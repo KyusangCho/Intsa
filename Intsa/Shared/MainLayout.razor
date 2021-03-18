@@ -21,7 +21,7 @@
         {
             if (!(AuthorizationService.AuthorizeAsync(user, "TwoFactorEnabled")).Result.Succeeded)
             {
-                NavigationManager.NavigateTo("Identity/Account/Manage/TwoFactorAuthentication");
+                NavigationManager.NavigateTo("Identity/Account/Manage/EnableAuthenticator2");
                 
             }
         }

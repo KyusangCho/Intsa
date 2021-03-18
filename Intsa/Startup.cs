@@ -112,8 +112,8 @@ namespace Intsa
 
             services.AddScoped<IFileUploadService, FileUploadService>();
 
-            //services.AddTransient<IFileStorageManager, BlobStorageManager>();  // Cloud Upload
-            services.AddTransient<IFileStorageManager, FileStorageManager>();  // Local Upload
+            //services.AddTransient<IFileStorageManager, NoticeAppBlobStorageManager>();  // Cloud Upload
+            services.AddTransient<IFileStorageManager, NoticeAppFileStorageManager>();  // Local Upload
         }
 
         /// <summary>

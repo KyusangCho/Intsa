@@ -1,8 +1,10 @@
-﻿using Intsa.Models.Boards;
+﻿using Cafe.Shared;
+using Intsa.Models.Boards;
 using Intsa.Pages.Boards.Notices.Components;
 using Microsoft.AspNetCore.Components;
-using System;
+using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,7 +12,7 @@ namespace Intsa.Pages.Boards.Notices
 {
     public partial class Manage
     {
-        [Parameter]
+        [Parameter] 
         public int ParentId { get; set; } = 0; 
 
         [Inject]
@@ -143,8 +145,14 @@ namespace Intsa.Pages.Boards.Notices
             
         }
 
+        [Inject]
+        public IFileStorageManager FileStorageManager { get; set; }
+
         protected async void DeleteClick()
         {
+            // 첨부파일 삭제
+            await FileStorageManager.DeleteAsync(model.FileName, ""); 
+
             await NoticeRepositoryAsyncReference.DeleteAsync(this.model.Id);
             DeleteDialogReference.Hide();
             this.model = new BoardNotices(); 
