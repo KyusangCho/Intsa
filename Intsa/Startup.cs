@@ -16,6 +16,7 @@ using Intsa.Services;
 using Cafe.Shared;
 using Intsa.Managers;
 using Microsoft.AspNetCore.Authorization;
+using Intsa.Models.Calendar;
 //using Intsa.Hubs;
 
 namespace Intsa
@@ -109,6 +110,7 @@ namespace Intsa
             services.AddScoped<SampleService>(); 
             
             AddDependencyInjectionContainerForBoards(services);
+            AddDependencyInjectionContainerForCalendars(services);
 
             services.AddScoped<IFileUploadService, FileUploadService>();
 
@@ -131,6 +133,19 @@ namespace Intsa
             // INoticeRepositoryAsync Inject
             services.AddTransient<INoticeRepository, NoticeRepository>(); 
         }
+
+        private void AddDependencyInjectionContainerForCalendars(IServiceCollection services)
+        {
+            // Board > NoticeAppDbContext.cs Inject: New Dbcontext Add
+            services.AddEntityFrameworkSqlServer().AddDbContext<CalendarAppDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);  
+
+
+            // INoticeRepositoryAsync Inject
+            services.AddTransient<ICalendarCenterRepository, CalendarCenterRepository>(); 
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

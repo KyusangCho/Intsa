@@ -21,10 +21,15 @@ namespace Intsa.Models.Boards
 		/// </summary>
         public int? ParentId { get; set; }
 
-		/// <summary>
-		/// 이름
-		/// </summary>
-		[Required(ErrorMessage = "이름을 입력하세요.")]
+        /// <summary>
+        /// 외래키 부모의 GUID
+        /// </summary>
+        public string ParentKey { get; set; }
+
+        /// <summary>
+        /// 이름
+        /// </summary>
+        [Required(ErrorMessage = "이름을 입력하세요.")]
 		[MaxLength(255)]
         public string Name { get; set; }
 		/// <summary>

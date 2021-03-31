@@ -15,6 +15,9 @@ namespace Intsa.Pages.Boards.Notices.Components
         
         private string parentId = "0";
 
+        [Parameter]
+        public string ParentKey { get; set; } = "";
+
         protected int[] parentIds = { 1, 2, 3 };
 
         public void Show()
@@ -103,6 +106,7 @@ namespace Intsa.Pages.Boards.Notices.Components
                 newParentId = 0; 
             }
             Model.ParentId = newParentId; 
+            //Model.ParentKey = Model.ParentKey; 
             
 
             if (Model.Id == 0)

@@ -13,7 +13,10 @@ namespace Intsa.Pages.Boards.Notices
     public partial class Manage
     {
         [Parameter] 
-        public int ParentId { get; set; } = 0; 
+        public int ParentId { get; set; } = 0;
+
+        [Parameter]
+        public string ParentKey { get; set; } = "";
 
         [Inject]
         public INoticeRepository NoticeRepositoryAsyncReference { get; set; }
@@ -116,14 +119,16 @@ namespace Intsa.Pages.Boards.Notices
         protected void ShowEditorForm()
         {
             EditorFormTitle = "CREATE";
-            this.model = new BoardNotices(); 
+            this.model = new BoardNotices();
+            this.model.ParentKey = ParentKey;       // 
             EditorFormReference.Show(); 
         }
 
         protected void EditBy(BoardNotices model)
         {
             EditorFormTitle = "EDIT";
-            this.model = model; 
+            this.model = model;
+            this.model.ParentKey = ParentKey;       // 
             EditorFormReference.Show(); 
         }
 

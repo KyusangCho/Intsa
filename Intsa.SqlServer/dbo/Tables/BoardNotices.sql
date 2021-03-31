@@ -2,7 +2,7 @@
 (
 	[Id] INT NOT NULL PRIMARY KEY identity (1,1),		-- Serial Number 
 	[ParentId] Int Null,		-- ParentId, AppId, SiteId, ... 
-
+	[ParentKey] nvarchar(255) null,					-- 부모의 GUID 
 	[Name] NVarchar(255) Not Null,					-- 작성자 
 	[Title] NVarchar(255) Null,						-- 제목
 	[Content] nvarchar(max) null,					-- 내용 => Todo: not null 

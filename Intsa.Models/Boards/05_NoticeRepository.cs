@@ -180,5 +180,38 @@ namespace Intsa.Models.Boards
 
             return new PagingResult<BoardNotices>(models, totalRecords);
         }
+
+        public async Task<PagingResult<BoardNotices>> GetAllByParentKeyAsync(int pageIndex, int pageSize, string parentKey)
+        {
+            var totalRecords = await _context.BoardNotices.Where(m => m.ParentKey == parentKey).CountAsync();
+
+            var models = await _context.BoardNotices
+                    .Where(m => m.ParentKey == parentKey)
+                    .OrderByDescending(m => m.Id)
+                    //.Include(m => m.NoticesComments)
+                    .Skip(pageIndex * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+            return new PagingResult<BoardNotices>(models, totalRecords);
+        }
+
+        public async Task<PagingResult<BoardNotices>> SearchAllByParentKeyAsync(int pageIndex, int pageSize, string searchQuery, string parentKey)
+        {
+            var totalRecords = await _context.BoardNotices
+                .Where(m => m.ParentKey == parentKey)
+                .Where(m => m.Name.Contains(searchQuery) || m.Title.Contains(searchQuery) || m.Content.Contains(searchQuery))
+                .CountAsync();
+            var models = await _context.BoardNotices
+                .Where(m => m.ParentKey == parentKey)
+                .Where(m => m.Name.Contains(searchQuery) || m.Title.Contains(searchQuery) || m.Content.Contains(searchQuery))
+                .OrderByDescending(m => m.Id)
+                //.Include(m => m.NoticesComments)
+                .Skip(pageIndex * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagingResult<BoardNotices>(models, totalRecords);
+        }
     }
 }

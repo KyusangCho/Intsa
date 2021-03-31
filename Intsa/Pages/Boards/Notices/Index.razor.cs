@@ -28,8 +28,6 @@ namespace Intsa.Pages.Boards.Notices
 
         protected override async Task OnInitializedAsync()
         {
-            
-
             if (string.IsNullOrEmpty(this.searchQuery))
             {
                 await DisplayData(); 
