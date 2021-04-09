@@ -2,9 +2,7 @@
 using Intsa.Models.Boards;
 using Intsa.Pages.Boards.Notices.Components;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 

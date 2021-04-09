@@ -1,0 +1,92 @@
+﻿@page "/Systems/PageSearchResults"
+
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">HOME</a></li>
+        <li class="breadcrumb-item active">SEARCH RESULTS</li>
+    </ul>
+
+    <h1 class="page-header">
+        Search Results <small>지원 검색어 (File, PO, Style, Buyer, Team, Handler, Description)</small>
+    </h1>
+
+    <!-- BEGIN search-result -->
+    <div class="search-result">
+        <!-- BEGIN search-input -->
+        <div class="search-input">
+            <form action="#" method="POST" name="search_form">
+                <a href="#" class="search-close" data-clear-form="#search">&times;</a>
+                <input type="text" class="form-control form-control-lg" value="" placeholder="" />
+            </form>
+        </div>
+        <!-- END search-input -->
+        <!-- BEGIN search-tab -->
+        <div class="search-tab">
+            <div class="search-tab-item"><a href="#" class="search-tab-link active">Order</a></div>
+            <div class="search-tab-item"><a href="#" class="search-tab-link">Ship</a></div>
+            <div class="search-tab-item"><a href="#" class="search-tab-link">Others</a></div>
+        </div>
+        <!-- END search-tab -->
+        <!-- BEGIN search-result -->
+        <div class="search-result">
+            <!-- BEGIN search-result-list -->
+            <div class="search-result-list">
+                
+                <div class="search-result-item">
+                    <div class="search-result-content">
+                        <h3><a href="#">Order - File# 2011001-01</a></h3>
+                        <p>
+                            Buyer/File#/PO#/Style/Team/Descrption/Q'ty/Amount
+                        </p>
+                        <a href="/Sales/Orders/2011001-01">https://interpweb.com/Sales/Orders/2011001-01</a>
+                    </div>
+                </div>
+                <div class="search-result-item">
+                    <div class="search-result-content">
+                        <h3><a href="#">Order - File# 2011001-02</a></h3>
+                        <p>
+                            Buyer/File#/PO#/Style/Team/Descrption/Q'ty/Amount
+                        </p>
+                        <a href="/Sales/Orders/2011001-02">https://interpweb.com/Sales/Orders/2011001-01</a>
+                    </div>
+                </div>
+                <div class="search-result-item">
+                    <div class="search-result-content">
+                        <h3><a href="#">Order - File# 2011001-03</a></h3>
+                        <p>
+                            Buyer/File#/PO#/Style/Team/Descrption/Q'ty/Amount
+                        </p>
+                        <a href="/Sales/Orders/2011001-03">https://interpweb.com/Sales/Orders/2011001-01</a>
+                    </div>
+                </div>
+                
+            </div>
+            <!-- END search-result-list -->
+            <!-- BEGIN pagination -->
+            <div class="text-center mt-4 mb-5">
+                <div class="pagination justify-content-center">
+                    <div class="disabled page-item">
+                        <a href="#" class="page-link">
+                            <span>«</span>
+                        </a>
+                    </div>
+                    <div class="active page-item"><a href="#" class="page-link">1</a></div>
+                    <div class="page-item"><a href="#" class="page-link">2</a></div>
+                    <div class="page-item"><a href="#" class="page-link">3</a></div>
+                    <div class="page-item"><a href="#" class="page-link">4</a></div>
+                    <div class="page-item"><a href="#" class="page-link">5</a></div>
+                    <div class="page-item">
+                        <a href="#" class="page-link">
+                            <span>»</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- END pagination -->
+        </div>
+        <!-- END search-result -->
+    </div>
+    <!-- END search-result -->
+ 
+@code {
+    
+}
