@@ -137,18 +137,18 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="Syncfusion.Blazor.Charts" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.Core" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.Data" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.FileManager" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.Kanban" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.ProgressBar" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.Schedule" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.Spinner" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Blazor.Themes" Version="18.4.0.44" />
-    <PackageReference Include="Syncfusion.Licensing" Version="18.4.0.44" />
+    <PackageReference Include="Syncfusion.Blazor.Charts" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Core" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Data" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.FileManager" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Kanban" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.ProgressBar" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Schedule" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Spinner" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Licensing" Version="19.1.0.54" />
   </ItemGroup>
 
   <ItemGroup>

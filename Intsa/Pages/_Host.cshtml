@@ -18,8 +18,10 @@
     <!-- ================== BEGIN core-css ================== -->
     <link href="~/css/bootstrap4.css" rel="stylesheet" />
     <link href="/templates/dashboard/assets/css/app.min.css" rel="stylesheet" />
+    @*<link href="~/css/fabric.css" rel="stylesheet" />*@
+    <link href="~/css/material.css" rel="stylesheet" />
     <!-- ================== END core-css ================== -->
-    
+
 </head>
 <body data-spy='scroll' data-target='#sidebar-bootstrap' data-offset='200'>
     <!-- BEGIN #app -->
@@ -51,7 +53,7 @@
             <!-- END brand -->
             <!-- BEGIN menu -->
             <div class="menu">
-                <form action="/Systems/PageSearchResults" class="menu-search" method="GET" name="header_search_form" >
+                <form action="/Systems/PageSearchResults" class="menu-search" method="GET" name="header_search_form">
                     <div class="menu-search-icon"><i class="fa fa-search"></i></div>
                     <div class="menu-search-input">
                         <input type="text" class="form-control" placeholder="Search data..." />
@@ -89,8 +91,8 @@
                             </div>
                         </a>
                         @*<div class="p-2 text-center mb-n1">
-                            <a href="#" class="text-gray-800 text-decoration-none">See all</a>
-                        </div>*@
+                                <a href="#" class="text-gray-800 text-decoration-none">See all</a>
+                            </div>*@
                     </div>
                 </div>
 
@@ -103,7 +105,8 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end me-lg-3">
                         <a class="dropdown-item d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index">Manager User <i class="fa fa-user-circle fa-fw ms-auto text-gray-400 f-s-16"></i></a>
-                        <a class="dropdown-item d-flex align-items-center" href="/CustomTemplate">Calendar <i class="fa fa-calendar-alt fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                        <a class="dropdown-item d-flex align-items-center" href="/CustomTemplate">INT Calendar <i class="fa fa-calendar-alt fa-fw ms-auto text-gray-400 f-s-16"></i></a>
+                        <a class="dropdown-item d-flex align-items-center" href="/CalendarTeamPersonal">Calendar <i class="fa fa-calendar-alt fa-fw ms-auto text-gray-400 f-s-16"></i></a>
                         <a class="dropdown-item d-flex align-items-center" href="/Settings">Setting <i class="fa fa-wrench fa-fw ms-auto text-gray-400 f-s-16"></i></a>
                         <div class="dropdown-divider"></div>
                         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post">
@@ -117,7 +120,6 @@
 
         </div>
         <!-- END #header -->
-
         <!-- BEGIN #sidebar -->
         <div id="sidebar" class="app-sidebar">
             <!-- BEGIN scrollbar -->
@@ -377,6 +379,11 @@
                                 </div>
 
                                 <!-- 공장 라인맵 END menu -->
+                                <div class="menu-item">
+                                    <a href="/Production/Hourly" class="menu-link">
+                                        <span class="menu-text">Hourly Production</span>
+                                    </a>
+                                </div>
                                 <!-- #endregion -->
                             </div>
                         </div>
@@ -619,12 +626,12 @@
                         <!-- #region 품질관리 -->
                         <!-- 품질관리 BEGIN menu -->
                         <!--<div class="menu-header">Quality Management</div>
-        <div class="menu-item ">
-            <a href="/" class="menu-link">
-                <span class="menu-icon"><i class="fa fa-file"></i></span>
-                <span class="menu-text"></span>
-            </a>
-        </div>-->
+                        <div class="menu-item ">
+                            <a href="/" class="menu-link">
+                                <span class="menu-icon"><i class="fa fa-file"></i></span>
+                                <span class="menu-text"></span>
+                            </a>
+                        </div>-->
                         <!-- 품질관리 END menu -->
                         <!-- #endregion -->
                     }
@@ -954,17 +961,18 @@
             <!-- END btn-scroll-top -->
         </div>
         <!-- END #content -->
-        
+
     </div>
     <!-- END #app -->
     <script src="_framework/blazor.server.js"></script>
-    
+
     <script>
         Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
             document.location.reload();
-    }
+        }
     </script>
     <!-- ================== BEGIN core-js ================== -->
+
     <script src="_content/BlazorInputFile/inputfile.js"></script>
     <script src="/templates/dashboard/assets/js/app.min.js"></script>
     <!-- ================== END core-js ================== -->

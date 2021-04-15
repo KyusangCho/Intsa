@@ -1,0 +1,305 @@
+﻿@page "/CalendarTeamPersonal"
+
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Schedule
+@using System.Globalization
+@using Syncfusion.Blazor.Data
+@using Intsa.Models.Calendar
+
+<div class="rows">
+    <div class="col-md-12 mb-3">
+        <SfCheckBox TChecked="bool" @bind-Checked="Center1Checked" Value="@Center1Id" ValueChange="@OnChange" Label="Sales1" CssClass="Center1">
+        </SfCheckBox>
+        <SfCheckBox TChecked="bool" @bind-Checked="Center2Checked" Value="@Center2Id" ValueChange="@OnChange" Label="Team1A" CssClass="Center2">
+        </SfCheckBox>
+        <SfCheckBox TChecked="bool" @bind-Checked="Center3Checked" Value="@Center3Id" ValueChange="@OnChange" Label="Personal" CssClass="Center3">
+        </SfCheckBox>
+    </div>
+    <div class="col-md-12">
+        <div class="content-wrapper">
+            <SfSchedule TValue="CalendarCenter" Width="100%" Height="650px" EnableAutoRowHeight="true"
+                        @bind-SelectedDate="@CurrentDate"
+                        @bind-CurrentView="CurrentView">
+                <ScheduleHeaderRows>
+                    <ScheduleHeaderRow Option="HeaderRowType.Month">
+                        <Template>
+                            <div class="date-text">@(getMonthText((context as TemplateContext).Date))</div>
+                        </Template>
+                    </ScheduleHeaderRow>
+                </ScheduleHeaderRows>
+                <ScheduleResources>
+                    <ScheduleResource TItem="ResourceData" TValue="int[]" DataSource="@CenterData" Field="CenterId" Title="Choose Center" Name="Center" TextField="Text" IdField="Id" ColorField="Color"></ScheduleResource>
+                </ScheduleResources>
+                <ScheduleViews>
+                    <ScheduleView Option="View.Week" StartHour="07:00" EndHour="17:00"></ScheduleView>
+                    <ScheduleView Option="View.Month" MaxEventsPerRow="2" ShowWeekend="true">
+                        <ScheduleViewTimeScale Enable="false" Interval="@this.viewInterval"></ScheduleViewTimeScale>
+                    </ScheduleView>
+                    @*<ScheduleView Option="View.Year"></ScheduleView>*@
+                </ScheduleViews>
+                @*<ScheduleEventSettings DataSource="@DataSource" AllowAdding="true" AllowDeleting="true" AllowEditing="true" Query="ScheduleQuery"></ScheduleEventSettings>*@
+                <ScheduleEventSettings TValue="CalendarCenter">
+                    <SfDataManager AdaptorInstance="@typeof(CustomAdaptor)" Adaptor="Adaptors.CustomAdaptor"></SfDataManager>
+                </ScheduleEventSettings>
+            </SfSchedule>
+        </div>
+    </div>
+</div>
+
+@code{
+
+
+
+    View CurrentView = View.Month;  // 현재 뷰 지정
+    DateTime CurrentDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day);
+    private int viewInterval { get; set; } = 60;
+    @*static int[] WorkDays = new int[] { 1, 2, 3, 4, 5, 6 };*@
+
+    public bool Center1Checked { get; set; } = true;
+    public bool Center2Checked { get; set; } = true;
+    public bool Center3Checked { get; set; } = true;
+    public bool Center4Checked { get; set; } = true;
+    public bool Center5Checked { get; set; } = true;
+    public bool Center6Checked { get; set; } = true;
+    public string Center1Id { get; set; } = "1";
+    public string Center2Id { get; set; } = "2";
+    public string Center3Id { get; set; } = "3";
+    public string Center4Id { get; set; } = "4";
+    public string Center5Id { get; set; } = "5";
+    public string Center6Id { get; set; } = "6";
+
+    public dynamic predicate;
+    public Query ScheduleQuery { get; set; } = null;
+
+    [Inject]
+    public ICalendarCenterRepository CalendarCenterRepositoryAsyncReference { get; set; }
+    [Inject]
+    public NavigationManager NavigationManagerReference { get; set; }
+
+    protected static List<CalendarCenter> DataSource;
+
+    public void OnChange(ChangeEventArgs<bool> args)
+    {
+        predicate = null;
+        if (Center1Checked)
+        {
+            if (predicate != null)
+            {
+                predicate = predicate.Or("CenterId", "equal", Convert.ToInt32(Center1Id));
+            }
+            else
+            {
+                predicate = new WhereFilter() { Field = "CenterId", Operator = "equal", value = Convert.ToInt32(Center1Id) };
+            }
+        }
+        if (Center2Checked)
+        {
+            if (predicate != null)
+            {
+                predicate = predicate.Or("CenterId", "equal", Convert.ToInt32(Center2Id));
+            }
+            else
+            {
+                predicate = new WhereFilter() { Field = "CenterId", Operator = "equal", value = Convert.ToInt32(Center2Id) };
+            }
+        }
+        if (Center3Checked)
+        {
+            if (predicate != null)
+            {
+                predicate = predicate.Or("CenterId", "equal", Convert.ToInt32(Center3Id));
+            }
+            else
+            {
+                predicate = new WhereFilter() { Field = "CenterId", Operator = "equal", value = Convert.ToInt32(Center3Id) };
+            }
+        }
+        if (Center4Checked)
+        {
+            if (predicate != null)
+            {
+                predicate = predicate.Or("CenterId", "equal", Convert.ToInt32(Center4Id));
+            }
+            else
+            {
+                predicate = new WhereFilter() { Field = "CenterId", Operator = "equal", value = Convert.ToInt32(Center4Id) };
+            }
+        }
+        if (Center5Checked)
+        {
+            if (predicate != null)
+            {
+                predicate = predicate.Or("CenterId", "equal", Convert.ToInt32(Center5Id));
+            }
+            else
+            {
+                predicate = new WhereFilter() { Field = "CenterId", Operator = "equal", value = Convert.ToInt32(Center5Id) };
+            }
+        }
+        if (Center6Checked)
+        {
+            if (predicate != null)
+            {
+                predicate = predicate.Or("CenterId", "equal", Convert.ToInt32(Center6Id));
+            }
+            else
+            {
+                predicate = new WhereFilter() { Field = "CenterId", Operator = "equal", value = Convert.ToInt32(Center6Id) };
+            }
+        }
+
+        if (predicate == null)
+        {
+            predicate = new WhereFilter() { Field = "CenterId", Operator = "notequal", value = Convert.ToInt32(Center1Id) }
+                    .And("CenterId", "notequal", Convert.ToInt32(Center2Id))
+                    .And("CenterId", "notequal", Convert.ToInt32(Center3Id))
+                    .And("CenterId", "notequal", Convert.ToInt32(Center4Id))
+                    .And("CenterId", "notequal", Convert.ToInt32(Center5Id))
+                    .And("CenterId", "notequal", Convert.ToInt32(Center6Id));
+        }
+        ScheduleQuery = new Query().Where(predicate);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await DisplayData();
+    }
+
+    private async Task DisplayData()
+    {
+        var resultSet = await CalendarCenterRepositoryAsyncReference.GetAllAsync();
+        DataSource = resultSet;
+    }
+
+    public class CustomAdaptor : DataAdaptor
+    {
+        @*List<CalendarCenter> EventData = DataSource;*@
+
+        public async override Task<object> ReadAsync(DataManagerRequest dataManagerRequest, string key = null)
+        {
+
+            await Task.Delay(100); //To mimic asynchronous operation, we delayed this operation using Task.Delay
+            return dataManagerRequest.RequiresCounts ? new DataResult() { Result = DataSource, Count = DataSource.Count() } : (object)DataSource;
+        }
+        public async override Task<object> InsertAsync(DataManager dataManager, object data, string key)
+        {
+            await Task.Delay(100); //To mimic asynchronous operation, we delayed this operation using Task.Delay
+            DataSource.Insert(0, data as CalendarCenter);
+            return data;
+        }
+        public async override Task<object> UpdateAsync(DataManager dataManager, object data, string keyField, string key)
+        {
+            await Task.Delay(100); //To mimic asynchronous operation, we delayed this operation using Task.Delay
+            var val = (data as CalendarCenter);
+            var appointment = DataSource.Where((CalendarCenter) => CalendarCenter.Id == val.Id).FirstOrDefault();
+            if (appointment != null)
+            {
+                appointment.Id = val.Id;
+                appointment.Subject = val.Subject;
+                appointment.StartTime = val.StartTime;
+                appointment.EndTime = val.EndTime;
+                appointment.Location = val.Location;
+                appointment.Description = val.Description;
+                appointment.IsAllDay = val.IsAllDay;
+                appointment.CenterId = val.CenterId;
+                appointment.RecurrenceException = val.RecurrenceException;
+                appointment.RecurrenceID = val.RecurrenceID;
+                appointment.RecurrenceRule = val.RecurrenceRule;
+            }
+            return data;
+        }
+        public async override Task<object> RemoveAsync(DataManager dataManager, object data, string keyField, string key) //triggers on appointment deletion through public method DeleteEvent
+        {
+            @*await Task.Delay(100); //To mimic asynchronous operation, we delayed this operation using Task.Delay
+                int value = (int)data;
+                EventData.Remove(EventData.Where((AppointmentData) => AppointmentData.Id == value).FirstOrDefault());
+                return data;*@
+            return null;
+        }
+        public async override Task<object> BatchUpdateAsync(DataManager dataManager, object changedRecords, object addedRecords, object deletedRecords, string keyField, string key, int? dropIndex)
+        {
+            @*await Task.Delay(100); //To mimic asynchronous operation, we delayed this operation using Task.Delay
+                object records = deletedRecords;
+                List<AppointmentData> deleteData = deletedRecords as List<AppointmentData>;
+                foreach (var data in deleteData)
+                {
+                    EventData.Remove(EventData.Where((AppointmentData) => AppointmentData.Id == data.Id).FirstOrDefault());
+                }
+                List<AppointmentData> addData = addedRecords as List<AppointmentData>;
+                foreach (var data in addData)
+                {
+                    EventData.Insert(0, data as AppointmentData);
+                    records = addedRecords;
+                }
+                List<AppointmentData> updateData = changedRecords as List<AppointmentData>;
+                foreach (var data in updateData)
+                {
+                    var val = (data as AppointmentData);
+                    var appointment = EventData.Where((AppointmentData) => AppointmentData.Id == val.Id).FirstOrDefault();
+                    if (appointment != null)
+                    {
+                        appointment.Id = val.Id;
+                        appointment.Subject = val.Subject;
+                        appointment.StartTime = val.StartTime;
+                        appointment.EndTime = val.EndTime;
+                        appointment.Location = val.Location;
+                        appointment.Description = val.Description;
+                        appointment.IsAllDay = val.IsAllDay;
+                        appointment.ProjectId = val.ProjectId;
+                        appointment.RecurrenceException = val.RecurrenceException;
+                        appointment.RecurrenceID = val.RecurrenceID;
+                        appointment.RecurrenceRule = val.RecurrenceRule;
+                    }
+                    records = changedRecords;
+                }
+                return records;*@
+            return null;
+        }
+    }
+
+
+    @*List<AppointmentData> DataSource = new List<AppointmentData>
+        {
+        };*@
+
+    public List<ResourceData> CenterData { get; set; } = new List<ResourceData> {
+            new ResourceData{ Text = "Team1", Id= 1, Color = "#333333" },
+            new ResourceData{ Text = "Team1A", Id= 2, Color = "#339933" },
+            new ResourceData{ Text = "Personal", Id= 3, Color = "#ff6633" },
+            new ResourceData{ Text = "", Id= 4, Color = "#1e90ff" },
+            new ResourceData{ Text = "", Id= 5, Color = "#990099" },
+            new ResourceData{ Text = "", Id= 6, Color = "#FF0000" },
+        };
+
+    public class AppointmentData
+    {
+        public int Id { get; set; }
+        public string Subject { get; set; }
+        public string Location { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public string Description { get; set; }
+        public bool IsAllDay { get; set; }
+        public string RecurrenceRule { get; set; }
+        public string RecurrenceException { get; set; }
+        public Nullable<int> RecurrenceID { get; set; }
+        public int CenterId { get; set; }
+    }
+
+    public class ResourceData
+    {
+        public int Id { get; set; }
+        public string Text { get; set; }
+        public string Color { get; set; }
+    }
+
+    public static string getMonthText(DateTime date)
+    {
+        return date.ToString("MMMM", CultureInfo.InvariantCulture);
+    }
+
+
+
+
+}

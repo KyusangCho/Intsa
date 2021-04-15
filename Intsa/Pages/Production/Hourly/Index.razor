@@ -1,0 +1,232 @@
+﻿@page "/Production/Hourly"
+@page "/Production/Hourly/Index"
+@using Syncfusion.Blazor.Spinner
+@using Syncfusion.Blazor.Calendars
+
+@*@attribute [AllowAnonymous]*@
+@*@attribute [Authorize]*@
+@attribute [Authorize(Roles = "Administrators, Users")]
+
+@implements IAsyncDisposable
+
+<div class="row">
+    <div class="col-md-12">
+        
+        <AuthorizeView Roles="Administrators, Users">
+            <Authorized>
+                @if (models == null)
+                {
+                    <div>
+                        <SfSpinner @bind-Visible="@VisibleProperty"
+                                   Label="Data Loading...."
+                                   Type="@SpinnerType.Bootstrap4"
+                                   Size="50">
+                        </SfSpinner>
+                    </div>
+                }
+                else
+                {
+                    <!-- BEGIN #responsiveTables -->
+
+            <div id="responsiveTables" class="mb-5">
+                
+                <div class="d-flex align-items-center mb-3">
+                    <div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">HOME</a></li>
+                            <li class="breadcrumb-item">PRODUCTION</li>
+                            <li class="breadcrumb-item active">HOURLY</li>
+                        </ul>
+                        <h1 class="page-header mb-0">
+                            PRODUCCION HORARIO <small>시간별/라인별 생산현황</small>
+                        </h1>
+                    </div>
+
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <SfDateRangePicker TValue="DateTime?" Placeholder="Choose a Range" Min="@MinDate" Max="@MaxDate" ZIndex="9999"></SfDateRangePicker>
+                            </div>
+                            <div class="col-md-9">
+                                <a href="/Production/Hourly/Create" class="btn btn-primary disabled"><i class="fa fa-plus-circle fa-fw me-1"></i> Create</a>
+                            </div>
+                        </div>
+
+
+                            </div>
+
+                            <div class="card-body">
+                                @*<ul class="nav nav-tabs nav-tabs-v2 px-4">
+                    <li class="nav-item me-3"><a href="#allTab" class="nav-link active px-2" data-bs-toggle="tab">All</a></li>
+                </ul>*@
+                                <div class="tab-content p-4">
+                                    <div class="tab-pane fade show active" id="allTab">
+                                        <!-- BEGIN input-group -->
+                                        <div class="input-group mb-4">
+                                            <div class="flex-fill position-relative">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control ps-35px" placeholder="Filter" />
+                                                    <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0" style="z-index: 1020;">
+                                                        <i class="fa fa-search opacity-5"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="d-none d-md-inline">Filter</span><span class="d-inline d-md-none"><i class="fa fa-credit-card"></i></span> &nbsp;</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">Loading fields...</a>
+                                            </div>
+                                            <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="d-none d-md-inline">Sort</span><span class="d-inline d-md-none"><i class="fa fa-check"></i></span></button>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#">Loading fields...</a>
+                                            </div>
+                                        </div>
+                                        <!-- END input-group -->
+                                        <!-- BEGIN table -->
+                                        <div class="table-responsive ">
+                                            <table class="table table-hover text-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Fecha</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Linea</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Mno</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Cliente</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Estilo</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Dias<br />Trabajados</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">$ Precio</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Total</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Meta</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">8:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">9:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">10:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">11:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">12:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">2:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">3:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">4:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">5:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">6:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">7:00</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">TTL</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Perdidas</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">%</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Ope.</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Ayu.</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Persona<br />Total</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">#</th>
+                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                @if (models.Count == 0)
+                                                {
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="4" class="text-center">
+                                                                <p>데이터가 없습니다.</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                }
+                                                <tbody>
+                                                    @*@foreach (var m in models)
+                                    {*@
+
+                                                    <tr>
+                                                        <td class="align-middle">@DateTime.Today.ToShortDateString()</td>
+                                                        <td class="align-middle">Linea 2</td>
+                                                        <td class="align-middle">A</td>
+                                                        <td class="align-middle">A&F</td>
+                                                        <td class="align-middle"></td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">$0.00</td>
+                                                        <td class="align-middle">$0.00</td>
+                                                        <td class="align-middle">2000</td>
+                                                        <td class="align-middle">240</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">240</td>
+                                                        <td class="align-middle text-danger">-1760</td>
+                                                        <td class="align-middle">12.00%</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+                                                        <td class="align-middle">0</td>
+
+                                                        <td class="align-middle" scope="row"><a href="#">1</a></td>
+                                                        <td class="width-10 align-middle">
+                                                            <div class="form-check">
+                                                                <input type="checkbox" class="form-check-input" id="product1">
+                                                                <label class="form-check-label" for="product1"></label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+
+                                                    @*}*@
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- END table -->
+
+                                        <div class="d-md-flex align-items-center">
+                                            <div class="me-md-auto text-md-left text-center mb-2 mb-md-0">
+                                                Showing 1 to 10 of 57 entries
+                                            </div>
+                                            <ul class="pagination mb-0 justify-content-center">
+                                                <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-header">
+                                <div class="mb-md-4 mb-3 d-md-flex">
+                                    <div class="mt-md-0 mt-2"><a href="#" class="text-dark text-decoration-none"><i class="fa fa-download fa-fw me-1 text-muted"></i> Export</a></div>
+                                    <div class="ms-md-4 mt-md-0 mt-2 dropdown-toggle">
+                                        <a href="#" data-bs-toggle="dropdown" class="text-dark text-decoration-none">More Actions</a>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#">Confirm</a>
+                                            <a class="dropdown-item" href="#">Deactivate</a>
+                                            <a class="dropdown-item" href="#">Rollback</a>
+                                            <a class="dropdown-item" href="#">Copy</a>
+                                            <div role="separator" class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Subscribe</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                <!-- END #responsiveTables -->
+                }
+</Authorized>
+            <NotAuthorized>
+
+            </NotAuthorized>
+        </AuthorizeView>
+
+    </div>
+</div>
