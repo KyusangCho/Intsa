@@ -1,6 +1,7 @@
 ﻿@page "/Dashboard"
 @namespace Intsa.Pages
 @using Syncfusion.Blazor.Spinner
+@using Syncfusion.Blazor.Charts
 
 <h3>Dashboard</h3>
 
@@ -23,77 +24,77 @@
                 <!-- BEGIN table-responsive -->
                 <div class="table-responsive mb-n2">
                     @*<table class="table mb-0">
-                        <thead>
-                            <tr class="text-dark">
-                                <th>구분</th>
-                                <th>TEAM/FILE#/PO#</th>
-                                <th>거래처</th>
-                                <th class="text-center">진행상태</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="d-flex">
-                                        <div class="ml-0 flex-grow-1">
-                                            <div class="font-weight-600 text-dark">Material Management</div>
-                                            <div class="fs-13px">Mary Kim</div>
+                            <thead>
+                                <tr class="text-dark">
+                                    <th>구분</th>
+                                    <th>TEAM/FILE#/PO#</th>
+                                    <th>거래처</th>
+                                    <th class="text-center">진행상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex">
+                                            <div class="ml-0 flex-grow-1">
+                                                <div class="font-weight-600 text-dark">Material Management</div>
+                                                <div class="fs-13px">Mary Kim</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="d-flex">
-                                        <div class="ml-0 flex-grow-1">
-                                            <div class="font-weight-700 text-dark">TEAM 1A</div>
-                                            <div class="font-weight-500 text-dark">2011602-01</div>
-                                            <div class="fs-13px">TRIM20135131</div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <div class="ml-0 flex-grow-1">
+                                                <div class="font-weight-700 text-dark">TEAM 1A</div>
+                                                <div class="font-weight-500 text-dark">2011602-01</div>
+                                                <div class="fs-13px">TRIM20135131</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
+                                    </td>
 
-                                <td>
-                                    <div class="d-flex">
-                                        <div class="ml-0 flex-grow-1">
-                                            <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
-                                            <div class="fs-13px">2020.05.21 13:34</div>
+                                    <td>
+                                        <div class="d-flex">
+                                            <div class="ml-0 flex-grow-1">
+                                                <div class="font-weight-600 text-dark">A.T.IMPRESORA, S. A.</div>
+                                                <div class="fs-13px">2020.05.21 13:34</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="nav-wizards-container">
-                                        <nav class="nav nav-wizards-1 mb-2">
-                                             
-                                            <div class="nav-item col">
-                                                <a class="nav-link completed" href="#">
-                                                    <div class="nav-no">-</div>
-                                                    <div class="nav-text">Mary Kim</div>
-                                                </a>
-                                            </div>
-                                            <div class="nav-item col">
-                                                <a class="nav-link completed" href="#">
-                                                    <div class="nav-no">-</div>
-                                                    <div class="nav-text">Jason Woo</div>
-                                                </a>
-                                            </div>
-                                            <div class="nav-item col">
-                                                <a class="nav-link active" @onclick="ShowEditorForm">
-                                                    <div class="nav-no">12</div>
-                                                    <div class="nav-text">Steven Hong</div>
-                                                </a>
-                                            </div>
-                                            <div class="nav-item col">
-                                                <a class="nav-link disabled" href="#">
-                                                    <div class="nav-no">0</div>
-                                                    <div class="nav-text">T.H. Lee</div>
-                                                </a>
-                                            </div>
-                                        </nav>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td>
+                                        <div class="nav-wizards-container">
+                                            <nav class="nav nav-wizards-1 mb-2">
 
-                        </tbody>
-                    </table>*@
+                                                <div class="nav-item col">
+                                                    <a class="nav-link completed" href="#">
+                                                        <div class="nav-no">-</div>
+                                                        <div class="nav-text">Mary Kim</div>
+                                                    </a>
+                                                </div>
+                                                <div class="nav-item col">
+                                                    <a class="nav-link completed" href="#">
+                                                        <div class="nav-no">-</div>
+                                                        <div class="nav-text">Jason Woo</div>
+                                                    </a>
+                                                </div>
+                                                <div class="nav-item col">
+                                                    <a class="nav-link active" @onclick="ShowEditorForm">
+                                                        <div class="nav-no">12</div>
+                                                        <div class="nav-text">Steven Hong</div>
+                                                    </a>
+                                                </div>
+                                                <div class="nav-item col">
+                                                    <a class="nav-link disabled" href="#">
+                                                        <div class="nav-no">0</div>
+                                                        <div class="nav-text">T.H. Lee</div>
+                                                    </a>
+                                                </div>
+                                            </nav>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>*@
                 </div>
                 <!-- END table-responsive -->
             </div>
@@ -219,9 +220,49 @@
     <!-- END col-6 -->
 </div>
 
+<div class="row">
+    <div class="col-xl-6">
+        <!-- html -->
+        <!-- BEGIN card -->
+        <div class="card">
+            <!-- BEGIN card-body -->
+            <div class="card-body">
+
+                <SfChart Title="Historical INT Production Q'ty (Pcs)">
+                    <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
+                    <ChartPrimaryXAxis LabelFormat="yyyy" ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" EdgeLabelPlacement="EdgeLabelPlacement.Shift">
+                        <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+                    </ChartPrimaryXAxis>
+                    <ChartPrimaryYAxis Title="Production Q'ty">
+                        <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
+                        <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+                    </ChartPrimaryYAxis>
+                    <ChartSeriesCollection>
+                        <ChartSeries DataSource="@Data" XName="XValue" YName="YValue" Type="ChartSeriesType.Spline">
+                            <ChartMarker Visible="true">
+                            </ChartMarker>
+                            <ChartTrendlines>
+                                <ChartTrendline Type="TrendlineTypes.Linear" Width="3" Name="Linear" Fill="#C64A75">
+                                </ChartTrendline>
+                            </ChartTrendlines>
+                        </ChartSeries>
+                    </ChartSeriesCollection>
+                </SfChart>
+
+            </div>
+            <!-- END card-body -->
+        </div>
+        <!-- END card -->
+    </div>
+    <div class="col-xl-6">
+    </div>
+</div>
+
+
+
 <Intsa.Pages.Components.ApprovalForm @ref="EditorFormReference"
-            Model="model"
-            CreateCallback="CreateOrEdit"
-            EditCallback="CreateOrEdit">
+                                     Model="model"
+                                     CreateCallback="CreateOrEdit"
+                                     EditCallback="CreateOrEdit">
     <FormTitle>@FormTitle</FormTitle>
 </Intsa.Pages.Components.ApprovalForm>
