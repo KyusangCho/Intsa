@@ -220,45 +220,79 @@
     <!-- END col-6 -->
 </div>
 
-<div class="row">
-    <div class="col-xl-6">
+<div class="row mt-4">
+    <div class="col-xl-12">
         <!-- html -->
         <!-- BEGIN card -->
         <div class="card">
-            <!-- BEGIN card-body -->
-            <div class="card-body">
-
-                <SfChart Title="Historical INT Production Q'ty (Pcs)">
+        <!-- BEGIN card-body -->
+        <div class="card-body">
+                <SfChart Title="Daily Production" Width="1400">
                     <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
-                    <ChartPrimaryXAxis LabelFormat="yyyy" ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" EdgeLabelPlacement="EdgeLabelPlacement.Shift">
+                    <ChartPrimaryXAxis LabelFormat="MM/dd" ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime"
+                                        LabelIntersectAction="LabelIntersectAction.Rotate45">
                         <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
                     </ChartPrimaryXAxis>
-                    <ChartPrimaryYAxis Title="Production Q'ty">
+
+                    <ChartPrimaryYAxis Title="Q'ty">
                         <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
                         <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
                     </ChartPrimaryYAxis>
+
                     <ChartSeriesCollection>
-                        <ChartSeries DataSource="@Data" XName="XValue" YName="YValue" Type="ChartSeriesType.Spline">
+                        <ChartSeries DataSource="@Data" XName="XValue" YName="YValue" Type="ChartSeriesType.Line" Width="2" Name="INT" Fill="#467AC5">
+                            <ChartSeriesAnimation Enable="true" Duration="1000" Delay="50"></ChartSeriesAnimation>
                             <ChartMarker Visible="true">
+                                <ChartDataLabel Visible="true" />
                             </ChartMarker>
-                            <ChartTrendlines>
-                                <ChartTrendline Type="TrendlineTypes.Linear" Width="3" Name="Linear" Fill="#C64A75">
-                                </ChartTrendline>
-                            </ChartTrendlines>
+                        </ChartSeries>
+                        <ChartSeries DataSource="@Data" XName="XValue" YName="YValue1" Type="ChartSeriesType.Line" Width="2" Name="J.S." Fill="#D27C21">
+                        <ChartSeriesAnimation Enable="true" Duration="1000" Delay="100"></ChartSeriesAnimation>
+                        <ChartMarker Visible="true">
+                            <ChartDataLabel Visible="true" />
+                        </ChartMarker>
+                                        </ChartSeries>
+                        <ChartSeries DataSource="@Data" XName="XValue" YName="YValue2" Type="ChartSeriesType.Line" Width="2" Name="Apparel Links" Fill="#C64A75">
+                            <ChartSeriesAnimation Enable="true" Duration="1000" Delay="150"></ChartSeriesAnimation>
+                            <ChartMarker Visible="true">
+                                <ChartDataLabel Visible="true" />
+                            </ChartMarker>
                         </ChartSeries>
                     </ChartSeriesCollection>
                 </SfChart>
-
             </div>
             <!-- END card-body -->
         </div>
         <!-- END card -->
     </div>
-    <div class="col-xl-6">
-    </div>
 </div>
 
+<div class="row mt-4">
+    <div class="col-xl-12">
+        <!-- html -->
+        <!-- BEGIN card -->
+        <div class="card">
+            <!-- BEGIN card-body -->
+            <div class="card-body">
+                <SfChart Title="Order Summary" Palettes="@palettes">
+                    <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category">
+                    </ChartPrimaryXAxis>
 
+                    <ChartSeriesCollection>
+                        <ChartSeries DataSource="@OrderSummary" XName="Buyer" YName="PlanQty" Type="ChartSeriesType.Column" Name="Plan Q'ty">
+                        </ChartSeries>
+                        <ChartSeries DataSource="@OrderSummary" XName="Buyer" YName="OrderQty" Type="ChartSeriesType.Column" Name="Order Q'ty">
+                        </ChartSeries>
+                        <ChartSeries DataSource="@OrderSummary" XName="Buyer" YName="ShipQty" Type="ChartSeriesType.Column" Name="Ship Q'ty">
+                        </ChartSeries>
+                    </ChartSeriesCollection>
+                </SfChart>
+            </div>
+            <!-- END card-body -->
+        </div>
+        <!-- END card -->
+    </div>
+</div>
 
 <Intsa.Pages.Components.ApprovalForm @ref="EditorFormReference"
                                      Model="model"
