@@ -1,5 +1,5 @@
-﻿@page "/Systems/CostCenter"
-@page "/Systems/CostCenter/Index"
+﻿@page "/Systems/Team"
+@page "/Systems/Team/Index"
 
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Navigations
@@ -8,26 +8,26 @@
 @using Syncfusion.Blazor.DropDowns
 
 <h1 class="page-header mb-3">
-    Cost Center
-    <small>비용센터 관리</small>
+    Team
+    <small>부서별 팀 관리</small>
 </h1>
 
 
-<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Orders" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Teams" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
         Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
-    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Order"></GridEvents>
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Team"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
     <GridPageSettings PageSize="22"></GridPageSettings>
     <GridFilterSettings>
         <GridFilterColumns>
-            <GridFilterColumn Field="CustomerID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+            <GridFilterColumn Field="DeptID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
         </GridFilterColumns>
     </GridFilterSettings>
     <GridColumns>
-        <GridColumn Field=@nameof(Order.OrderID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" EditType="EditType.DropDownEdit" EditorSettings="@CustomerIDEditParams" Width="150"></GridColumn>
-        <GridColumn Field=@nameof(Order.OrderDate) HeaderText="Order Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
-        <GridColumn Field=@nameof(Order.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Team.TeamID) IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Team.DeptID) EditType="EditType.DropDownEdit" EditorSettings="@DeptIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Team.RegDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(Team.Class) TextAlign="TextAlign.Right" Width="120"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -56,7 +56,7 @@
 
 @code {
 
-    private SfGrid<Order> DefaultGrid;
+    private SfGrid<Team> DefaultGrid;
     private SfDialog Dialog;
     public object SelectedData;
     public bool flag = true;
@@ -65,7 +65,7 @@
         flag = true;
     }
 
-    public void OnActionBegin(ActionEventArgs<Order> Args)
+    public void OnActionBegin(ActionEventArgs<Team> Args)
     {
         if (Args.RequestType.ToString() == "Delete" && flag)
         {
@@ -78,9 +78,9 @@
             this.DefaultGrid.ExcelExport();
         }
     }
-    public void RowSelectHandler(RowSelectEventArgs<Order> Args)
+    public void RowSelectHandler(RowSelectEventArgs<Team> Args)
     {
-        SelectedData = Args.Data.OrderID;
+        SelectedData = Args.Data.TeamID;
     }
     private void OkClick()
     {
@@ -92,7 +92,7 @@
         Dialog.Hide();
     }
 
-    public List<Order> Orders { get; set; }
+    public List<Team> Teams { get; set; }
     public string val = "";
     private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete", "Update", "Cancel", "ExcelExport", "Search",
         new ItemModel() { Text="Transfer", TooltipText = "Transfer", PrefixIcon = "e-click", Id="Transfer" } };
@@ -101,36 +101,36 @@
 
     protected override void OnInitialized()
     {
-        Orders = Enumerable.Range(1, 75).Select(x => new Order()
+        Teams = Enumerable.Range(1, 75).Select(x => new Team()
         {
-            OrderID = 1000 + x,
-            CustomerID = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(5)],
-            Freight = 2.1 * x,
-            OrderDate = DateTime.Now.AddDays(-x),
+            TeamID = 1000 + x,
+            DeptID = (new string[] { "Sales1", "Sales2", "Sales3", "Administration", "Presidential", "QC", "Compliance" })[new Random().Next(5)],
+            Class = x,
+            RegDate = DateTime.Now.AddDays(-x),
         }).ToList();
     }
 
-    public IEditorSettings CustomerIDEditParams = new DropDownEditCellParams
+    public IEditorSettings DeptIDEditParams = new DropDownEditCellParams
     {
-        Params = new DropDownListModel<object, object>() { DataSource = LocalDataCustomer, AllowFiltering = true }
-    }; 
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataDept, AllowFiltering = true }
+    };
 
 
-    public class Order
+    public class Team
     {
         [Key]
-        [Required(ErrorMessage = "OrderID should not be empty")]
-        [Display(Name = "Order ID")]
-        public int? OrderID { get; set; }
-        [Display(Name = "Customer Name")]
+        [Required(ErrorMessage = "TeamID should not be empty")]
+        [Display(Name = "Team ID")]
+        public int? TeamID { get; set; }
+        [Display(Name = "Dept Name")]
         [Required(ErrorMessage = "Field should not be empty")]
-        public string CustomerID { get; set; }
+        public string DeptID { get; set; }
         [DataType(DataType.Date)]
-        [Display(Name = "Order Date")]
+        [Display(Name = "Reg Date")]
         [Editable(false)]
-        public DateTime? OrderDate { get; set; }
-        [Display(Name = "Freight")]
-        public double? Freight { get; set; }
+        public DateTime? RegDate { get; set; }
+        [Display(Name = "Class")]
+        public double? Class { get; set; }
     }
 
     public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
@@ -146,14 +146,13 @@
         }
     }
 
-    public static List<Order> LocalDataCustomer = new List<Order> {
-            new Order() { CustomerID= "BELUGA INC" },
-            new Order() { CustomerID= "EXPRESS" },
-            new Order() { CustomerID= "JCREW" },
-            new Order() { CustomerID= "MATERNITY OPCO" },
-            new Order() { CustomerID= "KOHL'S" },
-            new Order() { CustomerID= "TORRID" },
-            new Order() { CustomerID= "MAURICES" },
-            new Order() { CustomerID= "LUCKY OPCO" }
+    public static List<Team> LocalDataDept = new List<Team> {
+            new Team() { DeptID= "Sales1" },
+            new Team() { DeptID= "Sales2" },
+            new Team() { DeptID= "Sales3" },
+            new Team() { DeptID= "Administration" },
+            new Team() { DeptID= "Presidential" },
+            new Team() { DeptID= "QC" },
+            new Team() { DeptID= "Compliance" }
     };
 }
