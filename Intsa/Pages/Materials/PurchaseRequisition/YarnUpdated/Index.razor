@@ -18,7 +18,7 @@
 <SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@YarnPurchases" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
         Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
     <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="YarnPurchase"></GridEvents>
-    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
     <GridPageSettings PageSize="22"></GridPageSettings>
     <GridFilterSettings>
         <GridFilterColumns>
@@ -40,13 +40,14 @@
     </GridColumns>
 </SfGrid>
 
-<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
     <DialogEvents Closed="Closed"></DialogEvents>
     <DialogTemplates>
         @*Here you can customize the Header and Content of delete confirmation dialog*@
         <Header> Delete Record</Header>
         <Content> You are about to Delete a Record @SelectedData ?</Content>
     </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
     <DialogButtons>
         <DialogButton OnClick="@OkClick">
             <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
@@ -58,6 +59,77 @@
 </SfDialog>
 
 <style>
+    .e-btn.e-flat.e-primary, .e-btn.e-flat.e-primary:focus {
+        background-color: #317ab9;
+        border-color: #265f91;
+        color: #fff;
+    }
+
+        .e-btn.e-flat.e-primary:hover, .e-btn.e-flat.e-primary:active {
+            background-color: #21527d;
+            border-color: #163854;
+            color: #fff;
+        }
+
+    .close-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .error-msg {
+        color: #66afe9;
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 10px;
+    }
+
+    .error-detail {
+        position: relative;
+        left: 56px;
+        margin: 0 0 21px;
+    }
+
+    .e-icons.close-icon.col-lg-2:before {
+        content: '\e7e9';
+        font-size: 26px;
+        color: #d9534f;
+        position: relative;
+        left: 1px;
+        bottom: 18px;
+    }
+
+    .e-dialog .e-footer-content {
+        background-color: #f8f8f8;
+        
+    }
+
+    .e-dialog.e-control.e-popup, .e-dialog.e-control.e-popup .e-dlg-header-content {
+        background-color: #d9edf7;
+    }
+
+    .e-dialog.e-control.e-popup {
+        padding: 3px;
+    }
+
+    .e-dialog.e-control .e-dlg-header-content {
+        padding: 10px;
+    }
+
+    .e-dialog.e-control .e-footer-content {
+        padding: 8px 12px;
+    }
+
+    .e-dialog.e-control .e-dlg-content {
+        padding: 15px 0 0;
+        padding-left: 5px; 
+    }
+
+    .msg-wrapper.col-lg-12 {
+        margin-top: 20px;
+    }
     .e-click::before {
         content: '\e525';
     }
@@ -74,6 +146,9 @@
 
     private SfGrid<YarnPurchase> DefaultGrid;
     private SfDialog Dialog;
+    private DialogEffect AnimationEffect = DialogEffect.Zoom;
+    private DialogSettings DialogParams = new DialogSettings { Width = "500px", Height="80%" }; 
+
     public object SelectedData;
     public bool flag = true;
     public void Closed()
