@@ -1,0 +1,348 @@
+﻿@page "/Production/WorkOrderSheet/FabricUpdated"
+@page "/Production/WorkOrderSheet/FabricUpdated/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<h1 class="page-header mb-3">
+    Production Worksheet (Fabric)
+    <small>원단작업지시 관리</small>
+</h1>
+
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Worksheets" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" ContextMenuItemClicked="OnContextMenuClick" 
+                RowSelected="RowSelectHandler" TValue="Worksheet"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="TeamID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Worksheet.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="50"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.Buyer) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.Fileno) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.Worksheetno) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.OrderQty) Type="ColumnType.Number" TextAlign="TextAlign.Right" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.EnvioQty) Type="ColumnType.Number" TextAlign="TextAlign.Right" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.UltimoEnvio) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.Status) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Worksheet.RegDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<SfDialog @ref="DialogConfirm" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="ClosedConfirm"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Confirm Record</Header>
+        <Content> You are about to Confirm a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkConfirmClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelConfirmClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-btn.e-flat.e-primary, .e-btn.e-flat.e-primary:focus {
+        background-color: #317ab9;
+        border-color: #265f91;
+        color: #fff;
+    }
+
+        .e-btn.e-flat.e-primary:hover, .e-btn.e-flat.e-primary:active {
+            background-color: #21527d;
+            border-color: #163854;
+            color: #fff;
+        }
+
+    .close-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .error-msg {
+        color: #66afe9;
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 10px;
+    }
+
+    .error-detail {
+        position: relative;
+        left: 56px;
+        margin: 0 0 21px;
+    }
+
+    .e-icons.close-icon.col-lg-2:before {
+        content: '\e7e9';
+        font-size: 26px;
+        color: #d9534f;
+        position: relative;
+        left: 1px;
+        bottom: 18px;
+    }
+
+    .e-dialog .e-footer-content {
+        background-color: #f8f8f8;
+    }
+
+    .e-dialog.e-control.e-popup, .e-dialog.e-control.e-popup .e-dlg-header-content {
+        background-color: #d9edf7;
+    }
+
+    .e-dialog.e-control.e-popup {
+        padding: 3px;
+    }
+
+    .e-dialog.e-control .e-dlg-header-content {
+        padding: 10px;
+    }
+
+    .e-dialog.e-control .e-footer-content {
+        padding: 8px 12px;
+    }
+
+    .e-dialog.e-control .e-dlg-content {
+        padding: 15px 0 0;
+        padding-left: 5px;
+    }
+
+    .msg-wrapper.col-lg-12 {
+        margin-top: 20px;
+    }
+
+    .e-click::before {
+        content: '\e525';
+    }
+
+    .e-confirm::before {
+        content: '\e19f';
+    }
+
+    .e-upload::before {
+        content: '\e60f';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Worksheet> DefaultGrid;
+    private SfDialog Dialog;
+    private SfDialog DialogConfirm;
+    private DialogEffect AnimationEffect = DialogEffect.Zoom;
+    private DialogSettings DialogParams = new DialogSettings { Width = "500px", Height = "80%" };
+
+    public object SelectedData;
+    public bool flag = true;
+    public bool flagConfirm = true;
+
+    #region Delete Dialog  
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+        DialogConfirm.Hide();
+    }
+    #endregion
+
+    #region Confirm Dialog 
+
+    public void ClosedConfirm()
+    {
+        flagConfirm = true;
+    }
+    private void OkConfirmClick()
+    {
+        flagConfirm = true;
+        DialogConfirm.Hide();
+    }
+
+    private void CancelConfirmClick()
+    {
+        flagConfirm = true;
+        DialogConfirm.Hide();
+    }
+    #endregion
+
+    public void OnActionBegin(ActionEventArgs<Worksheet> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Worksheet> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+
+
+    public void OnContextMenuClick(ContextMenuClickEventArgs<Worksheet> args)
+    {
+        if (args.Item.Id == "ViewWorksheet")
+        {
+
+            NavigationManager.NavigateTo("/Production/WorkOrderSheet/FabricUpdated"); 
+        }
+    }
+
+    public List<Worksheet> Worksheets { get; set; }
+    public string val = "";
+
+    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Delete", "ExcelExport", "Search",
+        new ItemModel() { Text="Confirm", TooltipText = "Confirm", PrefixIcon = "e-confirm", Id="Confirm" }
+    };
+
+    private List<ContextMenuItemModel> ContextMenuitems = new List<ContextMenuItemModel> {
+        new ContextMenuItemModel() { Text = "Worksheet Detail", Target=".e-content", Id = "ViewWorksheet" },
+        new ContextMenuItemModel() { Text = "Inbound/Outbound", Target=".e-content", Id = "InboundOutbound" },
+        new ContextMenuItemModel() { Text = "Upload", Target=".e-content", Id = "Upload" },
+    };
+
+    protected override void OnInitialized()
+    {
+        Worksheets = Enumerable.Range(1, 75).Select(x => new Worksheet()
+        {
+            ID = 1000 + x,
+            TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(5)],
+            RegDate = DateTime.Now.AddDays(-x),
+            OrderQty = new Random().NextDouble() * 10000,
+            EnvioQty = new Random().NextDouble() * 10000,
+            UltimoEnvio = DateTime.Now.AddDays(-x),
+            Status = x.ToString(),
+        }).ToList();
+    }
+
+    public IEditorSettings TeamIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataTeam, AllowFiltering = true }
+    };
+
+
+    public class Worksheet
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team Name")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string TeamID { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Created")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+        [Display(Name = "INT File")]
+        public string Fileno { get; set; }
+        [Display(Name = "Worksheet#")]
+        public string Worksheetno { get; set; }
+
+        [Display(Name = "Order Q'ty")]
+        public double OrderQty { get; set; }
+        [Display(Name = "Envio Q'ty")]
+        public double EnvioQty { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Ultimo Envio")]
+        [Editable(false)]
+        public DateTime? UltimoEnvio { get; set; }
+        [Display(Name = "Status")]
+        public string Status { get; set; }
+        [Display(Name = "Created By")]
+        public string CreatedBy { get; set; }
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Confirm" && flagConfirm)
+        {
+            args.Cancel = true;
+            await DialogConfirm.Show();
+            flagConfirm = false;
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+        }
+    }
+
+    public static List<Worksheet> LocalDataTeam = new List<Worksheet> {
+            new Worksheet() { TeamID= "Team1A" },
+            new Worksheet() { TeamID= "Team1B" },
+            new Worksheet() { TeamID= "Team2A" },
+            new Worksheet() { TeamID= "Team2B" },
+            new Worksheet() { TeamID= "Team3A" },
+            new Worksheet() { TeamID= "Team3B" },
+            new Worksheet() { TeamID= "Administration" }
+    };
+
+    public static List<Worksheet> LocalDataBuyer = new List<Worksheet> {
+            new Worksheet() { Buyer= "BELUGA INC" },
+            new Worksheet() { Buyer= "EXPRESS" },
+            new Worksheet() { Buyer= "JCREW" },
+            new Worksheet() { Buyer= "MATERNITY OPCO" },
+            new Worksheet() { Buyer= "KOHL'S" },
+            new Worksheet() { Buyer= "TORRID" },
+            new Worksheet() { Buyer= "MAURICES" },
+            new Worksheet() { Buyer= "LUCKY OPCO" }
+    };
+}

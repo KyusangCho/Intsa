@@ -1,0 +1,380 @@
+﻿@page "/Materials/Inventory/Yarn"
+@page "/Materials/Inventory/Yarn/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+@inject IJSRuntime JSRuntime
+
+<h1 class="page-header mb-3">
+    Inventory (Yarn)
+    <small>원사재고 및 입출고현황</small>
+</h1>
+
+
+<SfGrid ID="Grid" @ref="DefaultGridM" DataSource="@YarnMasters" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var selectedID = (context as YarnMaster);
+
+                <SfGrid DataSource="@YarnInbounds" Query="@GetYarnInboundQuery(selectedID)" AllowPaging="true">
+                    <GridPageSettings PageSize="8"></GridPageSettings>
+                    <GridColumns>
+                        <GridColumn Field=@nameof(YarnInbound.ID) HeaderText="ID" Width="30"> </GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Requestno) HeaderText="Request#" Width="90"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Yarn) HeaderText="Yarn" Width="200"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.YarnCode) HeaderText="Yarn Code" Width="50"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Detail) HeaderText="Detail" Width="100"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Qty) HeaderText="Q'ty" Width="70"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Unit) HeaderText="Unit" Width="70"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Unit) HeaderText="U/P" Width="70"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Uprice) HeaderText="Amount($)" Width="70"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            }
+        </DetailTemplate>
+    </GridTemplates>
+
+
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="YarnMaster"></GridEvents>
+    <GridEditSettings AllowAdding="false" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
+    <GridPageSettings PageSize="15"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="TeamID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+
+    <GridColumns>
+        <GridColumn Field=@nameof(YarnMaster.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.Purchaseno) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.Supplier) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.ShipTo) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.Status) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+    </GridColumns>
+
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-btn.e-flat.e-primary, .e-btn.e-flat.e-primary:focus {
+        background-color: #317ab9;
+        border-color: #265f91;
+        color: #fff;
+    }
+
+        .e-btn.e-flat.e-primary:hover, .e-btn.e-flat.e-primary:active {
+            background-color: #21527d;
+            border-color: #163854;
+            color: #fff;
+        }
+
+    .close-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .error-msg {
+        color: #66afe9;
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 10px;
+    }
+
+    .error-detail {
+        position: relative;
+        left: 56px;
+        margin: 0 0 21px;
+    }
+
+    .e-icons.close-icon.col-lg-2:before {
+        content: '\e7e9';
+        font-size: 26px;
+        color: #d9534f;
+        position: relative;
+        left: 1px;
+        bottom: 18px;
+    }
+
+    .e-dialog .e-footer-content {
+        background-color: #f8f8f8;
+    }
+
+    .e-dialog.e-control.e-popup, .e-dialog.e-control.e-popup .e-dlg-header-content {
+        background-color: #d9edf7;
+    }
+
+    .e-dialog.e-control.e-popup {
+        padding: 3px;
+    }
+
+    .e-dialog.e-control .e-dlg-header-content {
+        padding: 10px;
+    }
+
+    .e-dialog.e-control .e-footer-content {
+        padding: 8px 12px;
+    }
+
+    .e-dialog.e-control .e-dlg-content {
+        padding: 15px 0 0;
+        padding-left: 5px;
+    }
+
+    .msg-wrapper.col-lg-12 {
+        margin-top: 20px;
+    }
+
+    .e-click::before {
+        content: '\e525';
+    }
+
+    .e-download::before {
+        content: '\e603';
+    }
+
+    .e-upload::before {
+        content: '\e60f';
+    }
+
+    .e-accept::before {
+        content: '\e19f';
+    }
+
+    .e-cancel::before {
+        content: '\e204';
+    }
+</style>
+
+@code {
+
+    private SfGrid<YarnMaster> DefaultGridM;
+    private SfGrid<YarnInbound> DefaultGridD;
+    private SfDialog Dialog;
+    private DialogEffect AnimationEffect = DialogEffect.Zoom;
+    private DialogSettings DialogParams = new DialogSettings { Width = "500px", Height = "80%" };
+
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    public void OnActionBegin(ActionEventArgs<YarnMaster> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGridM.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<YarnMaster> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGridM.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<YarnMaster> YarnMasters { get; set; }
+    public List<YarnInbound> YarnInbounds { get; set; }
+    public string val = "";
+
+    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete",
+        new ItemModel() { Text="Accept", TooltipText = "Accept", PrefixIcon = "e-accept", Id="Accept" },
+        new ItemModel() { Text="Cancel", TooltipText = "Cancel", PrefixIcon = "e-cancel", Id="Cancel" },
+        "ExcelExport", "Search",
+        new ItemModel() { Text="Template Download", TooltipText = "Template Download", PrefixIcon = "e-download", Id="TemplateDownload" },
+        new ItemModel() { Text="Upload Excel", TooltipText = "Upload Excel", PrefixIcon = "e-upload", Id="UploadExcel" }
+    };
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        YarnMasters = Enumerable.Range(1, 75).Select(x => new YarnMaster()
+        {
+            ID = 1000 + x,
+            TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
+            RegDate = DateTime.Now.AddDays(-x),
+            DeliveryDate = DateTime.Now.AddDays(-x),
+            SupplierDate = DateTime.Now.AddDays(-x),
+            Status = "0",
+        }).ToList();
+
+        YarnInbounds = Enumerable.Range(1, 750).Select(x => new YarnInbound()
+        {
+            ID = 1000 + x,
+            PID = 1000 + (new Random().Next(75)),
+            Requestno = "YR-2021-000019",
+            Yarn = "150D/95F 100% POLYESTER FILAMENT",
+            YarnCode = "YA0021",
+            Detail = (1000 + x).ToString(),
+            RegDate = DateTime.Now.AddDays(-x),
+            Qty = new Random().Next(9000),
+            Unit = (new string[] { "Pcs", "Kgs" })[new Random().Next(2)],
+            Uprice = Convert.ToDecimal(new Random().NextDouble()) * 10m,
+            Amount = Convert.ToDecimal(new Random().NextDouble()) * 100m,
+            Status = "0",
+        }).ToList();
+
+    }
+
+    public IEditorSettings TeamIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataTeam, AllowFiltering = true }
+    };
+
+    /// <summary>
+    /// 원사 마스터
+    /// </summary>
+    public class YarnMaster
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team Name")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string TeamID { get; set; }
+        [Display(Name = "Created By")]
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Created")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+        [Display(Name = "Purchase#")]
+        public string Purchaseno { get; set; }
+        [Display(Name = "Purpose of")]
+        public string PurposeOf { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Delivery")]
+        public DateTime? DeliveryDate { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Supplier")]
+        public DateTime? SupplierDate { get; set; }
+
+        [Display(Name = "Supplier")]
+        public string Supplier { get; set; }
+        [Display(Name = "ShipTo")]
+        public string ShipTo { get; set; }
+        [Display(Name = "Status")]
+        public string Status { get; set; }
+    }
+    /// <summary>
+    /// 원사 입고데이터
+    /// </summary>
+    public class YarnInbound
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "PID")]
+        public int PID { get; set; }
+        [Display(Name = "Created By")]
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Created")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+        [Display(Name = "Request#")]
+        public string Requestno { get; set; }
+        [Display(Name = "Yarn")]
+        public string Yarn { get; set; }
+        [Display(Name = "Yarn Code")]
+        public string YarnCode { get; set; }
+        [Display(Name = "Detail")]
+        public string Detail { get; set; }
+
+        [Display(Name = "Q'ty")]
+        public int Qty { get; set; }
+        [Display(Name = "Unit")]
+        public string Unit { get; set; }
+        [Display(Name = "U/P")]
+        public decimal Uprice { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal Amount { get; set; }
+        [Display(Name = "Status")]
+        public string Status { get; set; }
+    }
+
+    public Query GetYarnMasterQuery(YarnMaster value)
+    {
+        return new Query().Where("ID", "equal", value.ID);
+    }
+    public Query GetYarnInboundQuery(YarnMaster value)
+    {
+        return new Query().Where("PID", "equal", value.ID);
+    }
+
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGridM.ExcelExport();
+        }
+        else if (args.Item.Id == "TemplateDownload")
+        {
+            await JSRuntime.InvokeAsync<object>("open", "https://s3.amazonaws.com/int.boards/WebTemplate_Material_Purchase_Requisition.xlsx", "_blank");
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+        }
+    }
+
+    public static List<YarnMaster> LocalDataTeam = new List<YarnMaster> {
+            new YarnMaster() { TeamID= "Team1A" },
+            new YarnMaster() { TeamID= "Team1B" },
+            new YarnMaster() { TeamID= "Team2A" },
+            new YarnMaster() { TeamID= "Team2B" },
+            new YarnMaster() { TeamID= "Team3A" },
+            new YarnMaster() { TeamID= "Team3B" },
+            new YarnMaster() { TeamID= "Administration" }
+    };
+
+
+}

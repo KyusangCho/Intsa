@@ -167,7 +167,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\Materials\Inventory\Fabric\" />
-    <Folder Include="Pages\Materials\Inventory\Yarn\" />
     <Folder Include="Pages\Production\WorkOrderSheet\Fabric\Components\" />
     <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
