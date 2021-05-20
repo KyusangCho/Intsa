@@ -1,5 +1,4 @@
-﻿@page "/Production/WorkOrderSheet/FabricUpdated"
-@page "/Production/WorkOrderSheet/FabricUpdated/Index"
+﻿@page "/Production/WorkOrderSheet/FabricUpdated/Worksheet"
 
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Data
@@ -15,27 +14,44 @@
 </h1>
 
 
-<SfGrid ID="Grid" @ref="DefaultGridM" DataSource="@WorksheetContents" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+<SfGrid ID="Grid" @ref="DefaultGridM" DataSource="@WorksheetContents" 
+        FrozenColumns="3" EnableHover="true"
+        AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
         Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
     <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="WorksheetContent"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
-    <GridPageSettings PageSize="15"></GridPageSettings>
+    <GridPageSettings PageSize="7"></GridPageSettings>
     <GridFilterSettings>
         <GridFilterColumns>
             <GridFilterColumn Field="TeamID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
         </GridFilterColumns>
     </GridFilterSettings>
     <GridColumns>
-        <GridColumn Field=@nameof(WorksheetContent.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Position) TextAlign="TextAlign.Left" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.FabricTexture) TextAlign="TextAlign.Left" Width="160"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Content1) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Rates1) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Content2) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Rates2) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Content3) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Rates3) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Content4) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Rates4) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+
+        <GridColumn Field=@nameof(WorksheetContent.Grade) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Width) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.GramMeter) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.GramYard) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Diameter) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Gauge) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Needles) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Loop1) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Loop2) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+
         <GridColumn Field=@nameof(WorksheetContent.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
         <GridColumn Field=@nameof(WorksheetContent.RegDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
         <GridColumn Field=@nameof(WorksheetContent.CreatedBy) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetContent.Position) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetContent.PurposeOf) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetContent.DeliveryDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetContent.Supplier) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetContent.ShipTo) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetContent.Status) TextAlign="TextAlign.Left" Width="120"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -45,14 +61,10 @@
 <SfGrid DataSource="@WorksheetColors" Query="@(new Query().Where("PID", "equal", SelectedData))">
     <GridColumns>
         <GridColumn Field=@nameof(WorksheetColor.ID) HeaderText="ID" Width="30"> </GridColumn>
-        <GridColumn Field=@nameof(WorksheetColor.Requestno) HeaderText="Request#" Width="90"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetColor.Yarn) HeaderText="Yarn" Width="200"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetColor.YarnCode) HeaderText="Yarn Code" Width="50"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetColor.Detail) HeaderText="Detail" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetColor.Color) HeaderText="Request#" Width="90"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetColor.Loss) HeaderText="Loss(%)" Width="70"></GridColumn>
         <GridColumn Field=@nameof(WorksheetColor.Qty) HeaderText="Q'ty" Width="70"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetColor.Unit) HeaderText="Unit" Width="70"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetColor.Uprice) HeaderText="U/P" Width="70"></GridColumn>
-        <GridColumn Field=@nameof(WorksheetColor.Amount) HeaderText="Amount($)" Width="70"></GridColumn>
+        <GridColumn HeaderText="" Width="200"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -73,6 +85,8 @@
         </DialogButton>
     </DialogButtons>
 </SfDialog>
+
+
 
 <style>
     .e-btn.e-flat.e-primary, .e-btn.e-flat.e-primary:focus {
@@ -214,11 +228,9 @@
     public string val = "";
 
     private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete",
-        new ItemModel() { Text="Accept", TooltipText = "Accept", PrefixIcon = "e-accept", Id="Accept" },
-        new ItemModel() { Text="Cancel", TooltipText = "Cancel", PrefixIcon = "e-cancel", Id="Cancel" },
         "ExcelExport", "Search",
-        new ItemModel() { Text="Template Download", TooltipText = "Template Download", PrefixIcon = "e-download", Id="TemplateDownload" },
-        new ItemModel() { Text="Upload Excel", TooltipText = "Upload Excel", PrefixIcon = "e-upload", Id="UploadExcel" }
+        @*new ItemModel() { Text="Template Download", TooltipText = "Template Download", PrefixIcon = "e-download", Id="TemplateDownload" },
+        new ItemModel() { Text="Upload Excel", TooltipText = "Upload Excel", PrefixIcon = "e-upload", Id="UploadExcel" }*@
     };
 
     private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
@@ -230,25 +242,19 @@
             ID = 1000 + x,
             TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
             RegDate = DateTime.Now.AddDays(-x),
-            DeliveryDate = DateTime.Now.AddDays(-x),
-            SupplierDate = DateTime.Now.AddDays(-x),
+            Position = (new string[] { "B1", "B2", "B3", "B4", "T1", "T2", "T3", "T4" })[new Random().Next(8)],
+            FabricTexture = (new string[] { "Single Jersey", "Rib", "Rib 1x1", "Rib 1x1 Slub", "French Terry", "Slub Single", "Fleece", "Rib 2x2" })[new Random().Next(8)],
             Status = "0",
         }).ToList();
 
-        WorksheetColors = Enumerable.Range(1, 750).Select(x => new WorksheetColor()
+        WorksheetColors = Enumerable.Range(1, 75).Select(x => new WorksheetColor()
         {
             ID = 1000 + x,
             PID = 1000 + (new Random().Next(75)),
-            Requestno = "YR-2021-000019",
-            Yarn = "150D/95F 100% POLYESTER FILAMENT",
-            YarnCode = "YA0021",
-            Detail = (1000 + x).ToString(),
+            Color = "Any Blue",
             RegDate = DateTime.Now.AddDays(-x),
-            Qty = new Random().Next(9000),
-            Unit = (new string[] { "Pcs", "Kgs" })[new Random().Next(2)],
-            Uprice = Convert.ToDecimal(new Random().NextDouble()) * 10m,
-            Amount = Convert.ToDecimal(new Random().NextDouble()) * 100m,
-            Status = "0",
+            Loss = (new Random().NextDouble()) * 10,
+            Qty = (new Random().NextDouble()) * 100,
         }).ToList();
 
     }
@@ -259,7 +265,7 @@
     };
 
     /// <summary>
-    /// 발주 마스터
+    /// Fabric Content
     /// </summary>
     public class WorksheetContent
     {
@@ -267,39 +273,65 @@
         [Required(ErrorMessage = "ID should not be empty")]
         [Display(Name = "ID")]
         public int? ID { get; set; }
-        [Display(Name = "PID")]
-        public int? PID { get; set; }
-        [Display(Name = "Team Name")]
-        [Required(ErrorMessage = "Field should not be empty")]
-        public string TeamID { get; set; }
+        [Display(Name = "WorkID")]
+        public int? WID { get; set; }       // 작업지시시서 고유ID 
+        public string TeamID { get; set; }  // 이력용 
         [Display(Name = "Created By")]
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; }   // 이력용 
         [DataType(DataType.Date)]
         [Display(Name = "Created")]
         [Editable(false)]
-        public DateTime? RegDate { get; set; }
+        public DateTime? RegDate { get; set; }  // 이력용 
         [Display(Name = "Status")]
-        public string Status { get; set; }
+        public string Status { get; set; }      // 이력용 
 
 
         [Display(Name = "Position")]
         public string Position { get; set; }
-        [Display(Name = "Purpose of")]
-        public string PurposeOf { get; set; }
+        [Display(Name = "Fabric Texture")]
+        public string FabricTexture { get; set; }
+        [Display(Name = "Content1")]
+        public string Content1 { get; set; }
+        [Display(Name = "Content2")]
+        public string Content2 { get; set; }
+        [Display(Name = "Content3")]
+        public string Content3 { get; set; }
+        [Display(Name = "Content4")]
+        public string Content4 { get; set; }
+        [Display(Name = "Rates1")]
+        public string Rates1 { get; set; }
+        [Display(Name = "Rates2")]
+        public string Rates2 { get; set; }
+        [Display(Name = "Rates3")]
+        public string Rates3 { get; set; }
+        [Display(Name = "Rates4")]
+        public string Rates4 { get; set; }
+        
+        [Display(Name = "Grade")]
+        public string Grade { get; set; }
+        [Display(Name = "Width")]
+        public string Width { get; set; }
+        [Display(Name = "G/M2")]
+        public string GramMeter { get; set; }
+        [Display(Name = "G/YD")]
+        public string GramYard { get; set; }
+        [Display(Name = "Diameter")]
+        public string Diameter { get; set; }
+        [Display(Name = "Gauge")]
+        public string Gauge { get; set; }
+        [Display(Name = "Needles")]
+        public string Needles { get; set; }
+        [Display(Name = "Loop1")]
+        public string Loop1 { get; set; }
+        [Display(Name = "Loop2")]
+        public string Loop2 { get; set; }
+        
 
-        [DataType(DataType.Date)]
-        [Display(Name = "Delivery")]
-        public DateTime? DeliveryDate { get; set; }
-        [DataType(DataType.Date)]
-        [Display(Name = "Supplier")]
-        public DateTime? SupplierDate { get; set; }
-
-        [Display(Name = "Supplier")]
-        public string Supplier { get; set; }
-        [Display(Name = "ShipTo")]
-        public string ShipTo { get; set; }
     }
 
+    /// <summary>
+    /// Position별 컬러 
+    /// </summary>
     public class WorksheetColor
     {
         [Key]
@@ -307,32 +339,21 @@
         [Display(Name = "ID")]
         public int? ID { get; set; }
         [Display(Name = "PID")]
-        public int PID { get; set; }
+        public int PID { get; set; }        // Content ID 
         [Display(Name = "Created By")]
         public string CreatedBy { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Created")]
         [Editable(false)]
         public DateTime? RegDate { get; set; }
-        [Display(Name = "Request#")]
-        public string Requestno { get; set; }
-        [Display(Name = "Yarn")]
-        public string Yarn { get; set; }
-        [Display(Name = "Yarn Code")]
-        public string YarnCode { get; set; }
-        [Display(Name = "Detail")]
-        public string Detail { get; set; }
 
+        [Display(Name = "Color")]
+        public string Color { get; set; }
+
+        [Display(Name = "Loss")]
+        public double Loss { get; set; }
         [Display(Name = "Q'ty")]
-        public int Qty { get; set; }
-        [Display(Name = "Unit")]
-        public string Unit { get; set; }
-        [Display(Name = "U/P")]
-        public decimal Uprice { get; set; }
-        [Display(Name = "Amount($)")]
-        public decimal Amount { get; set; }
-        [Display(Name = "Status")]
-        public string Status { get; set; }
+        public double Qty { get; set; }
     }
 
     public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)

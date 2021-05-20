@@ -1,0 +1,648 @@
+﻿@page "/Production/WorkOrderSheet/FabricUpdated/InOut"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Calendars
+@using System.IO
+
+@inject IJSRuntime JSRuntime
+
+<h1 class="page-header mb-3">
+    FILE# 2012027-01
+    <small>파일별 생지입출고 관리</small>
+</h1>
+
+
+<SfGrid ID="GridM" @ref="DefaultGridM" DataSource="@WorksheetContents"
+        EnableHover="true"
+        AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%">
+    <GridEvents RowSelected="RowSelectHandler" TValue="WorksheetContent"></GridEvents>
+    <GridPageSettings PageSize="7"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="TeamID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(WorksheetContent.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Position) TextAlign="TextAlign.Left" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.FabricTexture) TextAlign="TextAlign.Left" Width="160"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Content1) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Rates1) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Content2) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Rates2) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Content3) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Rates3) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Content4) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Rates4) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+
+        <GridColumn Field=@nameof(WorksheetContent.Grade) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Width) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.GramMeter) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.GramYard) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Diameter) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Gauge) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Needles) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Loop1) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.Loop2) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+
+        <GridColumn Field=@nameof(WorksheetContent.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.RegDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetContent.CreatedBy) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@* -------------------- 작업지시상세 -------------------- *@
+
+<div class='e-statustext'>Selected Contents#: <b>@SelectedData</b></div>
+
+<SfGrid ID="GridD" @ref="DefaultGridD" DataSource="@WorksheetInouts" Query="@(new Query().Where("PID", "equal", SelectedData))"
+        EnableHover="true"
+        Toolbar="Toolbaritems" AllowExcelExport="true" >
+
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectInOutHandler" TValue="WorksheetInout"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
+    <GridPageSettings PageSize="10"></GridPageSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(WorksheetInout.ID) HeaderText="ID" Width="30" Visible="false"> </GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Fileno) HeaderText="File#" Width="90"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Fecha) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Color) HeaderText="Color" Width="90"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Yarn) HeaderText="Yarn" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Outbound) HeaderText="Outbound" Width="90"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Inbound) HeaderText="Inbound" Width="90"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Rolls) HeaderText="Rolls" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Qty) HeaderText="Q'ty" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Unit) HeaderText="Unit" Width="90"></GridColumn>
+        <GridColumn Field=@nameof(WorksheetInout.Envio) HeaderText="Envio#" Width="90"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true" CloseOnEscape="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<SfDialog @ref="DialogEnvio" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true" CloseOnEscape="true">
+    <DialogEvents Closed="ClosedEnvio"></DialogEvents>
+    <DialogTemplates>
+        <Header> Upload Envio</Header>
+        <Content>
+            You are about to upload document for Record @SelectedData
+
+            <SfUploader AutoUpload="false">
+                <UploaderEvents ValueChange="OnChange"></UploaderEvents>
+            </SfUploader>
+        </Content>
+
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkEnvioClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelEnvioClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<SfDialog @ref="DialogConvert" Width="600px" Visible="false" ShowCloseIcon="true" IsModal="true" CloseOnEscape="true">
+    <DialogEvents Closed="ClosedConvert"></DialogEvents>
+    <DialogTemplates>
+        <Header> Convert Data</Header>
+        <Content>
+            <p>
+                You are about to Convert document for Record @SelectedData
+            </p>
+
+            <div class="row">
+                <div class="col-3">
+                    <SfDatePicker TValue="DateTime?" Value='@DateValue' Min='@MinDate' Max='@MaxDate'></SfDatePicker>
+                </div>
+                <div class="col-6">
+                    <SfDropDownList TValue="string" TItem="Yarns" Placeholder="Select a yarn" DataSource="@LocalDataYarn">
+                        <DropDownListFieldSettings Value="ID" Text="Text"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </div>
+                <div class="col-3">
+                    <SfNumericTextBox TValue="int?" Value=0></SfNumericTextBox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <SfDatePicker TValue="DateTime?" Value='@DateValue' Min='@MinDate' Max='@MaxDate'></SfDatePicker>
+                </div>
+                <div class="col-6">
+                    <SfDropDownList TValue="string" TItem="Yarns" Placeholder="Select a yarn" DataSource="@LocalDataYarn">
+                        <DropDownListFieldSettings Value="ID" Text="Text"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </div>
+                <div class="col-3">
+                    <SfNumericTextBox TValue="int?" Value=0></SfNumericTextBox>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <SfDatePicker TValue="DateTime?" Value='@DateValue' Min='@MinDate' Max='@MaxDate'></SfDatePicker>
+                </div>
+                <div class="col-6">
+                    <SfDropDownList TValue="string" TItem="Yarns" Placeholder="Select a yarn" DataSource="@LocalDataYarn">
+                        <DropDownListFieldSettings Value="ID" Text="Text"></DropDownListFieldSettings>
+                    </SfDropDownList>
+                </div>
+                <div class="col-3">
+                    <SfNumericTextBox TValue="int?" Value=0></SfNumericTextBox>
+                </div>
+            </div>
+        </Content>
+
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkConvertClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelConvertClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<SfDialog @ref="DialogConfirm" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true" CloseOnEscape="true">
+    <DialogEvents Closed="ClosedConfirm"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Confirm Record</Header>
+        <Content> You are about to Confirm a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkConfirmClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelConfirmClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-btn.e-flat.e-primary, .e-btn.e-flat.e-primary:focus {
+        background-color: #317ab9;
+        border-color: #265f91;
+        color: #fff;
+    }
+
+        .e-btn.e-flat.e-primary:hover, .e-btn.e-flat.e-primary:active {
+            background-color: #21527d;
+            border-color: #163854;
+            color: #fff;
+        }
+
+    .close-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .error-msg {
+        color: #66afe9;
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 10px;
+    }
+
+    .error-detail {
+        position: relative;
+        left: 56px;
+        margin: 0 0 21px;
+    }
+
+    .e-icons.close-icon.col-lg-2:before {
+        content: '\e7e9';
+        font-size: 26px;
+        color: #d9534f;
+        position: relative;
+        left: 1px;
+        bottom: 18px;
+    }
+
+    .e-dialog .e-footer-content {
+        background-color: #f8f8f8;
+    }
+
+    .e-dialog.e-control.e-popup, .e-dialog.e-control.e-popup .e-dlg-header-content {
+        background-color: #d9edf7;
+    }
+
+    .e-dialog.e-control.e-popup {
+        padding: 3px;
+    }
+
+    .e-dialog.e-control .e-dlg-header-content {
+        padding: 10px;
+    }
+
+    .e-dialog.e-control .e-footer-content {
+        padding: 8px 12px;
+    }
+
+    .e-dialog.e-control .e-dlg-content {
+        padding: 15px 0 0;
+        padding-left: 5px;
+    }
+
+    .msg-wrapper.col-lg-12 {
+        margin-top: 20px;
+    }
+
+    .e-click::before {
+        content: '\e525';
+    }
+
+    .e-download::before {
+        content: '\e603';
+    }
+
+    .e-upload::before {
+        content: '\e60f';
+    }
+
+    .e-accept::before {
+        content: '\e19f';
+    }
+
+    .e-cancel::before {
+        content: '\e204';
+    }
+</style>
+
+@code {
+
+    private SfGrid<WorksheetContent> DefaultGridM;
+    private SfGrid<WorksheetInout> DefaultGridD;
+    private SfDialog Dialog;
+    private SfDialog DialogEnvio;
+    private SfDialog DialogConvert;
+    private SfDialog DialogConfirm;
+
+    private DialogEffect AnimationEffect = DialogEffect.Zoom;
+    private DialogSettings DialogParams = new DialogSettings { Width = "500px", Height = "80%" };
+
+    public object SelectedData;
+    public object SelectedDataD;
+    public bool flag = true;
+    public bool flagEnvio = true;
+    public bool flagConvert = true;
+    public bool flagConfirm = true;
+
+    public DateTime? DateValue { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 10);
+    public DateTime MinDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 05);
+    public DateTime MaxDate { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 27);
+
+    #region Diaglog Delete
+
+    public void Closed()
+    {
+        flag = true;
+    }
+    private void OkClick()
+    {
+        DefaultGridD.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    #endregion
+
+    #region Diaglog Envio
+
+    public void ClosedEnvio()
+    {
+        flagEnvio = true;
+    }
+    private void OkEnvioClick()
+    {
+        DialogEnvio.Hide();
+    }
+    private void CancelEnvioClick()
+    {
+        DialogEnvio.Hide();
+    }
+
+    private void OnChange(UploadChangeEventArgs args)
+    {
+        foreach (var file in args.Files)
+        {
+            var path = @"path" + file.FileInfo.Name;
+            FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
+            file.Stream.WriteTo(filestream);
+            filestream.Close();
+            file.Stream.Close();
+        }
+    }
+
+    #endregion
+
+    #region Diaglog Convert
+
+    public void ClosedConvert()
+    {
+        flagConvert = true;
+    }
+    private void OkConvertClick()
+    {
+        DialogConvert.Hide();
+    }
+    private void CancelConvertClick()
+    {
+        DialogConvert.Hide();
+    }
+
+    public class Yarns
+    {
+        public string ID { get; set; }
+        public string Text { get; set; }
+    }
+    List<Yarns> LocalDataYarn = new List<Yarns> {
+        new Yarns() { ID= "Yarn1", Text= "Yarn1" },
+        new Yarns() { ID= "Yarn2", Text= "Yarn2" },
+        new Yarns() { ID= "Yarn3", Text= "Yarn3" },
+  };
+
+    #endregion
+
+    #region Diaglog Confirm
+
+    public void ClosedConfirm()
+    {
+        flagConfirm = true;
+    }
+    private void OkConfirmClick()
+    {
+        @*DefaultGridD.DeleteRecord();   //delete the record programatically while clikcing OK button*@
+    DialogConfirm.Hide();
+}
+private void CancelConfirmClick()
+{
+    DialogConfirm.Hide();
+}
+
+#endregion
+
+
+
+public void OnActionBegin(ActionEventArgs<WorksheetInout> Args)
+{
+    if (Args.RequestType.ToString() == "Delete" && flag)
+    {
+        Args.Cancel = true;  //cancel default delete action
+        Dialog.Show();
+        flag = false;
+    }
+    else if (Args.RequestType.ToString() == "Excel Export")
+    {
+        this.DefaultGridD.ExcelExport();
+    }
+}
+
+public void RowSelectHandler(RowSelectEventArgs<WorksheetContent> Args)
+{
+    SelectedData = Args.Data.ID;
+}
+
+public void RowSelectInOutHandler(RowSelectEventArgs<WorksheetInout> Args)
+{
+    SelectedDataD = Args.Data.ID;
+}
+
+public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+{
+    if (args.Item.Id == "Grid_excelexport")
+    {
+        await this.DefaultGridD.ExcelExport();
+    }
+    else if (args.Item.Id == "SubirEnvio" & flagEnvio)
+    {
+        args.Cancel = true;
+        await DialogEnvio.Show();
+        flagEnvio = false;
+    }
+    else if (args.Item.Id == "Transformar" & flagConvert)
+    {
+        args.Cancel = true;
+        await DialogConvert.Show();
+        flagConvert = false;
+    }
+    else if (args.Item.Id == "Confirmar" & flagConfirm)
+    {
+        args.Cancel = true;
+        await DialogConfirm.Show();
+        flagConfirm = false;
+    }
+}
+
+
+    public List<WorksheetContent> WorksheetContents { get; set; }
+    public List<WorksheetInout> WorksheetInouts { get; set; }
+    public string val = "";
+
+    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete",
+        "ExcelExport", "Search",
+        new ItemModel() { Text="Subir Envio", TooltipText = "Subir Envio", PrefixIcon = "e-upload", Id="SubirEnvio" },
+        new ItemModel() { Text="Transformar", TooltipText = "Transformar", PrefixIcon = "e-upload", Id="Transformar" }, 
+        new ItemModel() { Text="Confirmar", TooltipText = "Confirmar", PrefixIcon = "e-upload", Id="Confirmar" }
+    };
+
+    @*private List<ContextMenuItemModel> ContextMenuitems = new List<ContextMenuItemModel> {
+            new ContextMenuItemModel() { Text = "Subir Envio", Target=".e-content", Id = "SubirEnvio" },
+            new ContextMenuItemModel() { Text = "Transformar", Target=".e-content", Id = "Transformar" },
+            new ContextMenuItemModel() { Text = "Confirmar", Target=".e-content", Id = "Confirmar" },
+        };*@
+
+    protected override void OnInitialized()
+    {
+        WorksheetContents = Enumerable.Range(1, 75).Select(x => new WorksheetContent()
+        {
+            ID = 1000 + x,
+            TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
+            RegDate = DateTime.Now.AddDays(-x),
+            Position = (new string[] { "B1", "B2", "B3", "B4", "T1", "T2", "T3", "T4" })[new Random().Next(8)],
+            FabricTexture = (new string[] { "Single Jersey", "Rib", "Rib 1x1", "Rib 1x1 Slub", "French Terry", "Slub Single", "Fleece", "Rib 2x2" })[new Random().Next(8)],
+            Status = "0",
+        }).ToList();
+
+        WorksheetInouts = Enumerable.Range(1, 75).Select(x => new WorksheetInout()
+        {
+            ID = 1000 + x,
+            PID = 1000 + (new Random().Next(75)),
+            RegDate = DateTime.Now.AddDays(-x),
+            Fecha = DateTime.Now.AddDays(-x),
+            Color = "Any Blue",
+            Yarn = "",
+            Inbound = "",
+            Outbound = "",
+            Rolls = new Random().Next(10),
+            Qty = (new Random().NextDouble()) * 100,
+            Unit = "",
+            Envio = "",
+        }).ToList();
+
+    }
+
+    public IEditorSettings TeamIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataTeam, AllowFiltering = true }
+    };
+
+    /// <summary>
+    /// 원단 컨텐츠
+    /// </summary>
+    public class WorksheetContent
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "WorkID")]
+        public int? WID { get; set; }       // 작업지시시서 고유ID
+        public string TeamID { get; set; }  // 이력용
+        [Display(Name = "Created By")]
+        public string CreatedBy { get; set; }   // 이력용
+        [DataType(DataType.Date)]
+        [Display(Name = "Created")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }  // 이력용
+        [Display(Name = "Status")]
+        public string Status { get; set; }      // 이력용
+
+
+        [Display(Name = "Position")]
+        public string Position { get; set; }
+        [Display(Name = "Fabric Texture")]
+        public string FabricTexture { get; set; }
+        [Display(Name = "Content1")]
+        public string Content1 { get; set; }
+        [Display(Name = "Content2")]
+        public string Content2 { get; set; }
+        [Display(Name = "Content3")]
+        public string Content3 { get; set; }
+        [Display(Name = "Content4")]
+        public string Content4 { get; set; }
+        [Display(Name = "Rates1")]
+        public string Rates1 { get; set; }
+        [Display(Name = "Rates2")]
+        public string Rates2 { get; set; }
+        [Display(Name = "Rates3")]
+        public string Rates3 { get; set; }
+        [Display(Name = "Rates4")]
+        public string Rates4 { get; set; }
+
+        [Display(Name = "Grade")]
+        public string Grade { get; set; }
+        [Display(Name = "Width")]
+        public string Width { get; set; }
+        [Display(Name = "G/M2")]
+        public string GramMeter { get; set; }
+        [Display(Name = "G/YD")]
+        public string GramYard { get; set; }
+        [Display(Name = "Diameter")]
+        public string Diameter { get; set; }
+        [Display(Name = "Gauge")]
+        public string Gauge { get; set; }
+        [Display(Name = "Needles")]
+        public string Needles { get; set; }
+        [Display(Name = "Loop1")]
+        public string Loop1 { get; set; }
+        [Display(Name = "Loop2")]
+        public string Loop2 { get; set; }
+
+
+    }
+
+    /// <summary>
+    /// 생지 입출고
+    /// </summary>
+    public class WorksheetInout
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "PID")]
+        public int PID { get; set; }        // Content ID
+        [Display(Name = "Created By")]
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Created")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+
+        [Display(Name = "Fileno")]
+        public string Fileno { get; set; }
+        [Display(Name = "Fecha")]
+        [DataType(DataType.Date)]
+        [Editable(false)]
+        public DateTime? Fecha { get; set; }
+        [Display(Name = "Color")]
+        public string Color { get; set; }
+        [Display(Name = "Yarn")]
+        public string Yarn { get; set; }
+        [Display(Name = "Outbound")]
+        public string Outbound { get; set; }
+        [Display(Name = "Inbound")]
+        public string Inbound { get; set; }
+        [Display(Name = "Lot#")]
+        public string Lotno { get; set; }
+        [Display(Name = "Rolls")]
+        public int Rolls { get; set; }
+
+        [Display(Name = "Q'ty")]
+        public double Qty { get; set; }
+        [Display(Name = "Unit")]
+        public string Unit { get; set; }
+        [Display(Name = "Envio#")]
+        public string Envio { get; set; }
+
+    }
+
+    
+
+    public static List<WorksheetContent> LocalDataTeam = new List<WorksheetContent> {
+            new WorksheetContent() { TeamID= "Team1A" },
+            new WorksheetContent() { TeamID= "Team1B" },
+            new WorksheetContent() { TeamID= "Team2A" },
+            new WorksheetContent() { TeamID= "Team2B" },
+            new WorksheetContent() { TeamID= "Team3A" },
+            new WorksheetContent() { TeamID= "Team3B" },
+            new WorksheetContent() { TeamID= "Administration" }
+    };
+
+
+
+
+}

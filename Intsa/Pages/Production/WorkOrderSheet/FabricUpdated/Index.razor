@@ -6,6 +6,8 @@
 @using System.ComponentModel.DataAnnotations
 @using Syncfusion.Blazor.Popups
 @using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using System.IO
 
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
@@ -18,7 +20,7 @@
 
 <SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Worksheets" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
         Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
-    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" ContextMenuItemClicked="OnContextMenuClick" 
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" ContextMenuItemClicked="OnContextMenuClick"
                 RowSelected="RowSelectHandler" TValue="Worksheet"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
     <GridPageSettings PageSize="22"></GridPageSettings>
@@ -41,7 +43,7 @@
     </GridColumns>
 </SfGrid>
 
-<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
+<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true" CloseOnEscape="true">
     <DialogEvents Closed="Closed"></DialogEvents>
     <DialogTemplates>
         @*Here you can customize the Header and Content of delete confirmation dialog*@
@@ -59,7 +61,7 @@
     </DialogButtons>
 </SfDialog>
 
-<SfDialog @ref="DialogConfirm" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
+<SfDialog @ref="DialogConfirm" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true" CloseOnEscape="true">
     <DialogEvents Closed="ClosedConfirm"></DialogEvents>
     <DialogTemplates>
         @*Here you can customize the Header and Content of delete confirmation dialog*@
@@ -77,95 +79,36 @@
     </DialogButtons>
 </SfDialog>
 
-<style>
-    .e-btn.e-flat.e-primary, .e-btn.e-flat.e-primary:focus {
-        background-color: #317ab9;
-        border-color: #265f91;
-        color: #fff;
-    }
+<SfDialog @ref="DialogEnvio" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true" CloseOnEscape="true">
+    <DialogEvents Closed="ClosedEnvio"></DialogEvents>
+    <DialogTemplates>
+        <Header> Upload Envio</Header>
+        <Content>
+            You are about to upload document for Record @SelectedData
 
-        .e-btn.e-flat.e-primary:hover, .e-btn.e-flat.e-primary:active {
-            background-color: #21527d;
-            border-color: #163854;
-            color: #fff;
-        }
+            <SfUploader AutoUpload="false">
+                <UploaderEvents ValueChange="OnChange"></UploaderEvents>
+            </SfUploader>
+        </Content>
 
-    .close-icon {
-        width: 24px;
-        height: 24px;
-        position: relative;
-        display: inline-block;
-    }
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkEnvioClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelEnvioClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
 
-    .error-msg {
-        color: #66afe9;
-        display: inline-block;
-        position: relative;
-        top: -20px;
-        left: 10px;
-    }
-
-    .error-detail {
-        position: relative;
-        left: 56px;
-        margin: 0 0 21px;
-    }
-
-    .e-icons.close-icon.col-lg-2:before {
-        content: '\e7e9';
-        font-size: 26px;
-        color: #d9534f;
-        position: relative;
-        left: 1px;
-        bottom: 18px;
-    }
-
-    .e-dialog .e-footer-content {
-        background-color: #f8f8f8;
-    }
-
-    .e-dialog.e-control.e-popup, .e-dialog.e-control.e-popup .e-dlg-header-content {
-        background-color: #d9edf7;
-    }
-
-    .e-dialog.e-control.e-popup {
-        padding: 3px;
-    }
-
-    .e-dialog.e-control .e-dlg-header-content {
-        padding: 10px;
-    }
-
-    .e-dialog.e-control .e-footer-content {
-        padding: 8px 12px;
-    }
-
-    .e-dialog.e-control .e-dlg-content {
-        padding: 15px 0 0;
-        padding-left: 5px;
-    }
-
-    .msg-wrapper.col-lg-12 {
-        margin-top: 20px;
-    }
-
-    .e-click::before {
-        content: '\e525';
-    }
-
-    .e-confirm::before {
-        content: '\e19f';
-    }
-
-    .e-upload::before {
-        content: '\e60f';
-    }
-</style>
 
 @code {
 
     private SfGrid<Worksheet> DefaultGrid;
     private SfDialog Dialog;
+    private SfDialog DialogEnvio;
     private SfDialog DialogConfirm;
     private DialogEffect AnimationEffect = DialogEffect.Zoom;
     private DialogSettings DialogParams = new DialogSettings { Width = "500px", Height = "80%" };
@@ -173,8 +116,9 @@
     public object SelectedData;
     public bool flag = true;
     public bool flagConfirm = true;
+    public bool flagEnvio = true;
 
-    #region Delete Dialog  
+    #region Delete Dialog
     public void Closed()
     {
         flag = true;
@@ -192,7 +136,7 @@
     }
     #endregion
 
-    #region Confirm Dialog 
+    #region Confirm Dialog
 
     public void ClosedConfirm()
     {
@@ -209,6 +153,35 @@
         flagConfirm = true;
         DialogConfirm.Hide();
     }
+    #endregion
+
+    #region Diaglog Envio
+
+    public void ClosedEnvio()
+    {
+        flagEnvio = true;
+    }
+    private void OkEnvioClick()
+    {
+        DialogEnvio.Hide();
+    }
+    private void CancelEnvioClick()
+    {
+        DialogEnvio.Hide();
+    }
+
+    private void OnChange(UploadChangeEventArgs args)
+    {
+        foreach (var file in args.Files)
+        {
+            var path = @"path" + file.FileInfo.Name;
+            FileStream filestream = new FileStream(path, FileMode.Create, FileAccess.Write);
+            file.Stream.WriteTo(filestream);
+            filestream.Close();
+            file.Stream.Close();
+        }
+    }
+
     #endregion
 
     public void OnActionBegin(ActionEventArgs<Worksheet> Args)
@@ -230,13 +203,22 @@
     }
 
 
-    public void OnContextMenuClick(ContextMenuClickEventArgs<Worksheet> args)
+    public async Task OnContextMenuClick(ContextMenuClickEventArgs<Worksheet> args)
     {
         if (args.Item.Id == "ViewWorksheet")
         {
-
-            NavigationManager.NavigateTo("/Production/WorkOrderSheet/FabricUpdated"); 
+            NavigationManager.NavigateTo("/Production/WorkOrderSheet/FabricUpdated/Worksheet");
         }
+        else if (args.Item.Id == "InboundOutbound")
+        {
+            NavigationManager.NavigateTo("/Production/WorkOrderSheet/FabricUpdated/InOut");
+        }
+        else if (args.Item.Id == "Upload")
+        {
+            await DialogEnvio.Show();
+            flagEnvio = false;
+        }
+
     }
 
     public List<Worksheet> Worksheets { get; set; }
