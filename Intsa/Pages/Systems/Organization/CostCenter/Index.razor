@@ -13,9 +13,9 @@
 </h1>
 
 
-<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Orders" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Centers" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
         Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
-    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Order"></GridEvents>
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="CostCenter"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
     <GridPageSettings PageSize="22"></GridPageSettings>
     <GridFilterSettings>
@@ -24,10 +24,10 @@
         </GridFilterColumns>
     </GridFilterSettings>
     <GridColumns>
-        <GridColumn Field=@nameof(Order.OrderID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(Order.CustomerID) HeaderText="Customer Name" EditType="EditType.DropDownEdit" EditorSettings="@CustomerIDEditParams" Width="150"></GridColumn>
-        <GridColumn Field=@nameof(Order.OrderDate) HeaderText="Order Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
-        <GridColumn Field=@nameof(Order.Freight) HeaderText="Freight" Format="C2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(CostCenter.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(CostCenter.CustomerID) HeaderText="Type" EditType="EditType.DropDownEdit" EditorSettings="@CustomerIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(CostCenter.Center) HeaderText="Center" TextAlign="TextAlign.Left" EditType="EditType.DropDownEdit" EditorSettings="@CenterIDEditParams" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(CostCenter.Created) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -56,7 +56,7 @@
 
 @code {
 
-    private SfGrid<Order> DefaultGrid;
+    private SfGrid<CostCenter> DefaultGrid;
     private SfDialog Dialog;
     public object SelectedData;
     public bool flag = true;
@@ -65,7 +65,7 @@
         flag = true;
     }
 
-    public void OnActionBegin(ActionEventArgs<Order> Args)
+    public void OnActionBegin(ActionEventArgs<CostCenter> Args)
     {
         if (Args.RequestType.ToString() == "Delete" && flag)
         {
@@ -78,9 +78,9 @@
             this.DefaultGrid.ExcelExport();
         }
     }
-    public void RowSelectHandler(RowSelectEventArgs<Order> Args)
+    public void RowSelectHandler(RowSelectEventArgs<CostCenter> Args)
     {
-        SelectedData = Args.Data.OrderID;
+        SelectedData = Args.Data.ID ;
     }
     private void OkClick()
     {
@@ -92,45 +92,49 @@
         Dialog.Hide();
     }
 
-    public List<Order> Orders { get; set; }
+    public List<CostCenter> Centers { get; set; }
     public string val = "";
-    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete", "Update", "Cancel", "ExcelExport", "Search",
+    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete", "ExcelExport", "Search",
         new ItemModel() { Text="Transfer", TooltipText = "Transfer", PrefixIcon = "e-click", Id="Transfer" } };
 
     private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
 
     protected override void OnInitialized()
     {
-        Orders = Enumerable.Range(1, 75).Select(x => new Order()
+        Centers = Enumerable.Range(1, 25).Select(x => new CostCenter()
         {
-            OrderID = 1000 + x,
-            CustomerID = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(5)],
-            Freight = 2.1 * x,
-            OrderDate = DateTime.Now.AddDays(-x),
+            ID = 1000 + x,
+            CustomerID = (new string[] { "INT", "Others" })[new Random().Next(2)],
+            Center = (new string[] { "Head Office", "INT Sewing Plant I", "JS International", "Development", "JS Warehouse", "Recepsa Warehouse", "People & Arts", "Apparel Links" })[new Random().Next(8)],
+            Created = DateTime.Now.AddDays(-x),
         }).ToList();
     }
 
     public IEditorSettings CustomerIDEditParams = new DropDownEditCellParams
     {
         Params = new DropDownListModel<object, object>() { DataSource = LocalDataCustomer, AllowFiltering = true }
-    }; 
+    };
+    public IEditorSettings CenterIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataCenter, AllowFiltering = true }
+    };
 
 
-    public class Order
+    public class CostCenter
     {
         [Key]
-        [Required(ErrorMessage = "OrderID should not be empty")]
-        [Display(Name = "Order ID")]
-        public int? OrderID { get; set; }
-        [Display(Name = "Customer Name")]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Type")]
         [Required(ErrorMessage = "Field should not be empty")]
         public string CustomerID { get; set; }
+        [Display(Name = "Center")]
+        public string Center { get; set; }
         [DataType(DataType.Date)]
-        [Display(Name = "Order Date")]
+        [Display(Name = "Created Date")]
         [Editable(false)]
-        public DateTime? OrderDate { get; set; }
-        [Display(Name = "Freight")]
-        public double? Freight { get; set; }
+        public DateTime? Created { get; set; }
     }
 
     public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
@@ -146,14 +150,19 @@
         }
     }
 
-    public static List<Order> LocalDataCustomer = new List<Order> {
-            new Order() { CustomerID= "BELUGA INC" },
-            new Order() { CustomerID= "EXPRESS" },
-            new Order() { CustomerID= "JCREW" },
-            new Order() { CustomerID= "MATERNITY OPCO" },
-            new Order() { CustomerID= "KOHL'S" },
-            new Order() { CustomerID= "TORRID" },
-            new Order() { CustomerID= "MAURICES" },
-            new Order() { CustomerID= "LUCKY OPCO" }
+    public static List<CostCenter> LocalDataCustomer = new List<CostCenter> {
+            new CostCenter() { CustomerID= "INT" },
+            new CostCenter() { CustomerID= "Others" },
+    };
+
+    public static List<CostCenter> LocalDataCenter = new List<CostCenter> {
+            new CostCenter() { Center= "Head Office" },
+            new CostCenter() { Center= "INT Sewing Plant I" },
+            new CostCenter() { Center= "JS International" },
+            new CostCenter() { Center= "Development" },
+            new CostCenter() { Center= "JS Warehouse" },
+            new CostCenter() { Center= "Recepsa Warehouse" },
+            new CostCenter() { Center= "People & Arts" },
+            new CostCenter() { Center= "Apparel Links" },
     };
 }

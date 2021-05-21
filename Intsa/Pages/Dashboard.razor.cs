@@ -116,9 +116,35 @@ namespace Intsa.Pages
         };
 
         public bool VisibleProperty { get; set; } = false;
+        public List<ColumnChartData> ChartPoints { get; set; } = Enumerable.Range(1, 11).Select(x => new ColumnChartData()
+        {
+            Lineno = "Linea " + x,
+            Meta = 2000,
+            ProductQty = new Random().Next(2000),
+        }).ToList();
+        public List<ColumnChartData> ChartPoints1 = new List<ColumnChartData>()
+        {
+            new ColumnChartData() {
+            Lineno = "Linea 1",
+            Meta = 2000,
+            ProductQty = new Random().Next(2000),
+            },
+            new ColumnChartData() {
+            Lineno = "Linea 1",
+            Meta = 1700,
+            ProductQty = new Random().Next(2000),
+            },
+        }; 
 
         protected override async Task OnInitializedAsync()
         {
+            
+            //ChartPoints = Enumerable.Range(1, 11).Select(x => new ColumnChartData()
+            //{
+            //    Lineno = "Linea " + x, 
+            //    Meta = 2000, 
+            //    ProductQty = new Random().Next(2000), 
+            //}).ToList(); 
 
             //if ((AuthorizationService.AuthorizeAsync(context.User, "TwoFactorEnabled")).Result.Succeeded)
             //{
@@ -161,5 +187,12 @@ namespace Intsa.Pages
         }
 
         
+        public class ColumnChartData
+        {
+            public string Lineno { get; set; }
+            public double Meta { get; set; }
+            public double ProductQty { get; set; }
+        }
+
     }
 }

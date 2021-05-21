@@ -1,232 +1,352 @@
 ﻿@page "/Production/Hourly"
 @page "/Production/Hourly/Index"
-@using Syncfusion.Blazor.Spinner
-@using Syncfusion.Blazor.Calendars
 
-@*@attribute [AllowAnonymous]*@
-@*@attribute [Authorize]*@
-@attribute [Authorize(Roles = "Administrators, Users")]
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
 
-@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
 
-<div class="row">
-    <div class="col-md-12">
-        
-        <AuthorizeView Roles="Administrators, Users">
-            <Authorized>
-                @if (models == null)
-                {
-                    <div>
-                        <SfSpinner @bind-Visible="@VisibleProperty"
-                                   Label="Data Loading...."
-                                   Type="@SpinnerType.Bootstrap4"
-                                   Size="50">
-                        </SfSpinner>
-                    </div>
-                }
-                else
-                {
-                    <!-- BEGIN #responsiveTables -->
-
-            <div id="responsiveTables" class="mb-5">
-                
-                <div class="d-flex align-items-center mb-3">
-                    <div>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">HOME</a></li>
-                            <li class="breadcrumb-item">PRODUCTION</li>
-                            <li class="breadcrumb-item active">HOURLY</li>
-                        </ul>
-                        <h1 class="page-header mb-0">
-                            PRODUCCION HORARIO <small>시간별/라인별 생산현황</small>
-                        </h1>
-                    </div>
-
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <SfDateRangePicker TValue="DateTime?" Placeholder="Choose a Range" Min="@MinDate" Max="@MaxDate" ZIndex="9999"></SfDateRangePicker>
-                            </div>
-                            <div class="col-md-9">
-                                <a href="/Production/Hourly/Create" class="btn btn-primary disabled"><i class="fa fa-plus-circle fa-fw me-1"></i> Create</a>
-                            </div>
-                        </div>
+<h1 class="page-header mb-3">
+    Production Hourly 
+    <small>시간별/라인별 생산현황</small>
+</h1>
 
 
-                            </div>
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Productions" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Production"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="LineID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Production.Fecha) AutoFit="true" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Production.LineID) EditType="EditType.DropDownEdit" EditorSettings="@LineIDEditParams" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Production.Mno) AutoFit="true" TextAlign="TextAlign.Left" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(Production.Buyer) AutoFit="true" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Production.DiasTrabaja) TextAlign="TextAlign.Left" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(Production.Precio) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Total) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Meta) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora01) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora02) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora03) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora04) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora05) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora06) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora07) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora08) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora09) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora10) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Hora11) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.HoraTTL) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Perdidas) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Rates) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Operator) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.Ayudante) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.PplTotal) AutoFit="true" TextAlign="TextAlign.Right" Width="80"></GridColumn>
+        <GridColumn Field=@nameof(Production.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+        <GridColumn Field=@nameof(Production.RegDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130" Visible="false"></GridColumn>
+        <GridColumn Field=@nameof(Production.CreatedBy) TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+    </GridColumns>
+</SfGrid>
 
-                            <div class="card-body">
-                                @*<ul class="nav nav-tabs nav-tabs-v2 px-4">
-                    <li class="nav-item me-3"><a href="#allTab" class="nav-link active px-2" data-bs-toggle="tab">All</a></li>
-                </ul>*@
-                                <div class="tab-content p-4">
-                                    <div class="tab-pane fade show active" id="allTab">
-                                        <!-- BEGIN input-group -->
-                                        <div class="input-group mb-4">
-                                            <div class="flex-fill position-relative">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control ps-35px" placeholder="Filter" />
-                                                    <div class="input-group-text position-absolute top-0 bottom-0 bg-none border-0 pe-0" style="z-index: 1020;">
-                                                        <i class="fa fa-search opacity-5"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="d-none d-md-inline">Filter</span><span class="d-inline d-md-none"><i class="fa fa-credit-card"></i></span> &nbsp;</button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Loading fields...</a>
-                                            </div>
-                                            <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="d-none d-md-inline">Sort</span><span class="d-inline d-md-none"><i class="fa fa-check"></i></span></button>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">Loading fields...</a>
-                                            </div>
-                                        </div>
-                                        <!-- END input-group -->
-                                        <!-- BEGIN table -->
-                                        <div class="table-responsive ">
-                                            <table class="table table-hover text-nowrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Fecha</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Linea</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Mno</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Cliente</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Estilo</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Dias<br />Trabajados</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">$ Precio</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Total</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Meta</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">8:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">9:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">10:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">11:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">12:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">2:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">3:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">4:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">5:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">6:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">7:00</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">TTL</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Perdidas</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">%</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Ope.</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Ayu.</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">Persona<br />Total</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col">#</th>
-                                                        <th class="border-bottom-0 border-top-0 pt-0 pb-2" scope="col"></th>
-                                                    </tr>
-                                                </thead>
-                                                @if (models.Count == 0)
-                                                {
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="4" class="text-center">
-                                                                <p>데이터가 없습니다.</p>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                }
-                                                <tbody>
-                                                    @*@foreach (var m in models)
-                                    {*@
+<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
 
-                                                    <tr>
-                                                        <td class="align-middle">@DateTime.Today.ToShortDateString()</td>
-                                                        <td class="align-middle">Linea 2</td>
-                                                        <td class="align-middle">A</td>
-                                                        <td class="align-middle">A&F</td>
-                                                        <td class="align-middle"></td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">$0.00</td>
-                                                        <td class="align-middle">$0.00</td>
-                                                        <td class="align-middle">2000</td>
-                                                        <td class="align-middle">240</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">240</td>
-                                                        <td class="align-middle text-danger">-1760</td>
-                                                        <td class="align-middle">12.00%</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
-                                                        <td class="align-middle">0</td>
+<style>
+    .e-btn.e-flat.e-primary, .e-btn.e-flat.e-primary:focus {
+        background-color: #317ab9;
+        border-color: #265f91;
+        color: #fff;
+    }
 
-                                                        <td class="align-middle" scope="row"><a href="#">1</a></td>
-                                                        <td class="width-10 align-middle">
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" id="product1">
-                                                                <label class="form-check-label" for="product1"></label>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+    .e-btn.e-flat.e-primary:hover, .e-btn.e-flat.e-primary:active {
+        background-color: #21527d;
+        border-color: #163854;
+        color: #fff;
+    }
+
+    .close-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .error-msg {
+        color: #66afe9;
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 10px;
+    }
+
+    .error-detail {
+        position: relative;
+        left: 56px;
+        margin: 0 0 21px;
+    }
+
+    .e-icons.close-icon.col-lg-2:before {
+        content: '\e7e9';
+        font-size: 26px;
+        color: #d9534f;
+        position: relative;
+        left: 1px;
+        bottom: 18px;
+    }
+
+    .e-dialog .e-footer-content {
+        background-color: #f8f8f8;
+    }
+
+    .e-dialog.e-control.e-popup, .e-dialog.e-control.e-popup .e-dlg-header-content {
+        background-color: #d9edf7;
+    }
+
+    .e-dialog.e-control.e-popup {
+        padding: 3px;
+    }
+
+    .e-dialog.e-control .e-dlg-header-content {
+        padding: 10px;
+    }
+
+    .e-dialog.e-control .e-footer-content {
+        padding: 8px 12px;
+    }
+
+    .e-dialog.e-control .e-dlg-content {
+        padding: 15px 0 0;
+        padding-left: 5px;
+    }
+
+    .msg-wrapper.col-lg-12 {
+        margin-top: 20px;
+    }
+
+    .e-click::before {
+        content: '\e525';
+    }
+
+    .e-download::before {
+        content: '\e603';
+    }
+
+    .e-upload::before {
+        content: '\e60f';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Production> DefaultGrid;
+    private SfDialog Dialog;
+    private DialogEffect AnimationEffect = DialogEffect.Zoom;
+    private DialogSettings DialogParams = new DialogSettings { Width = "500px", Height = "80%" };
+
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    public void OnActionBegin(ActionEventArgs<Production> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Production> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<Production> Productions { get; set; }
+    public string val = "";
+
+    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete", "ExcelExport", "Search",
+        @*new ItemModel() { Text="Template Download", TooltipText = "Template Download", PrefixIcon = "e-download", Id="TemplateDownload" },
+        new ItemModel() { Text="Upload Excel", TooltipText = "Upload Excel", PrefixIcon = "e-upload", Id="UploadExcel" }*@
+    };
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        Productions = Enumerable.Range(1, 75).Select(x => new Production()
+        {
+            ID = 1000 + x,
+            LineID = (new string[] { "Linea 1", "Linea 2", "Linea 3", "Linea 4", "Linea 5", "Linea 6", "Linea 7", "Linea 8", "Linea 9", "Linea10" })[new Random().Next(10)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(5)],
+            RegDate = DateTime.Now.AddDays(-x),
+            Fecha = DateTime.Now.AddDays(-x),
+            Hora01 = new Random().Next(1000),
+            Hora02 = new Random().Next(1000),
+            Hora03 = new Random().Next(1000),
+            Hora04 = new Random().Next(1000),
+            Hora05 = new Random().Next(1000),
+            Hora06 = new Random().Next(1000),
+            Hora07 = new Random().Next(1000),
+            Hora08 = new Random().Next(1000),
+            Hora09 = new Random().Next(1000),
+            Hora10 = new Random().Next(1000),
+            Hora11 = new Random().Next(1000),
+        }).ToList();
+    }
+
+    public IEditorSettings LineIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataLine, AllowFiltering = true }
+    };
 
 
-                                                    @*}*@
-                                                </tbody>
-                                            </table>
-                                        </div>
+    public class Production
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha")]
+        public DateTime? Fecha { get; set; }
+        [Display(Name = "Linea")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string LineID { get; set; }
+        [Display(Name = "M#")]
+        public string Mno { get; set; }
+        [Display(Name = "Cliente")]
+        public string Buyer { get; set; }
+        [Display(Name = "Dias Tra.")]
+        public int DiasTrabaja { get; set; }
+        [DataType(DataType.Currency)]
+        [Display(Name = "Precio")]
+        public decimal Precio { get; set; }
+        [DataType(DataType.Currency)]
+        [Display(Name = "Total")]
+        public decimal? Total { get; set; }
 
-                                        <!-- END table -->
+        [Display(Name = "Meta")]
+        public int Meta { get; set; }
+        [Display(Name = "8:00")]
+        public int Hora01 { get; set; }
+        [Display(Name = "9:00")]
+        public int Hora02 { get; set; }
+        [Display(Name = "10:00")]
+        public int Hora03 { get; set; }
+        [Display(Name = "11:00")]
+        public int Hora04 { get; set; }
+        [Display(Name = "12:00")]
+        public int Hora05 { get; set; }
+        [Display(Name = "2:00")]
+        public int Hora06 { get; set; }
+        [Display(Name = "3:00")]
+        public int Hora07 { get; set; }
+        [Display(Name = "4:00")]
+        public int Hora08 { get; set; }
+        [Display(Name = "5:00")]
+        public int Hora09 { get; set; }
+        [Display(Name = "6:00")]
+        public int Hora10 { get; set; }
+        [Display(Name = "7:00")]
+        public int Hora11 { get; set; }
+        [Display(Name = "TTL")]
+        public int HoraTTL { get; set; }
+        [Display(Name = "Perdidas")]
+        public int Perdidas { get; set; }
+        [Display(Name = "%")]
+        public double Rates { get; set; }
+        [Display(Name = "Ope.")]
+        public int Operator { get; set; }
+        [Display(Name = "Ayu.")]
+        public int Ayudante { get; set; }
+        [Display(Name = "Persona TTL")]
+        public int PplTotal { get; set; }
 
-                                        <div class="d-md-flex align-items-center">
-                                            <div class="me-md-auto text-md-left text-center mb-2 mb-md-0">
-                                                Showing 1 to 10 of 57 entries
-                                            </div>
-                                            <ul class="pagination mb-0 justify-content-center">
-                                                <li class="page-item disabled"><a class="page-link">Previous</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        [Display(Name = "Created By")]
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Created")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+    }
 
-                            <div class="card-header">
-                                <div class="mb-md-4 mb-3 d-md-flex">
-                                    <div class="mt-md-0 mt-2"><a href="#" class="text-dark text-decoration-none"><i class="fa fa-download fa-fw me-1 text-muted"></i> Export</a></div>
-                                    <div class="ms-md-4 mt-md-0 mt-2 dropdown-toggle">
-                                        <a href="#" data-bs-toggle="dropdown" class="text-dark text-decoration-none">More Actions</a>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">Confirm</a>
-                                            <a class="dropdown-item" href="#">Deactivate</a>
-                                            <a class="dropdown-item" href="#">Rollback</a>
-                                            <a class="dropdown-item" href="#">Copy</a>
-                                            <div role="separator" class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Subscribe</a>
-                                        </div>
-                                    </div>
-                                </div>
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "TemplateDownload")
+        {
+            await JSRuntime.InvokeAsync<object>("open", "https://s3.amazonaws.com/int.boards/WebTemplate_Material_Purchase_Requisition.xlsx", "_blank");
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+        }
+    }
 
-                            </div>
+    public static List<Production> LocalDataLine = new List<Production> {
+            new Production() { LineID= "Linea 1" },
+            new Production() { LineID= "Linea 2" },
+            new Production() { LineID= "Linea 3" },
+            new Production() { LineID= "Linea 4" },
+            new Production() { LineID= "Linea 5" },
+            new Production() { LineID= "Linea 6" },
+            new Production() { LineID= "Linea 7" },
+            new Production() { LineID= "Linea 8" },
+            new Production() { LineID= "Linea 9" },
+            new Production() { LineID= "Linea 10" },
+    };
 
-                        </div>
-
-
-                    </div>
-
-                <!-- END #responsiveTables -->
-                }
-</Authorized>
-            <NotAuthorized>
-
-            </NotAuthorized>
-        </AuthorizeView>
-
-    </div>
-</div>
+    public static List<Production> LocalDataBuyer = new List<Production> {
+            new Production() { Buyer= "BELUGA INC" },
+            new Production() { Buyer= "EXPRESS" },
+            new Production() { Buyer= "JCREW" },
+            new Production() { Buyer= "MATERNITY OPCO" },
+            new Production() { Buyer= "KOHL'S" },
+            new Production() { Buyer= "TORRID" },
+            new Production() { Buyer= "MAURICES" },
+            new Production() { Buyer= "LUCKY OPCO" }
+    };
+}

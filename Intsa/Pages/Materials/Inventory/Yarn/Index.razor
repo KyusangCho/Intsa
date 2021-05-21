@@ -24,30 +24,31 @@
             @{
                 var selectedID = (context as YarnMaster);
 
-                <SfGrid DataSource="@YarnInbounds" Query="@GetYarnInboundQuery(selectedID)" AllowPaging="true">
-                    <GridPageSettings PageSize="8"></GridPageSettings>
-                    <GridColumns>
-                        <GridColumn Field=@nameof(YarnInbound.ID) HeaderText="ID" Width="60"> </GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Class) HeaderText="Classification" Width="150"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Fecha) HeaderText="Fecha" Format="d" Width="100"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Yarn) HeaderText="Yarn" Width="200"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Outbound) HeaderText="Out" Width="50"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Inbound) HeaderText="In" Width="100"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Lotno) HeaderText="Lot#" Width="100"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Rolls) HeaderText="Rolls" Width="70"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Qty) HeaderText="Q'ty" Width="70"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Unit) HeaderText="Unit" Width="70"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Fileno) HeaderText="File#" Width="90"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Envio) HeaderText="Envio" Width="70"></GridColumn>
-                    </GridColumns>
-                </SfGrid>
+                        <SfGrid DataSource="@YarnInbounds" Query="@GetYarnInboundQuery(selectedID)"
+                                Toolbar="DetailToolbaritems" AllowExcelExport="true"
+                                AllowPaging="true">
+                            <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="YarnMaster"></GridEvents>
+                            <GridEditSettings AllowAdding="false" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
+                            <GridPageSettings PageSize="8"></GridPageSettings>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(YarnInbound.ID) HeaderText="ID" Width="60"> </GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Class) HeaderText="Classification" Width="150"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Fecha) HeaderText="Fecha" Format="d" Width="100"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Yarn) HeaderText="Yarn" Width="200"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Outbound) HeaderText="Out" Width="50"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Inbound) HeaderText="In" Width="100"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Lotno) HeaderText="Lot#" Width="100"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Rolls) HeaderText="Rolls" Width="70"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Qty) HeaderText="Q'ty" Width="70"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Unit) HeaderText="Unit" Width="70"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Fileno) HeaderText="File#" Width="90"></GridColumn>
+                                <GridColumn Field=@nameof(YarnInbound.Envio) HeaderText="Envio" Width="70"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
             }
         </DetailTemplate>
     </GridTemplates>
-
-
-    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="YarnMaster"></GridEvents>
-    <GridEditSettings AllowAdding="false" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
+    
     <GridPageSettings PageSize="15"></GridPageSettings>
     <GridFilterSettings>
         <GridFilterColumns>
@@ -224,13 +225,14 @@
     public List<YarnInbound> YarnInbounds { get; set; }
     public string val = "";
 
-    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete",
-        new ItemModel() { Text="Accept", TooltipText = "Accept", PrefixIcon = "e-accept", Id="Accept" },
-        new ItemModel() { Text="Cancel", TooltipText = "Cancel", PrefixIcon = "e-cancel", Id="Cancel" },
+    private List<Object> Toolbaritems = new List<Object>() {
         "ExcelExport", "Search",
-        new ItemModel() { Text="Template Download", TooltipText = "Template Download", PrefixIcon = "e-download", Id="TemplateDownload" },
-        new ItemModel() { Text="Upload Excel", TooltipText = "Upload Excel", PrefixIcon = "e-upload", Id="UploadExcel" }
     };
+    private List<Object> DetailToolbaritems = new List<Object>() {  "Add", "Edit", "Delete",
+        "ExcelExport", "Search",
+    };
+
+
 
     private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
 

@@ -1,5 +1,5 @@
-﻿@page "/Systems/User"
-@page "/Systems/User/Index"
+﻿@page "/Sales/FileNumber"
+@page "/Sales/FileNumber/Index"
 
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Navigations
@@ -8,14 +8,14 @@
 @using Syncfusion.Blazor.DropDowns
 
 <h1 class="page-header mb-3">
-    User
-    <small>사용자 관리</small>
+    File Number
+    <small>파일 관리</small>
 </h1>
 
 
-<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Users" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@FileNumbers" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
         Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
-    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="User"></GridEvents>
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="FileNumber"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
     <GridPageSettings PageSize="22"></GridPageSettings>
     <GridFilterSettings>
@@ -24,12 +24,14 @@
         </GridFilterColumns>
     </GridFilterSettings>
     <GridColumns>
-        <GridColumn Field=@nameof(User.UserID) IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(User.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
-        <GridColumn Field=@nameof(User.UserName) TextAlign="TextAlign.Left" Width="130"></GridColumn>
-        <GridColumn Field=@nameof(User.UserEmail) Type="ColumnType.String" TextAlign="TextAlign.Left" Width="130"></GridColumn>
-        <GridColumn Field=@nameof(User.RegDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
-        <GridColumn Field=@nameof(User.Level) TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(FileNumber.ID) IsPrimaryKey="true" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(FileNumber.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(FileNumber.Fileno) TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(FileNumber.Buyer) EditType="EditType.DropDownEdit" EditorSettings="@BuyerIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(FileNumber.Handler) TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(FileNumber.Remark) TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(FileNumber.Status) TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(FileNumber.RegDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -58,7 +60,7 @@
 
 @code {
 
-    private SfGrid<User> DefaultGrid;
+    private SfGrid<FileNumber> DefaultGrid;
     private SfDialog Dialog;
     public object SelectedData;
     public bool flag = true;
@@ -67,7 +69,7 @@
         flag = true;
     }
 
-    public void OnActionBegin(ActionEventArgs<User> Args)
+    public void OnActionBegin(ActionEventArgs<FileNumber> Args)
     {
         if (Args.RequestType.ToString() == "Delete" && flag)
         {
@@ -80,9 +82,9 @@
             this.DefaultGrid.ExcelExport();
         }
     }
-    public void RowSelectHandler(RowSelectEventArgs<User> Args)
+    public void RowSelectHandler(RowSelectEventArgs<FileNumber> Args)
     {
-        SelectedData = Args.Data.UserID;
+        SelectedData = Args.Data.ID;
     }
     private void OkClick()
     {
@@ -94,7 +96,7 @@
         Dialog.Hide();
     }
 
-    public List<User> Users { get; set; }
+    public List<FileNumber> FileNumbers { get; set; }
     public string val = "";
     private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete", "ExcelExport", "Search",
         new ItemModel() { Text="Copy", TooltipText = "Copy", PrefixIcon = "e-click", Id="Copy" } };
@@ -103,54 +105,64 @@
 
     protected override void OnInitialized()
     {
-        Users = Enumerable.Range(1, 75).Select(x => new User()
+        FileNumbers = Enumerable.Range(1, 75).Select(x => new FileNumber()
         {
-            UserID = 1000 + x,
+            ID = 1000 + x,
             TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
-            UserName = (new string[] { "bryan.cho", "neo.pyon", "tom.shin" })[new Random().Next(3)],
-            UserEmail = (new string[] { "bryan.cho@intsa.net", "neo.pyon@intsa.net", "tom.shin@intsa.net" })[new Random().Next(3)],
-            Level = x,
+            Fileno = "210" + x.ToString("0000"),
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(5)],
+            Handler = "",
+            Remark = "",
             RegDate = DateTime.Now.AddDays(-x),
         }).ToList();
     }
 
-    public static List<User> LocalDataTeam = new List<User> {
-            new User() { TeamID= "Team1A" },
-            new User() { TeamID= "Team1B" },
-            new User() { TeamID= "Team2A" },
-            new User() { TeamID= "Team2B" },
-            new User() { TeamID= "Team3A" },
-            new User() { TeamID= "Team3B" },
-            new User() { TeamID= "Administration" }
+    public static List<FileNumber> LocalDataTeam = new List<FileNumber> {
+            new FileNumber() { TeamID= "Team1A" },
+            new FileNumber() { TeamID= "Team1B" },
+            new FileNumber() { TeamID= "Team2A" },
+            new FileNumber() { TeamID= "Team2B" },
+            new FileNumber() { TeamID= "Team3A" },
+            new FileNumber() { TeamID= "Team3B" },
+            new FileNumber() { TeamID= "Administration" }
     };
 
     public IEditorSettings TeamIDEditParams = new DropDownEditCellParams
     {
         Params = new DropDownListModel<object, object>() { DataSource = LocalDataTeam, AllowFiltering = true }
     };
+    public IEditorSettings BuyerIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataBuyer, AllowFiltering = true }
+    };
 
-    public class User
+    public class FileNumber
     {
         [Key]
-        [Required(ErrorMessage = "UserID should not be empty")]
+        [Required(ErrorMessage = "ID should not be empty")]
         [Display(Name = "User ID")]
-        public int? UserID { get; set; }
+        public int? ID { get; set; }
         [Display(Name = "Team Name")]
         [Required(ErrorMessage = "Field should not be empty")]
         public string TeamID { get; set; }
-        [Display(Name = "Name")]
+        [Display(Name = "File#")]
         [Required(ErrorMessage = "Field should not be empty")]
-        public string UserName { get; set; }
-        [Display(Name = "Email")]
-        [DataType(DataType.EmailAddress)]
+        public string Fileno { get; set; }
+        [Display(Name = "Buyer")]
         [Required(ErrorMessage = "Field should not be empty")]
-        public string UserEmail { get; set; }
+        public string Buyer { get; set; }
+        [Display(Name = "Handler")]
+        public string Handler { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+
         [DataType(DataType.Date)]
         [Display(Name = "Reg Date")]
         [Editable(false)]
         public DateTime? RegDate { get; set; }
-        [Display(Name = "Level")]
-        public int? Level { get; set; }
+        [Display(Name = "Status")]
+        public int? Status { get; set; }
     }
 
     public class Team
@@ -171,5 +183,14 @@
         }
     }
 
-
+    public static List<FileNumber> LocalDataBuyer = new List<FileNumber> {
+            new FileNumber() { Buyer= "BELUGA INC" },
+            new FileNumber() { Buyer= "EXPRESS" },
+            new FileNumber() { Buyer= "JCREW" },
+            new FileNumber() { Buyer= "MATERNITY OPCO" },
+            new FileNumber() { Buyer= "KOHL'S" },
+            new FileNumber() { Buyer= "TORRID" },
+            new FileNumber() { Buyer= "MAURICES" },
+            new FileNumber() { Buyer= "LUCKY OPCO" }
+    };
 }

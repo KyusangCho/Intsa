@@ -225,12 +225,12 @@
         <!-- html -->
         <!-- BEGIN card -->
         <div class="card">
-        <!-- BEGIN card-body -->
-        <div class="card-body">
+            <!-- BEGIN card-body -->
+            <div class="card-body">
                 <SfChart Title="Daily Production" Width="1400">
                     <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
                     <ChartPrimaryXAxis LabelFormat="MM/dd" ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime"
-                                        LabelIntersectAction="LabelIntersectAction.Rotate45">
+                                       LabelIntersectAction="LabelIntersectAction.Rotate45">
                         <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
                     </ChartPrimaryXAxis>
 
@@ -247,11 +247,11 @@
                             </ChartMarker>
                         </ChartSeries>
                         <ChartSeries DataSource="@Data" XName="XValue" YName="YValue1" Type="ChartSeriesType.Line" Width="2" Name="J.S." Fill="#D27C21">
-                        <ChartSeriesAnimation Enable="true" Duration="1000" Delay="100"></ChartSeriesAnimation>
-                        <ChartMarker Visible="true">
-                            <ChartDataLabel Visible="true" />
-                        </ChartMarker>
-                                        </ChartSeries>
+                            <ChartSeriesAnimation Enable="true" Duration="1000" Delay="100"></ChartSeriesAnimation>
+                            <ChartMarker Visible="true">
+                                <ChartDataLabel Visible="true" />
+                            </ChartMarker>
+                        </ChartSeries>
                         <ChartSeries DataSource="@Data" XName="XValue" YName="YValue2" Type="ChartSeriesType.Line" Width="2" Name="Apparel Links" Fill="#C64A75">
                             <ChartSeriesAnimation Enable="true" Duration="1000" Delay="150"></ChartSeriesAnimation>
                             <ChartMarker Visible="true">
@@ -294,9 +294,218 @@
     </div>
 </div>
 
+
+<!-- BEGIN 공장 라인별 생산현황 col-6 -->
+
+<div class="row mt-4">
+    <div class="col-xl-12">
+        <!-- html -->
+        <!-- BEGIN card -->
+        <div class="card">
+            <!-- BEGIN card-body -->
+            <div class="card-body">
+                <SfChart Title="Production by Lines">
+                    <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
+                    <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category" Interval="1">
+                        <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+                    </ChartPrimaryXAxis>
+                    <ChartPrimaryYAxis>
+                        <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
+                        <ChartAxisLabelStyle Color="transparent"></ChartAxisLabelStyle>
+                        <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+                        <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+                    </ChartPrimaryYAxis>
+                    <ChartSeriesCollection>
+                        <ChartSeries DataSource="@ChartPoints" XName="Lineno" YName="Meta" Name="Meta" Type="ChartSeriesType.Column">
+                            <ChartMarker>
+                                <ChartDataLabel Visible="true" Position="LabelPosition.Top">
+                                    <ChartDataLabelFont FontWeight="600" Color="#ffffff"></ChartDataLabelFont>
+                                </ChartDataLabel>
+                            </ChartMarker>
+                        </ChartSeries>
+                        <ChartSeries DataSource="@ChartPoints" XName="Lineno" YName="ProductQty" Name="Actual" Type="ChartSeriesType.Column">
+                            <ChartMarker>
+                                <ChartDataLabel Visible="true" Position="LabelPosition.Top">
+                                    <ChartDataLabelFont FontWeight="600" Color="#ffffff"></ChartDataLabelFont>
+                                </ChartDataLabel>
+                            </ChartMarker>
+                        </ChartSeries>
+                    </ChartSeriesCollection>
+                    <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
+                </SfChart>
+            </div>
+            <!-- END card-body -->
+        </div>
+        <!-- END card -->
+    </div>
+</div>
+
+<!-- END 공장 라인별 생산현황 col-6 -->
+
+<!-- BEGIN 공장 라인별 달성현황 col-6 -->
+
+<div class="row mt-4">
+    <div class="col-xl-12">
+        <!-- html -->
+        <!-- BEGIN card -->
+        <div class="card">
+            <!-- BEGIN card-body -->
+            <div class="card-body">
+
+                <div class="row">
+                    <div align="center" class="col-3">
+                        <SfAccumulationChart Title="Linea 1" EnableAnimation="false" Height="230px">
+                            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                            <AccumulationChartSeriesCollection>
+                                <AccumulationChartSeries DataSource="@ChartPoints1" XName="Meta" YName="Meta" Name="ProductQty" StartAngle="270" EndAngle="90" Radius="90%" InnerRadius="40%" Explode="true">
+                                    <AccumulationDataLabelSettings Visible="true" Name="" Position="AccumulationLabelPosition.Inside">
+                                        <AccumulationChartDataLabelFont FontWeight="600"></AccumulationChartDataLabelFont>
+                                    </AccumulationDataLabelSettings>
+                                </AccumulationChartSeries>
+                            </AccumulationChartSeriesCollection>
+                        </SfAccumulationChart>
+                    </div>
+                    <div align="center" class="col-3">
+                        <SfAccumulationChart Title="Linea 2" EnableAnimation="false" Height="230px">
+                            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                            <AccumulationChartSeriesCollection>
+                                <AccumulationChartSeries DataSource="@ChartPoints1" XName="Meta" YName="Meta" Name="ProductQty" StartAngle="270" EndAngle="90" Radius="90%" InnerRadius="40%" Explode="true">
+                                    <AccumulationDataLabelSettings Visible="true" Name="" Position="AccumulationLabelPosition.Inside">
+                                        <AccumulationChartDataLabelFont FontWeight="600"></AccumulationChartDataLabelFont>
+                                    </AccumulationDataLabelSettings>
+                                </AccumulationChartSeries>
+                            </AccumulationChartSeriesCollection>
+                        </SfAccumulationChart>
+                    </div>
+                    <div align="center" class="col-3">
+                        <SfAccumulationChart Title="Linea 3" EnableAnimation="false" Height="230px">
+                            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                            <AccumulationChartSeriesCollection>
+                                <AccumulationChartSeries DataSource="@ChartPoints1" XName="Meta" YName="Meta" Name="ProductQty" StartAngle="270" EndAngle="90" Radius="90%" InnerRadius="40%" Explode="true">
+                                    <AccumulationDataLabelSettings Visible="true" Name="" Position="AccumulationLabelPosition.Inside">
+                                        <AccumulationChartDataLabelFont FontWeight="600"></AccumulationChartDataLabelFont>
+                                    </AccumulationDataLabelSettings>
+                                </AccumulationChartSeries>
+                            </AccumulationChartSeriesCollection>
+                        </SfAccumulationChart>
+                    </div>
+                    <div align="center" class="col-3">
+                        <SfAccumulationChart Title="Linea 4" EnableAnimation="false" Height="230px">
+                            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                            <AccumulationChartSeriesCollection>
+                                <AccumulationChartSeries DataSource="@ChartPoints1" XName="Meta" YName="Meta" Name="ProductQty" StartAngle="270" EndAngle="90" Radius="90%" InnerRadius="40%" Explode="true">
+                                    <AccumulationDataLabelSettings Visible="true" Name="" Position="AccumulationLabelPosition.Inside">
+                                        <AccumulationChartDataLabelFont FontWeight="600"></AccumulationChartDataLabelFont>
+                                    </AccumulationDataLabelSettings>
+                                </AccumulationChartSeries>
+                            </AccumulationChartSeriesCollection>
+                        </SfAccumulationChart>
+                    </div>
+                </div>
+                <div class="row">
+                    <div align="center" class="col-3">
+                        <SfAccumulationChart Title="Linea 5" EnableAnimation="false" Height="230px">
+                            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                            <AccumulationChartSeriesCollection>
+                                <AccumulationChartSeries DataSource="@ChartPoints1" XName="Meta" YName="Meta" Name="ProductQty" StartAngle="270" EndAngle="90" Radius="90%" InnerRadius="40%" Explode="true">
+                                    <AccumulationDataLabelSettings Visible="true" Name="" Position="AccumulationLabelPosition.Inside">
+                                        <AccumulationChartDataLabelFont FontWeight="600"></AccumulationChartDataLabelFont>
+                                    </AccumulationDataLabelSettings>
+                                </AccumulationChartSeries>
+                            </AccumulationChartSeriesCollection>
+                        </SfAccumulationChart>
+                    </div>
+                    <div align="center" class="col-3">
+                        <SfAccumulationChart Title="Linea 6" EnableAnimation="false" Height="230px">
+                            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                            <AccumulationChartSeriesCollection>
+                                <AccumulationChartSeries DataSource="@ChartPoints1" XName="Meta" YName="Meta" Name="ProductQty" StartAngle="270" EndAngle="90" Radius="90%" InnerRadius="40%" Explode="true">
+                                    <AccumulationDataLabelSettings Visible="true" Name="" Position="AccumulationLabelPosition.Inside">
+                                        <AccumulationChartDataLabelFont FontWeight="600"></AccumulationChartDataLabelFont>
+                                    </AccumulationDataLabelSettings>
+                                </AccumulationChartSeries>
+                            </AccumulationChartSeriesCollection>
+                        </SfAccumulationChart>
+                    </div>
+                    <div align="center" class="col-3">
+                        <SfAccumulationChart Title="Linea 7" EnableAnimation="false" Height="230px">
+                            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                            <AccumulationChartSeriesCollection>
+                                <AccumulationChartSeries DataSource="@ChartPoints1" XName="Meta" YName="Meta" Name="ProductQty" StartAngle="270" EndAngle="90" Radius="90%" InnerRadius="40%" Explode="true">
+                                    <AccumulationDataLabelSettings Visible="true" Name="" Position="AccumulationLabelPosition.Inside">
+                                        <AccumulationChartDataLabelFont FontWeight="600"></AccumulationChartDataLabelFont>
+                                    </AccumulationDataLabelSettings>
+                                </AccumulationChartSeries>
+                            </AccumulationChartSeriesCollection>
+                        </SfAccumulationChart>
+                    </div>
+                    <div align="center" class="col-3">
+                        <SfAccumulationChart Title="Linea 8" EnableAnimation="false" Height="230px">
+                            <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                            <AccumulationChartSeriesCollection>
+                                <AccumulationChartSeries DataSource="@ChartPoints1" XName="Meta" YName="Meta" Name="ProductQty" StartAngle="270" EndAngle="90" Radius="90%" InnerRadius="40%" Explode="true">
+                                    <AccumulationDataLabelSettings Visible="true" Name="" Position="AccumulationLabelPosition.Inside">
+                                        <AccumulationChartDataLabelFont FontWeight="600"></AccumulationChartDataLabelFont>
+                                    </AccumulationDataLabelSettings>
+                                </AccumulationChartSeries>
+                            </AccumulationChartSeriesCollection>
+                        </SfAccumulationChart>
+                    </div>
+                </div>
+
+            </div>
+                        <!-- END card-body -->
+                    </div>
+                    <!-- END card -->
+                </div>
+            </div>
+
+<!-- END 공장 라인별 달성현황 col-6 -->
+
+<style>
+    td {
+        font-family: "Roboto", "Segoe UI", "GeezaPro", "DejaVu Serif", "sans-serif";
+        font-weight: 600;
+    }
+
+    .spark {
+        border: 1px solid rgb(209, 209, 209);
+        border-radius: 2px;
+        width: 100%;
+    }
+
+    .sparent {
+        height: 110px;
+        margin-left: 3%;
+        margin-right: 0%;
+    }
+
+    .sparkpie {
+        float: left;
+        margin-top: 15px;
+        margin-left: 2%;
+    }
+
+    .pieparent {
+        width: 93%;
+    }
+
+    .pietext {
+        float: left;
+        margin-left: 25%;
+    }
+
+    .sparktext {
+        text-anchor: middle;
+        width: 100%;
+    }
+</style>
+
+
 <Intsa.Pages.Components.ApprovalForm @ref="EditorFormReference"
                                      Model="model"
                                      CreateCallback="CreateOrEdit"
                                      EditCallback="CreateOrEdit">
     <FormTitle>@FormTitle</FormTitle>
 </Intsa.Pages.Components.ApprovalForm>
+
