@@ -27,15 +27,18 @@
                 <SfGrid DataSource="@YarnInbounds" Query="@GetYarnInboundQuery(selectedID)" AllowPaging="true">
                     <GridPageSettings PageSize="8"></GridPageSettings>
                     <GridColumns>
-                        <GridColumn Field=@nameof(YarnInbound.ID) HeaderText="ID" Width="30"> </GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Requestno) HeaderText="Request#" Width="90"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.ID) HeaderText="ID" Width="60"> </GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Class) HeaderText="Classification" Width="150"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Fecha) HeaderText="Fecha" Format="d" Width="100"></GridColumn>
                         <GridColumn Field=@nameof(YarnInbound.Yarn) HeaderText="Yarn" Width="200"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.YarnCode) HeaderText="Yarn Code" Width="50"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Detail) HeaderText="Detail" Width="100"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Outbound) HeaderText="Out" Width="50"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Inbound) HeaderText="In" Width="100"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Lotno) HeaderText="Lot#" Width="100"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Rolls) HeaderText="Rolls" Width="70"></GridColumn>
                         <GridColumn Field=@nameof(YarnInbound.Qty) HeaderText="Q'ty" Width="70"></GridColumn>
                         <GridColumn Field=@nameof(YarnInbound.Unit) HeaderText="Unit" Width="70"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Unit) HeaderText="U/P" Width="70"></GridColumn>
-                        <GridColumn Field=@nameof(YarnInbound.Uprice) HeaderText="Amount($)" Width="70"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Fileno) HeaderText="File#" Width="90"></GridColumn>
+                        <GridColumn Field=@nameof(YarnInbound.Envio) HeaderText="Envio" Width="70"></GridColumn>
                     </GridColumns>
                 </SfGrid>
             }
@@ -53,12 +56,13 @@
     </GridFilterSettings>
 
     <GridColumns>
-        <GridColumn Field=@nameof(YarnMaster.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(YarnMaster.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
-        <GridColumn Field=@nameof(YarnMaster.Purchaseno) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(YarnMaster.Supplier) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(YarnMaster.ShipTo) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(YarnMaster.Status) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="60"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.Yarn) TextAlign="TextAlign.Left" Width="180"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.YarnCode) TextAlign="TextAlign.Left" Width="90"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.Detail) TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.Qty) HeaderText="Q'ty" TextAlign="TextAlign.Right" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(YarnMaster.Unit) HeaderText="Unit" TextAlign="TextAlign.Center" Width="70"></GridColumn>
     </GridColumns>
 
 </SfGrid>
@@ -237,25 +241,26 @@
             ID = 1000 + x,
             TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
             RegDate = DateTime.Now.AddDays(-x),
-            DeliveryDate = DateTime.Now.AddDays(-x),
-            SupplierDate = DateTime.Now.AddDays(-x),
-            Status = "0",
+            Yarn = "150D/95F 100% POLYESTER FILAMENT",
+            YarnCode = "YA0021",
+            Qty = new Random().Next(9000),
+            Unit = (new string[] { "Pcs", "Kgs" })[new Random().Next(2)],
         }).ToList();
 
         YarnInbounds = Enumerable.Range(1, 750).Select(x => new YarnInbound()
         {
             ID = 1000 + x,
             PID = 1000 + (new Random().Next(75)),
-            Requestno = "YR-2021-000019",
             Yarn = "150D/95F 100% POLYESTER FILAMENT",
-            YarnCode = "YA0021",
-            Detail = (1000 + x).ToString(),
+            Class = (new string[] { "1. 방적공장 → 편직처", "2. 편직처 → 방적공장(반송)", "3. 편직처 → 편직처(이동)", "4. 편직처 → 선염", "5. 방적공장 → 선염" })[new Random().Next(5)],
+            Outbound = "",
+            Inbound = "",
+            Lotno = (1000 + x).ToString(),
+            Rolls = new Random().Next(100),
+            Fecha = DateTime.Now.AddDays(-x),
             RegDate = DateTime.Now.AddDays(-x),
             Qty = new Random().Next(9000),
             Unit = (new string[] { "Pcs", "Kgs" })[new Random().Next(2)],
-            Uprice = Convert.ToDecimal(new Random().NextDouble()) * 10m,
-            Amount = Convert.ToDecimal(new Random().NextDouble()) * 100m,
-            Status = "0",
         }).ToList();
 
     }
@@ -283,44 +288,6 @@
         [Display(Name = "Created")]
         [Editable(false)]
         public DateTime? RegDate { get; set; }
-        [Display(Name = "Purchase#")]
-        public string Purchaseno { get; set; }
-        [Display(Name = "Purpose of")]
-        public string PurposeOf { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Delivery")]
-        public DateTime? DeliveryDate { get; set; }
-        [DataType(DataType.Date)]
-        [Display(Name = "Supplier")]
-        public DateTime? SupplierDate { get; set; }
-
-        [Display(Name = "Supplier")]
-        public string Supplier { get; set; }
-        [Display(Name = "ShipTo")]
-        public string ShipTo { get; set; }
-        [Display(Name = "Status")]
-        public string Status { get; set; }
-    }
-    /// <summary>
-    /// 원사 입고데이터
-    /// </summary>
-    public class YarnInbound
-    {
-        [Key]
-        [Required(ErrorMessage = "ID should not be empty")]
-        [Display(Name = "ID")]
-        public int? ID { get; set; }
-        [Display(Name = "PID")]
-        public int PID { get; set; }
-        [Display(Name = "Created By")]
-        public string CreatedBy { get; set; }
-        [DataType(DataType.Date)]
-        [Display(Name = "Created")]
-        [Editable(false)]
-        public DateTime? RegDate { get; set; }
-        [Display(Name = "Request#")]
-        public string Requestno { get; set; }
         [Display(Name = "Yarn")]
         public string Yarn { get; set; }
         [Display(Name = "Yarn Code")]
@@ -332,12 +299,50 @@
         public int Qty { get; set; }
         [Display(Name = "Unit")]
         public string Unit { get; set; }
-        [Display(Name = "U/P")]
-        public decimal Uprice { get; set; }
-        [Display(Name = "Amount($)")]
-        public decimal Amount { get; set; }
-        [Display(Name = "Status")]
-        public string Status { get; set; }
+    }
+    /// <summary>
+    /// 원사 입고데이터
+    /// </summary>
+    public class YarnInbound
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "PID")]
+        public int PID { get; set; }        // Content ID
+        [Display(Name = "Created By")]
+        public string CreatedBy { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Created")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+
+        [Display(Name = "Classification")]
+        public string Class { get; set; }
+        [Display(Name = "Fileno")]
+        public string Fileno { get; set; }
+        [Display(Name = "Fecha")]
+        [DataType(DataType.Date)]
+        [Editable(false)]
+        public DateTime? Fecha { get; set; }
+        [Display(Name = "Yarn")]
+        public string Yarn { get; set; }
+        [Display(Name = "Outbound")]
+        public string Outbound { get; set; }
+        [Display(Name = "Inbound")]
+        public string Inbound { get; set; }
+        [Display(Name = "Lot#")]
+        public string Lotno { get; set; }
+        [Display(Name = "Rolls")]
+        public int Rolls { get; set; }
+
+        [Display(Name = "Q'ty")]
+        public double Qty { get; set; }
+        [Display(Name = "Unit")]
+        public string Unit { get; set; }
+        [Display(Name = "Envio#")]
+        public string Envio { get; set; }
     }
 
     public Query GetYarnMasterQuery(YarnMaster value)
