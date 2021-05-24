@@ -1,0 +1,336 @@
+﻿@page "/Sales/Analysis/OrderSummary"
+@page "/Sales/Analysis/OrderSummary/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Order Status
+    <small></small>
+</h1>
+
+@{ 
+    var Initial = (new string[] { "Team" }); 
+}
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@OrderStatuses" AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems" AllowGrouping="true">
+    <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
+    <GridAggregates>
+        <GridAggregate>
+            <GridAggregateColumns>
+                <GridAggregateColumn Field=@nameof(OrderStatus.OrderQty) Type="AggregateType.Sum" Format="N">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.Uprice) Type="AggregateType.Average" Format="C2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Average</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+
+                <GridAggregateColumn Field=@nameof(OrderStatus.OrderAmt) Type="AggregateType.Sum" Format="C2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.TargetAmt) Type="AggregateType.Sum" Format="C2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.TargetBal) Type="AggregateType.Sum" Format="C2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.TargetRate) Type="AggregateType.Average" Format="P2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Average</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.ShippedQty) Type="AggregateType.Sum" Format="N">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.ShippedAmt) Type="AggregateType.Sum" Format="C2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.NotShipQty) Type="AggregateType.Sum" Format="N">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.NotShipAmt) Type="AggregateType.Sum" Format="C2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.OvershipQty) Type="AggregateType.Sum" Format="N">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.OvershipAmt) Type="AggregateType.Sum" Format="C2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.ShortageQty) Type="AggregateType.Sum" Format="N">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.ShortageAmt) Type="AggregateType.Sum" Format="C2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.OvershipRates) Type="AggregateType.Average" Format="P2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Average</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.AmountRates) Type="AggregateType.Average" Format="P2">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Average</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                </GridAggregateColumn>
+
+            </GridAggregateColumns>
+        </GridAggregate>
+    </GridAggregates>
+    <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OrderStatus"></GridEvents>
+    <GridColumns>
+        <GridColumn Field=@nameof(OrderStatus.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false">
+        </GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.Team) TextAlign="TextAlign.Left" Width="120">
+        </GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.Buyer) TextAlign="TextAlign.Left" Width="120">
+        </GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.OrderQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.Uprice) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.OrderAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn HeaderText="오더 수주 목표(수정목표)">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.TargetAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.TargetBal) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.TargetRate) Format="P2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.ShippedQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.ShippedAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn HeaderText="미선적">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.NotShipQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.NotShipAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="Over Ship">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OvershipQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OvershipAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="Shortage">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.ShortageQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShortageAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.OvershipRates) Format="P2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.AmountRates) Format="P2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<OrderStatus> DefaultGrid;
+    public object SelectedData;
+
+    public List<OrderStatus> OrderStatuses { get; set; }
+    public string val = "";
+    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", };
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        OrderStatuses = Enumerable.Range(1, 45).Select(x => new OrderStatus()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            OrderQty = new Random().Next(600000),
+            Uprice = Convert.ToDecimal(new Random().NextDouble() * 10.0f),
+            OrderAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            TargetAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            TargetBal = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            TargetRate = Convert.ToDecimal(new Random().NextDouble() * 1.0f),
+            ShippedQty = new Random().Next(600000),
+            ShippedAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            NotShipQty = new Random().Next(10000),
+            NotShipAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            OvershipQty = new Random().Next(10000),
+            OvershipAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            ShortageQty = new Random().Next(10000),
+            ShortageAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            OvershipRates = Convert.ToDecimal(new Random().NextDouble() * 1.0f),
+            AmountRates = Convert.ToDecimal(new Random().NextDouble() * 1.0f),
+            Created = DateTime.Now.AddDays(-x),
+        }).ToList();
+    }
+
+    public class OrderStatus
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+
+        [Display(Name = "오더수주량")]
+        public int OrderQty { get; set; }
+        [Display(Name = "U/Price")]
+        public decimal Uprice { get; set; }
+        [Display(Name = "오더수주($)")]
+        public decimal OrderAmt { get; set; }
+        [Display(Name = "수주목표($)")]
+        public decimal TargetAmt { get; set; }
+        [Display(Name = "목표Bal.($)")]
+        public decimal TargetBal { get; set; }
+        [Display(Name = "달성률")]
+        public decimal TargetRate { get; set; }
+        [Display(Name = "출고량")]
+        public int ShippedQty { get; set; }
+        [Display(Name = "출고($)")]
+        public decimal ShippedAmt { get; set; }
+        [Display(Name = "미선적Q'ty")]
+        public int NotShipQty { get; set; }
+        [Display(Name = "미선적($)")]
+        public decimal NotShipAmt { get; set; }
+        [Display(Name = "Overship Q'ty")]
+        public int OvershipQty { get; set; }
+        [Display(Name = "Overship($)")]
+        public decimal OvershipAmt { get; set; }
+        [Display(Name = "Shortage Q'ty")]
+        public int ShortageQty { get; set; }
+        [Display(Name = "Shortage Amt")]
+        public decimal ShortageAmt { get; set; }
+        [Display(Name = "Overship %")]
+        public decimal OvershipRates { get; set; }
+        [Display(Name = "%")]
+        public decimal AmountRates { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+    }
+
+
+}

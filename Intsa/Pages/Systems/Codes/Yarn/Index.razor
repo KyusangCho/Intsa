@@ -1,0 +1,156 @@
+﻿@page "/Systems/Codes/Yarn"
+@page "/Systems/Codes/Yarn/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Yarn Code
+    <small>원사코드 관리</small>
+</h1>
+
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@YarnCodes" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="YarnCode"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="Contents" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(YarnCode.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(YarnCode.Codigo) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(YarnCode.Contents) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(YarnCode.Pattern) TextAlign="TextAlign.Left" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(YarnCode.Spec) TextAlign="TextAlign.Left" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(YarnCode.Created) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(YarnCode.Activate) TextAlign="TextAlign.Left" Width="50"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<YarnCode> DefaultGrid;
+    private SfDialog Dialog;
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    public void OnActionBegin(ActionEventArgs<YarnCode> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<YarnCode> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<YarnCode> YarnCodes { get; set; }
+    public string val = "";
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ExcelExport", "Search", };
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        YarnCodes = Enumerable.Range(1, 25).Select(x => new YarnCode()
+        {
+            ID = 1000 + x,
+            Codigo = (new string[] { "YA0002", "YA0003", "YA0004", "YA0005", "YA0006", "YA0007" })[new Random().Next(6)],
+            Contents = (new string[] { "18/1 100% COTTON CPRS", "16/1 90% COTTON / 10% POLYESTER KPRS 10% HEATHER GREY", "100D/96F 100% POLYESTER FILAMENT", "150D/132F 100% BLACK POLYESTER FILAMENT", "150D/144F 100% POLYESTER FILAMENT", "150D/34F 100% POLYESTER FILAMENT", "150D/48F 100% POLYESTER FILAMENT", "150D/96F 100% POLYESTER FILAMENT", })[new Random().Next(8)],
+            Created = DateTime.Now.AddDays(-x),
+            Activate = 1, 
+        }).ToList();
+    }
+
+    public class YarnCode
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Codigo")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Codigo { get; set; }
+        [Display(Name = "Contents")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Contents { get; set; }
+
+        [Display(Name = "Code Pattern")]
+        public string Pattern { get; set; }
+        [Display(Name = "Spec")]
+        public string Spec { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        [Editable(false)]
+        public DateTime? Created { get; set; }
+        [Display(Name = "Activate")]
+        public int? Activate { get; set; }
+
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+
+        }
+    }
+
+}

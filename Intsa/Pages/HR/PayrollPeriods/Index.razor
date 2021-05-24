@@ -1,0 +1,233 @@
+﻿@page "/HR/PayrollPeriods"
+@page "/HR/PayrollPeriods/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Payroll Periods
+    <small>기간별 급여 지급현황</small>
+</h1>
+
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Payrolls" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Payroll"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="Center" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Payroll.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Center) TextAlign="TextAlign.Left" EditorSettings="@CenterIDEditParams" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Dept) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Team) TextAlign="TextAlign.Left" EditorSettings="@TeamIDEditParams" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.User) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.PayDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount1) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount2) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount3) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount4) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount5) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount6) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount7) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount8) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount9) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Amount10) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(Payroll.Remark) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Payroll> DefaultGrid;
+    private SfDialog Dialog;
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    public void OnActionBegin(ActionEventArgs<Payroll> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Payroll> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<Payroll> Payrolls { get; set; }
+    public string val = "";
+    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "Search", };
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        Payrolls = Enumerable.Range(1, 45).Select(x => new Payroll()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Center = (new string[] { "Head Office", "INT Sewing Plant I", "JS International", "Development", "JS Warehouse", "Recepsa Warehouse", "People & Arts", "Apparel Links" })[new Random().Next(8)],
+            PayDate = DateTime.Now.AddDays(-x),
+
+            Amount1 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount2 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount3 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount4 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount5 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount6 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount7 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount8 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount9 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Amount10 = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+
+            Remark = "",
+            Created = DateTime.Now.AddDays(-x),
+        }).ToList();
+    }
+
+    public static List<Payroll> LocalDataTeam = new List<Payroll> {
+            new Payroll() { Team= "Administration" },
+            new Payroll() { Team= "Team1A" },
+            new Payroll() { Team= "Team1C" },
+            new Payroll() { Team= "Team2A" },
+            new Payroll() { Team= "Team2B" },
+            new Payroll() { Team= "Team3A" },
+            new Payroll() { Team= "Team3B" },
+    };
+
+
+    public IEditorSettings TeamIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataTeam, AllowFiltering = true }
+    };
+    public IEditorSettings CenterIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataCenter, AllowFiltering = true }
+    };
+
+
+    public class Payroll
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "비용센터")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Center { get; set; }
+        [Display(Name = "부서")]
+        public string Dept { get; set; }
+        [Display(Name = "팀")]
+        public string Team { get; set; }
+        [Display(Name = "이름")]
+        public string User { get; set; }
+        [Display(Name = "계좌번호")]
+        public int Accountno { get; set; }
+        [Display(Name = "기준일")]
+        [DataType(DataType.Date)]
+        public DateTime PayDate { get; set; }
+        [Display(Name = "비고")]
+        public string Remark { get; set; }
+
+        [Display(Name = "급여")]
+        public decimal Amount1 { get; set; }
+        [Display(Name = "보너스")]
+        public decimal Amount2 { get; set; }
+        [Display(Name = "연차정산")]
+        public decimal Amount3 { get; set; }
+        [Display(Name = "급여합계")]
+        public decimal Amount4 { get; set; }
+        [Display(Name = "Q Planilla 급여")]
+        public decimal Amount5 { get; set; }
+        [Display(Name = "Q 기타 급여 정산")]
+        public decimal Amount6 { get; set; }
+        [Display(Name = "가족 보험 공제")]
+        public decimal Amount7 { get; set; }
+        [Display(Name = "통신비 추가사용")]
+        public decimal Amount8 { get; set; }
+        [Display(Name = "대여금 공제")]
+        public decimal Amount9 { get; set; }
+        [Display(Name = "$ 송금액")]
+        public decimal Amount10 { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+
+        }
+    }
+
+
+    public static List<Payroll> LocalDataCenter = new List<Payroll> {
+            new Payroll() { Center= "Head Office" },
+            new Payroll() { Center= "INT Sewing Plant I" },
+            new Payroll() { Center= "JS International" },
+            new Payroll() { Center= "Development" },
+            new Payroll() { Center= "JS Warehouse" },
+            new Payroll() { Center= "Recepsa Warehouse" },
+            new Payroll() { Center= "People & Arts" },
+            new Payroll() { Center= "Apparel Links" },
+    };
+}

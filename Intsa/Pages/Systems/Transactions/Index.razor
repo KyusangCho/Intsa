@@ -1,0 +1,193 @@
+﻿@page "/Systems/Transactions"
+@page "/Systems/Transactions/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Transaction History
+    <small>작업이력 관리</small>
+</h1>
+
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Transactions" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Transaction"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="Module" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Transaction.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.Module) HeaderText="Type" EditType="EditType.DropDownEdit" EditorSettings="@ClassIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.Center) HeaderText="Center" TextAlign="TextAlign.Left" EditType="EditType.DropDownEdit" EditorSettings="@CenterIDEditParams" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.Dept) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.Team) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.User) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.PrimaryKey) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.Docno) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.Description) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.Created) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Transaction> DefaultGrid;
+    private SfDialog Dialog;
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    public void OnActionBegin(ActionEventArgs<Transaction> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Transaction> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<Transaction> Transactions { get; set; }
+    public string val = "";
+    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "Search", }; 
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        Transactions = Enumerable.Range(1, 250).Select(x => new Transaction()
+        {
+            ID = 1000 + x,
+            Module = (new string[] { "System", "Code" })[new Random().Next(2)],
+            Center = (new string[] { "Head Office", "INT Sewing Plant I", "JS International", "Development", "JS Warehouse", "Recepsa Warehouse", "People & Arts", "Apparel Links" })[new Random().Next(8)],
+            PrimaryKey = 1000 + x,
+            Created = DateTime.Now.AddDays(-x),
+        }).ToList();
+    }
+
+    public IEditorSettings ClassIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataClass, AllowFiltering = true }
+    };
+    public IEditorSettings CenterIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataCenter, AllowFiltering = true }
+    };
+
+
+    public class Transaction
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Module")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Module { get; set; }
+        [Display(Name = "Center")]
+        public string Center { get; set; }
+        [Display(Name = "DeptID")]
+        public string Dept { get; set; }
+        [Display(Name = "TeamID")]
+        public string Team { get; set; }
+        [Display(Name = "UserID")]
+        public string User { get; set; }
+        [Display(Name = "PrimaryKey")]
+        public int PrimaryKey { get; set; }
+        [Display(Name = "Doc#")]
+        public string Docno { get; set; }
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        [Editable(false)]
+        public DateTime? Created { get; set; }
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+
+        }
+    }
+
+    public static List<Transaction> LocalDataClass = new List<Transaction> {
+            new Transaction() { Module= "Dashboard" },
+            new Transaction() { Module= "System" },
+            new Transaction() { Module= "Code" },
+            new Transaction() { Module= "Order" },
+            new Transaction() { Module= "Cost" },
+            new Transaction() { Module= "Yarn" },
+            new Transaction() { Module= "Payment" },
+            new Transaction() { Module= "Factory" },
+    };
+
+    public static List<Transaction> LocalDataCenter = new List<Transaction> {
+            new Transaction() { Center= "Head Office" },
+            new Transaction() { Center= "INT Sewing Plant I" },
+            new Transaction() { Center= "JS International" },
+            new Transaction() { Center= "Development" },
+            new Transaction() { Center= "JS Warehouse" },
+            new Transaction() { Center= "Recepsa Warehouse" },
+            new Transaction() { Center= "People & Arts" },
+            new Transaction() { Center= "Apparel Links" },
+    };
+}

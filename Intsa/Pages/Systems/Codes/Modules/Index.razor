@@ -1,0 +1,183 @@
+﻿@page "/Systems/Codes/Modules"
+@page "/Systems/Codes/Modules/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Programs
+    <small>프로그램 관리</small>
+</h1>
+
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Modules" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Module"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="ClassID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Module.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Module.Type) HeaderText="Type" EditType="EditType.DropDownEdit" EditorSettings="@TypeIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Module.ClassID) TextAlign="TextAlign.Left" EditType="EditType.DropDownEdit" EditorSettings="@ClassIDEditParams" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Module.ModuleName) HeaderText="Module" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Module.Description) HeaderText="Description" TextAlign="TextAlign.Left" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Module.Created) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Module> DefaultGrid;
+    private SfDialog Dialog;
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    public void OnActionBegin(ActionEventArgs<Module> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Module> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<Module> Modules { get; set; }
+    public string val = "";
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ExcelExport", "Search", }; 
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        Modules = Enumerable.Range(1, 25).Select(x => new Module()
+        {
+            ID = 1000 + x,
+            Type = (new string[] { "Manage", "Status" })[new Random().Next(2)],
+            ClassID = (new string[] { "Dashboard", "System", "Code", "Order", "Cost", "Yarn", "Payment", "Factory", })[new Random().Next(8)],
+            Created = DateTime.Now.AddDays(-x),
+        }).ToList();
+    }
+
+
+    public static List<Module> LocalDataClass = new List<Module> {
+            new Module() { ClassID= "Dashboard" },
+            new Module() { ClassID= "System" },
+            new Module() { ClassID= "Code" },
+            new Module() { ClassID= "Order" },
+            new Module() { ClassID= "Cost" },
+            new Module() { ClassID= "Yarn" },
+            new Module() { ClassID= "Payment" },
+            new Module() { ClassID= "Factory" },
+    };
+
+    public IEditorSettings TypeIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataType, AllowFiltering = true }
+    };
+    public IEditorSettings ClassIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataClass, AllowFiltering = true }
+    };
+
+
+    public class Module
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Class")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string ClassID { get; set; }
+        [Display(Name = "Type")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Type { get; set; }
+
+        [Display(Name = "Module Name")]
+        public string ModuleName { get; set; }
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        [Editable(false)]
+        public DateTime? Created { get; set; }
+        [Display(Name = "Activate")]
+        public int? Activate { get; set; }
+
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+
+        }
+    }
+
+    public static List<Module> LocalDataType = new List<Module> {
+            new Module() { Type= "Manage" },
+            new Module() { Type= "Status" },
+    };
+
+}

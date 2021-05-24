@@ -1,0 +1,170 @@
+﻿@page "/Systems/Codes/Fabric"
+@page "/Systems/Codes/Fabric/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Fabric Code
+    <small>원단코드 관리</small>
+</h1>
+
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@FabricCodes" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="FabricCode"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="Name" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(FabricCode.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.Class) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.Name) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.Sortno) TextAlign="TextAlign.Left" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.SubClass1) TextAlign="TextAlign.Left" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.SubClass2) TextAlign="TextAlign.Left" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.SubClass3) TextAlign="TextAlign.Left" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.Remark) TextAlign="TextAlign.Left" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.Created) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(FabricCode.Activate) TextAlign="TextAlign.Left" Width="50"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<FabricCode> DefaultGrid;
+    private SfDialog Dialog;
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    public void OnActionBegin(ActionEventArgs<FabricCode> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<FabricCode> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<FabricCode> FabricCodes { get; set; }
+    public string val = "";
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ExcelExport", "Search", };
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        FabricCodes = Enumerable.Range(1, 25).Select(x => new FabricCode()
+        {
+            ID = 1000 + x,
+            Class = "",
+            Name = "",
+            Sortno = "",
+            SubClass1 = "",
+            SubClass2 = "",
+            SubClass3 = "",
+            Remark = "",
+            Created = DateTime.Now.AddDays(-x),
+            Activate = 1,
+        }).ToList();
+    }
+
+    public class FabricCode
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Class")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Class { get; set; }
+        [Display(Name = "Name")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Name { get; set; }
+
+        [Display(Name = "Sort#")]
+        public string Sortno { get; set; }
+        [Display(Name = "Sub Class 1")]
+        public string SubClass1 { get; set; }
+        [Display(Name = "Sub Class 2")]
+        public string SubClass2 { get; set; }
+        [Display(Name = "Sub Class 3")]
+        public string SubClass3 { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        [Editable(false)]
+        public DateTime? Created { get; set; }
+        [Display(Name = "Activate")]
+        public int? Activate { get; set; }
+
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+
+        }
+    }
+
+}

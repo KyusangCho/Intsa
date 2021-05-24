@@ -2,6 +2,7 @@
 @page "/Sales/FileNumber/Index"
 
 @using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.Navigations
 @using System.ComponentModel.DataAnnotations
 @using Syncfusion.Blazor.Popups
@@ -9,12 +10,36 @@
 
 <h1 class="page-header mb-3">
     File Number
-    <small>파일 관리</small>
+    <small>영업 파일번호 관리</small>
 </h1>
 
 
-<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@FileNumbers" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+<SfGrid ID="Grid" @ref="DefaultGridM" DataSource="@FileNumbers" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
         Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var selectedID = (context as FileNumber);
+
+                <SfGrid DataSource="@FileDetails" Query="@GetFileDetailQuery(selectedID)"
+                        Toolbar="DetailToolbaritems" AllowExcelExport="true"
+                        AllowPaging="true">
+                    <GridPageSettings PageSize="8"></GridPageSettings>
+                    <GridColumns>
+                        <GridColumn Field=@nameof(FileDetail.ID) HeaderText="ID" Width="60"> </GridColumn>
+                        <GridColumn Field=@nameof(FileDetail.Pono) HeaderText="PO#/Voucher#" Width="130"></GridColumn>
+                        <GridColumn Field=@nameof(FileDetail.RegDate) HeaderText="Created" Format="d" Width="100"></GridColumn>
+                        <GridColumn Field=@nameof(FileDetail.Status) HeaderText="Status" Width="90"></GridColumn>
+                        <GridColumn HeaderText="" Width="400"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            }
+        </DetailTemplate>
+    </GridTemplates>
+       
+    
+    
     <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="FileNumber"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
     <GridPageSettings PageSize="22"></GridPageSettings>
@@ -60,7 +85,8 @@
 
 @code {
 
-    private SfGrid<FileNumber> DefaultGrid;
+    private SfGrid<FileNumber> DefaultGridM;
+    private SfGrid<FileDetail> DefaultGridD;
     private SfDialog Dialog;
     public object SelectedData;
     public bool flag = true;
@@ -79,7 +105,7 @@
         }
         else if (Args.RequestType.ToString() == "Excel Export")
         {
-            this.DefaultGrid.ExcelExport();
+            this.DefaultGridM.ExcelExport();
         }
     }
     public void RowSelectHandler(RowSelectEventArgs<FileNumber> Args)
@@ -88,7 +114,7 @@
     }
     private void OkClick()
     {
-        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        DefaultGridM.DeleteRecord();   //delete the record programatically while clikcing OK button
         Dialog.Hide();
     }
     private void CancelClick()
@@ -97,11 +123,22 @@
     }
 
     public List<FileNumber> FileNumbers { get; set; }
+    public List<FileDetail> FileDetails { get; set; }
     public string val = "";
-    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete", "ExcelExport", "Search",
-        new ItemModel() { Text="Copy", TooltipText = "Copy", PrefixIcon = "e-click", Id="Copy" } };
+    private List<Object> Toolbaritems = new List<Object>() {
+        new ItemModel() { Text="New Card", TooltipText = "New Card", PrefixIcon = "e-click", Id="NewCard" },
+        "Edit", "Delete", "ExcelExport", "Search",
+    };
+    private List<Object> DetailToolbaritems = new List<Object>() {  
+        "ExcelExport", "Search",
+    };
 
-    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+
+    private List<ContextMenuItemModel> ContextMenuitems = new List<ContextMenuItemModel> {
+        new ContextMenuItemModel() { Text = "Order", Target=".e-content", Id = "Order" },
+        new ContextMenuItemModel() { Text = "OrderCard", Target=".e-content", Id = "OrderCard" },
+    };
 
     protected override void OnInitialized()
     {
@@ -113,6 +150,15 @@
             Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(5)],
             Handler = "",
             Remark = "",
+            RegDate = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+
+        FileDetails = Enumerable.Range(1, 750).Select(x => new FileDetail()
+        {
+            ID = 1000 + x,
+            PID = 1000 + (new Random().Next(75)),
+            Pono = "T21050" + x.ToString("0000"),
             RegDate = DateTime.Now.AddDays(-x),
         }).ToList();
     }
@@ -140,7 +186,7 @@
     {
         [Key]
         [Required(ErrorMessage = "ID should not be empty")]
-        [Display(Name = "User ID")]
+        [Display(Name = "ID")]
         public int? ID { get; set; }
         [Display(Name = "Team Name")]
         [Required(ErrorMessage = "Field should not be empty")]
@@ -165,6 +211,36 @@
         public int? Status { get; set; }
     }
 
+    public class FileDetail
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "PID")]
+        public int? PID { get; set; }
+        [Display(Name = "PO#")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Pono { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Reg Date")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+        [Display(Name = "Status")]
+        public int? Status { get; set; }
+    }
+
+    public Query GetFileMasterQuery(FileNumber value)
+    {
+        return new Query().Where("ID", "equal", value.ID);
+    }
+    public Query GetFileDetailQuery(FileNumber value)
+    {
+        return new Query().Where("PID", "equal", value.ID);
+    }
+
+
     public class Team
     {
         public string TeamID { get; set; }
@@ -174,7 +250,7 @@
     {
         if (args.Item.Id == "Grid_excelexport")
         {
-            await this.DefaultGrid.ExcelExport();
+            await this.DefaultGridM.ExcelExport();
         }
         else if (args.Item.Id == "Transfer")
         {
