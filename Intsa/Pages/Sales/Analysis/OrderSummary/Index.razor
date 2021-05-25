@@ -6,6 +6,7 @@
 @using System.ComponentModel.DataAnnotations
 @using Syncfusion.Blazor.Popups
 @using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Calendars
 
 <h1 class="page-header mb-3">
     Order Status
@@ -16,9 +17,30 @@
     var Initial = (new string[] { "Team" }); 
 }
 
-<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@OrderStatuses" AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
-        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems" AllowGrouping="true">
-    <GridGroupSettings ShowDropArea="false" Columns="@Initial"></GridGroupSettings>
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@OrderStatuses"
+        AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+        AllowExcelExport="true" AllowPdfExport="true"
+        AllowGrouping="true">
+    <SfToolbar>
+        <ToolbarItems>
+            <ToolbarItem Type="ItemType.Input" Width="100">
+                <Template>
+                    <SfDatePicker TValue="DateTime?" Value="@DateValue" Format="yyyy-MM-dd"></SfDatePicker>
+                </Template>
+            </ToolbarItem>
+            <ToolbarItem Type="ItemType.Separator"></ToolbarItem>
+            <ToolbarItem Type="ItemType.Button" Text="Excel Export" PrefixIcon="e-excel" Id="Grid_excelexport" OnClick="@ExcelExport_Clicked"></ToolbarItem>
+            <ToolbarItem Type="ItemType.Button" Text="PDF Export" PrefixIcon="e-pdf" Id="Grid_pdfexport" OnClick="@ExcelExport_Clicked"></ToolbarItem>
+        </ToolbarItems>
+    </SfToolbar>
+    <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
+        <CaptionTemplate>
+            @{
+                @*var order = (context as CaptionTemplateContext);*@
+                <div></div>
+            }
+        </CaptionTemplate>
+    </GridGroupSettings>
     <GridAggregates>
         <GridAggregate>
             <GridAggregateColumns>
@@ -31,6 +53,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.Uprice) Type="AggregateType.Average" Format="C2">
                     <GroupFooterTemplate>
@@ -41,6 +71,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Average</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
 
                 <GridAggregateColumn Field=@nameof(OrderStatus.OrderAmt) Type="AggregateType.Sum" Format="C2">
@@ -52,6 +90,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.TargetAmt) Type="AggregateType.Sum" Format="C2">
                     <GroupFooterTemplate>
@@ -62,6 +108,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.TargetBal) Type="AggregateType.Sum" Format="C2">
                     <GroupFooterTemplate>
@@ -72,6 +126,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.TargetRate) Type="AggregateType.Average" Format="P2">
                     <GroupFooterTemplate>
@@ -82,6 +144,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Average</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.ShippedQty) Type="AggregateType.Sum" Format="N">
                     <GroupFooterTemplate>
@@ -92,6 +162,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.ShippedAmt) Type="AggregateType.Sum" Format="C2">
                     <GroupFooterTemplate>
@@ -102,6 +180,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.NotShipQty) Type="AggregateType.Sum" Format="N">
                     <GroupFooterTemplate>
@@ -112,6 +198,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.NotShipAmt) Type="AggregateType.Sum" Format="C2">
                     <GroupFooterTemplate>
@@ -122,6 +216,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.OvershipQty) Type="AggregateType.Sum" Format="N">
                     <GroupFooterTemplate>
@@ -132,6 +234,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.OvershipAmt) Type="AggregateType.Sum" Format="C2">
                     <GroupFooterTemplate>
@@ -142,6 +252,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.ShortageQty) Type="AggregateType.Sum" Format="N">
                     <GroupFooterTemplate>
@@ -152,6 +270,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.ShortageAmt) Type="AggregateType.Sum" Format="C2">
                     <GroupFooterTemplate>
@@ -162,6 +288,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.OvershipRates) Type="AggregateType.Average" Format="P2">
                     <GroupFooterTemplate>
@@ -172,6 +306,14 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Average</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
                 <GridAggregateColumn Field=@nameof(OrderStatus.AmountRates) Type="AggregateType.Average" Format="P2">
                     <GroupFooterTemplate>
@@ -182,51 +324,58 @@
                             </div>
                         }
                     </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Average</p>
+                            </div>
+                        }
+                    </FooterTemplate>
                 </GridAggregateColumn>
 
             </GridAggregateColumns>
         </GridAggregate>
     </GridAggregates>
-    <GridEvents OnToolbarClick="ToolbarClickHandler" TValue="OrderStatus"></GridEvents>
     <GridColumns>
         <GridColumn Field=@nameof(OrderStatus.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false">
         </GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.Team) TextAlign="TextAlign.Left" Width="120">
+        <GridColumn Field=@nameof(OrderStatus.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
         </GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.Buyer) TextAlign="TextAlign.Left" Width="120">
+        <GridColumn Field=@nameof(OrderStatus.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
         </GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.OrderQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.Uprice) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.OrderAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-        <GridColumn HeaderText="오더 수주 목표(수정목표)">
+        <GridColumn Field=@nameof(OrderStatus.OrderQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.Uprice) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.OrderAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+        <GridColumn HeaderText="오더 수주 목표(수정목표)" HeaderTextAlign="TextAlign.Center">
             <GridColumns>
-                <GridColumn Field=@nameof(OrderStatus.TargetAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-                <GridColumn Field=@nameof(OrderStatus.TargetBal) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-                <GridColumn Field=@nameof(OrderStatus.TargetRate) Format="P2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.TargetAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.TargetBal) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.TargetRate) Format="P2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
             </GridColumns>
         </GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.ShippedQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.ShippedAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-        <GridColumn HeaderText="미선적">
+        <GridColumn Field=@nameof(OrderStatus.ShippedQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.ShippedAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+        <GridColumn HeaderText="미선적" HeaderTextAlign="TextAlign.Center">
             <GridColumns>
-                <GridColumn Field=@nameof(OrderStatus.NotShipQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-                <GridColumn Field=@nameof(OrderStatus.NotShipAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.NotShipQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.NotShipAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
             </GridColumns>
         </GridColumn>
-        <GridColumn HeaderText="Over Ship">
+        <GridColumn HeaderText="Over Ship" HeaderTextAlign="TextAlign.Center">
             <GridColumns>
-                <GridColumn Field=@nameof(OrderStatus.OvershipQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-                <GridColumn Field=@nameof(OrderStatus.OvershipAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OvershipQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OvershipAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
             </GridColumns>
         </GridColumn>
-        <GridColumn HeaderText="Shortage">
+        <GridColumn HeaderText="Shortage" HeaderTextAlign="TextAlign.Center">
             <GridColumns>
-                <GridColumn Field=@nameof(OrderStatus.ShortageQty) Format="N" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-                <GridColumn Field=@nameof(OrderStatus.ShortageAmt) Format="C2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShortageQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShortageAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
             </GridColumns>
         </GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.OvershipRates) Format="P2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
-        <GridColumn Field=@nameof(OrderStatus.AmountRates) Format="P2" TextAlign="TextAlign.Right" Width="110"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.OvershipRates) Format="P2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.AmountRates) Format="P2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -234,18 +383,21 @@
     .e-click::before {
         content: '\e525';
     }
+    .e-excel::before {
+        content: '\e242';
+    }
+    .e-pdf::before {
+        content: '\e240';
+    }
+
 </style>
 
 @code {
-
+     
+    public DateTime? DateValue { get; set; } = DateTime.Now;
     private SfGrid<OrderStatus> DefaultGrid;
-    public object SelectedData;
-
     public List<OrderStatus> OrderStatuses { get; set; }
-    public string val = "";
-    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", };
 
-    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
 
     protected override void OnInitialized()
     {
@@ -324,13 +476,15 @@
         public DateTime Created { get; set; }
     }
 
-    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    private async Task ExcelExport_Clicked(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
         if (args.Item.Id == "Grid_excelexport")
         {
             await this.DefaultGrid.ExcelExport();
         }
+        else if (args.Item.Id == "Grid_pdfexport")
+        {
+            await this.DefaultGrid.PdfExport();
+        }
     }
-
-
 }

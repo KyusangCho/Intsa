@@ -1,0 +1,561 @@
+﻿@page "/Sales/Analysis/OrderMonthly"
+@page "/Sales/Analysis/OrderMonthly/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Calendars 
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Order Monthly
+    <small></small>
+</h1>
+
+@{
+    var Initial = (new string[] { "Team" });
+}
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@OrderStatuses" 
+        AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+        AllowExcelExport="true" AllowPdfExport="true"
+        AllowGrouping="true" >
+    <SfToolbar>
+        <ToolbarItems>
+            <ToolbarItem Type="ItemType.Input" Width="100">
+                <Template>
+                    <SfDatePicker TValue="DateTime?" Value="@DateValue" Placeholder="choose an year" 
+                                  Start="CalendarView.Decade" Depth="CalendarView.Year" Format="yyyy"></SfDatePicker>
+                </Template>
+            </ToolbarItem>
+            <ToolbarItem Type="ItemType.Separator"></ToolbarItem>
+            <ToolbarItem Type="ItemType.Button" Text="Excel Export" PrefixIcon="e-excel" Id="Grid_excelexport" OnClick="@ExcelExport_Clicked"></ToolbarItem>
+            <ToolbarItem Type="ItemType.Button" Text="PDF Export" PrefixIcon="e-pdf" Id="Grid_pdfexport" OnClick="@ExcelExport_Clicked"></ToolbarItem>
+        </ToolbarItems>
+    </SfToolbar>
+
+    <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
+        <CaptionTemplate>
+            @{
+                @*var order = (context as CaptionTemplateContext);*@
+                <div></div>
+            }
+        </CaptionTemplate>
+    </GridGroupSettings>
+
+    <GridAggregates>
+        <GridAggregate>
+            <GridAggregateColumns>
+                <GridAggregateColumn Field=@nameof(OrderStatus.OrderQty1) Type="AggregateType.Sum" Format="N0">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.OrderAmt1) Type="AggregateType.Sum" Format="C0">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.ShipQty1) Type="AggregateType.Sum" Format="N0">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.ShipAmt1) Type="AggregateType.Sum" Format="C0">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
+                </GridAggregateColumn>
+            
+                <GridAggregateColumn Field=@nameof(OrderStatus.OrderQty2) Type="AggregateType.Sum" Format="N0">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.OrderAmt2) Type="AggregateType.Sum" Format="C0">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.ShipQty2) Type="AggregateType.Sum" Format="N0">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
+                </GridAggregateColumn>
+                <GridAggregateColumn Field=@nameof(OrderStatus.ShipAmt2) Type="AggregateType.Sum" Format="C0">
+                    <GroupFooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </GroupFooterTemplate>
+                    <FooterTemplate>
+                        @{
+                            var aggregate = (context as AggregateTemplateContext);
+                            <div>
+                                <p>@aggregate.Sum</p>
+                            </div>
+                        }
+                    </FooterTemplate>
+                </GridAggregateColumn>
+            </GridAggregateColumns>
+
+
+
+        </GridAggregate>
+    </GridAggregates>
+    <GridColumns>
+        <GridColumn Field=@nameof(OrderStatus.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false">
+        </GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+        </GridColumn>
+        <GridColumn Field=@nameof(OrderStatus.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+        </GridColumn>
+        <GridColumn HeaderText="1월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty1) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt1) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty1) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt1) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="2월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty2) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt2) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty2) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt2) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="3월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty3) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt3) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty3) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt3) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="4월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty4) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt4) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty4) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt4) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="5월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty5) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt5) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty5) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt5) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="6월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty6) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt6) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty6) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt6) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="7월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty7) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt7) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty7) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt7) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="8월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty8) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt8) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty8) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt8) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="9월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty9) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt9) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty9) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt9) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="10월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty10) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt10) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty10) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt10) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="11월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty11) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt11) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty11) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt11) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="12월" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty12) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt12) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty12) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt12) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+        <GridColumn HeaderText="TOTAL" HeaderTextAlign="TextAlign.Center">
+            <GridColumns>
+                <GridColumn Field=@nameof(OrderStatus.OrderQty) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.OrderAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipQty) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                <GridColumn Field=@nameof(OrderStatus.ShipAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+            </GridColumns>
+        </GridColumn>
+
+    </GridColumns>
+</SfGrid>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+
+    .e-excel::before {
+        content: '\e242';
+    }
+
+    .e-pdf::before {
+        content: '\e240';
+    }
+</style>
+
+@code {
+
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+    private SfGrid<OrderStatus> DefaultGrid;
+    public List<OrderStatus> OrderStatuses { get; set; }
+    private List<Object> Toolbaritems = new List<Object>() { "ExcelExport", "PdfExport" };
+
+    protected override void OnInitialized()
+    {
+        int limit_qty = 100000; 
+        double limit_amt = 1000000f; 
+
+        OrderStatuses = Enumerable.Range(1, 45).Select(x => new OrderStatus()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            OrderQty1 = new Random().Next(limit_qty),
+            OrderAmt1 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty1 = new Random().Next(limit_qty),
+            ShipAmt1 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty2 = new Random().Next(limit_qty),
+            OrderAmt2 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty2 = new Random().Next(limit_qty),
+            ShipAmt2 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty3 = new Random().Next(limit_qty),
+            OrderAmt3 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty3 = new Random().Next(limit_qty),
+            ShipAmt3 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty4 = new Random().Next(limit_qty),
+            OrderAmt4 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty4 = new Random().Next(limit_qty),
+            ShipAmt4 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty5 = new Random().Next(limit_qty),
+            OrderAmt5 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty5 = new Random().Next(limit_qty),
+            ShipAmt5 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty6 = new Random().Next(limit_qty),
+            OrderAmt6 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty6 = new Random().Next(limit_qty),
+            ShipAmt6 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty7 = new Random().Next(limit_qty),
+            OrderAmt7 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty7 = new Random().Next(limit_qty),
+            ShipAmt7 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty8 = new Random().Next(limit_qty),
+            OrderAmt8 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty8 = new Random().Next(limit_qty),
+            ShipAmt8 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty9 = new Random().Next(limit_qty),
+            OrderAmt9 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty9 = new Random().Next(limit_qty),
+            ShipAmt9 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty10 = new Random().Next(limit_qty),
+            OrderAmt10 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty10 = new Random().Next(limit_qty),
+            ShipAmt10 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty11 = new Random().Next(limit_qty),
+            OrderAmt11 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty11 = new Random().Next(limit_qty),
+            ShipAmt11 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty12 = new Random().Next(limit_qty),
+            OrderAmt12 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty12 = new Random().Next(limit_qty),
+            ShipAmt12 = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            OrderQty = new Random().Next(limit_qty),
+            OrderAmt = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+            ShipQty = new Random().Next(limit_qty),
+            ShipAmt = Convert.ToDecimal(new Random().NextDouble() * limit_amt),
+
+            Created = DateTime.Now.AddDays(-x),
+        }).ToList();
+    }
+
+    public class OrderStatus
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty1 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt1 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty1 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt1 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty2 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt2 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty2 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt2 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty3 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt3 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty3 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt3 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty4 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt4 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty4 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt4 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty5 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt5 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty5 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt5 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty6 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt6 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty6 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt6 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty7 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt7 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty7 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt7 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty8 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt8 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty8 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt8 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty9 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt9 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty9 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt9 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty10 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt10 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty10 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt10 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty11 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt11 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty11 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt11 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty12 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt12 { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty12 { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt12 { get; set; }
+
+        [Display(Name = "Ordered")]
+        public int OrderQty { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal OrderAmt { get; set; }
+        [Display(Name = "Shipped")]
+        public int ShipQty { get; set; }
+        [Display(Name = "Amount($)")]
+        public decimal ShipAmt { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    private async Task ExcelExport_Clicked(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Grid_pdfexport")
+        {
+            await this.DefaultGrid.PdfExport();
+        }
+    }
+}

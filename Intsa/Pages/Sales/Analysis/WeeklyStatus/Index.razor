@@ -1,0 +1,394 @@
+﻿@page "/Sales/Analysis/WeeklyStatus"
+@page "/Sales/Analysis/WeeklyStatus/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Calendars
+
+<h1 class="page-header mb-3">
+    Weekly Report
+    <small>주간 업무 보고서 (영업부)</small>
+</h1>
+
+@{
+    var Initial = (new string[] { "Team" });
+}
+
+<div class="card">
+    <div class="card-header d-flex">
+        <span class="flex-grow-1">
+            <div class="row">
+                <div class="col-5">
+                    <SfDropDownList TValue="string" TItem="string" Placeholder="Select a period"></SfDropDownList>
+                </div>
+            </div>
+        </span>
+        <a href="#" data-toggle="card-expand" class="text-muted text-decoration-none"><i class="fa fa-fw fa-expand"></i> Expand</a>
+    </div>
+    <div class="card-body">
+        <div class="accordion" id="accordionWeekly">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        주간 출고 완료 및 계획
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        1. 새 오더 수주 내역 (Status of new order received)
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@OrderStatuses"
+                                AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+                                AllowExcelExport="true" AllowPdfExport="true"
+                                AllowGrouping="true">
+                            <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
+                                <CaptionTemplate>
+                                    @{
+                                        @*var order = (context as CaptionTemplateContext);*@
+                                        <div></div>
+                                    }
+                                </CaptionTemplate>
+                            </GridGroupSettings>
+                            <GridAggregates>
+                                <GridAggregate>
+                                    <GridAggregateColumns>
+                                        <GridAggregateColumn Field=@nameof(OrderStatus.Balqty) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(OrderStatus.Uprice) Type="AggregateType.Average" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Average</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Average</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+
+                                        <GridAggregateColumn Field=@nameof(OrderStatus.OrderBalAmt) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+
+                                        <GridAggregateColumn Field=@nameof(OrderStatus.TotalAmount) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                    </GridAggregateColumns>
+                                </GridAggregate>
+                            </GridAggregates>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(OrderStatus.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130" AutoFit="true"></GridColumn>
+
+                                <GridColumn Field=@nameof(OrderStatus.Styleno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Balqty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Uprice) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.OrderBalAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.TotalAmount) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Remark) TextAlign="TextAlign.Left" AutoFit="true"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        2. 지난 주 출고 현황 (Last week's shipment status)
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        2-1. 주간 미 출고 세부 사항 (Detail of Last week's balance q'ty)
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        3. 금주 출고 계획 (This week's shipment plan)
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+                        4. 차주 출고 계획 (Next week's shipment plan)
+                    </button>
+                </h2>
+                <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7">
+                        5. 견본 생산 계획 (Sample production plan)
+                    </button>
+                </h2>
+                <div id="collapse7" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8">
+                        6. 바이어 방문 및 출장 계획
+                    </button>
+                </h2>
+                <div id="collapse8" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid6" @ref="DefaultGrid6" DataSource="@BusinessTrips" AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+                                AllowExcelExport="true" >
+                            <GridColumns>
+                                <GridColumn Field=@nameof(BusinessTrip.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Notice) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.VisitStart) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.VisitEnd) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Visitor) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Purpose) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Destination) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Contact) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Remark) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+
+    .e-excel::before {
+        content: '\e242';
+    }
+
+    .e-pdf::before {
+        content: '\e240';
+    }
+</style>
+
+@code {
+
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+    private SfGrid<OrderStatus> DefaultGrid;
+    private SfGrid<BusinessTrip> DefaultGrid6;
+    public List<OrderStatus> OrderStatuses { get; set; }
+    public List<BusinessTrip> BusinessTrips { get; set; }
+
+    protected override void OnInitialized()
+    {
+        OrderStatuses = Enumerable.Range(1, 45).Select(x => new OrderStatus()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            Styleno = new Random().Next(600000),
+            Pono = new Random().Next(600000),
+            Balqty = new Random().Next(600000),
+            Uprice = Convert.ToDecimal(new Random().NextDouble() * 10.0f),
+            OrderBalAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            TotalAmount = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            Created = DateTime.Now.AddDays(-x),
+            Delivery = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        BusinessTrips = Enumerable.Range(1, 5).Select(x => new BusinessTrip()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            VisitStart = DateTime.Now.AddDays(-x),
+            VisitEnd = DateTime.Now.AddDays(-x),
+        }).ToList();
+    }
+
+    public class OrderStatus
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "TeamManager")]
+        public string Teamleader { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Delivery")]
+        public DateTime Delivery { get; set; }
+
+        [Display(Name = "No. of Style")]
+        public int Styleno { get; set; }
+        [Display(Name = "No. of PO")]
+        public int Pono { get; set; }
+        [Display(Name = "Order Bal Q'ty")]
+        public int Balqty { get; set; }
+        [Display(Name = "U/Price")]
+        public decimal Uprice { get; set; }
+        [Display(Name = "Order Bal in $")]
+        public decimal OrderBalAmt { get; set; }
+        [Display(Name = "TTL O/Amount rcvd")]
+        public decimal TotalAmount { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public class BusinessTrip
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = @"팀\nTeam")]
+        public string Team { get; set; }
+        [Display(Name = "바이어<br />Buyer")]
+        public string Buyer { get; set; }
+        [Display(Name = "Notice")]
+        public string Notice { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Visit Start")]
+        public DateTime VisitStart { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Visit End")]
+        public DateTime VisitEnd { get; set; }
+
+        [Display(Name = "Visitor")]
+        public string Visitor { get; set; }
+        [Display(Name = "Purpose")]
+        public string Purpose { get; set; }
+        [Display(Name = "Destination")]
+        public string Destination { get; set; }
+        [Display(Name = "Contact")]
+        public string Contact { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+
+    private async Task ExcelExport_Clicked(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Grid_pdfexport")
+        {
+            await this.DefaultGrid.PdfExport();
+        }
+    }
+}
