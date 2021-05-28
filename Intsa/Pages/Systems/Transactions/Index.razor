@@ -33,7 +33,7 @@
         <GridColumn Field=@nameof(Transaction.PrimaryKey) TextAlign="TextAlign.Left" Width="120"></GridColumn>
         <GridColumn Field=@nameof(Transaction.Docno) TextAlign="TextAlign.Left" Width="120"></GridColumn>
         <GridColumn Field=@nameof(Transaction.Description) TextAlign="TextAlign.Left" Width="200"></GridColumn>
-        <GridColumn Field=@nameof(Transaction.Created) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(Transaction.Created) HeaderText="Create Date" Format="MM/dd/yyyy HH:mm:ss" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130" AutoFit="true"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -112,7 +112,7 @@
             Module = (new string[] { "System", "Code" })[new Random().Next(2)],
             Center = (new string[] { "Head Office", "INT Sewing Plant I", "JS International", "Development", "JS Warehouse", "Recepsa Warehouse", "People & Arts", "Apparel Links" })[new Random().Next(8)],
             PrimaryKey = 1000 + x,
-            Created = DateTime.Now.AddDays(-x),
+            Created = DateTime.Now.AddDays(-x).AddSeconds(new Random().Next(100)),
         }).ToList();
     }
 
@@ -150,7 +150,7 @@
         [Display(Name = "Description")]
         public string Description { get; set; }
 
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [Display(Name = "Created Date")]
         [Editable(false)]
         public DateTime? Created { get; set; }

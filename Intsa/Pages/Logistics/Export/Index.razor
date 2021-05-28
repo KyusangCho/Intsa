@@ -1,0 +1,445 @@
+﻿@page "/Logistics/Export"
+@page "/Logistics/Export/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+
+<h1 class="page-header mb-3">
+    Export
+    <small>수출 내역 등록</small>
+</h1>
+
+<SfGrid ID="Grid" @ref="DefaultGridM" DataSource="@Exports" AllowPaging="true" AllowSorting="true" AllowFiltering="true"
+        Height="600" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true"
+        FrozenRows="0">
+
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var customer = (context as Export);
+            }
+
+            <div style="padding:20px">
+                <SfTab>
+                    <TabItems>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Detaille de Producto"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <div style="padding:25px">
+                                    <SfGrid DataSource="@ProductDetails" Query="@(new Query().Where("PID", "equal", customer.ID))"
+                                            Toolbar="DetailToolbaritems" AllowExcelExport="true"
+                                            AllowPaging="true">
+                                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+                                        <GridPageSettings PageSize="6"></GridPageSettings>
+                                        <GridColumns>
+                                            <GridColumn Field=@nameof(ProductDetail.ID) Width="60" Visible="false"> </GridColumn>
+                                            <GridColumn Field=@nameof(ProductDetail.Hts) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ProductDetail.Description) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ProductDetail.Category) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ProductDetail.Cantidad) Format="N" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ProductDetail.Medida) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ProductDetail.Unitario) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ProductDetail.RegDate) HeaderText="Created" Format="d" Width="100" Visible="false"></GridColumn>
+                                        </GridColumns>
+                                    </SfGrid>
+                                </div>
+                            </ContentTemplate>
+                        </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Poliza de Importacion"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <div style="padding-top: 35px; padding-left:20px;">
+                                    <SfGrid DataSource="@PolizaImportacions" Query="@(new Query().Where("PID", "equal", customer.ID))"
+                                            Toolbar="DetailToolbaritems" AllowExcelExport="true"
+                                            AllowPaging="true">
+                                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+                                        <GridPageSettings PageSize="6"></GridPageSettings>
+                                        <GridColumns>
+                                            <GridColumn Field=@nameof(PolizaImportacion.ID) Width="60" Visible="false"> </GridColumn>
+                                            <GridColumn Field=@nameof(PolizaImportacion.Poliza) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(PolizaImportacion.PaisOrigen) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(PolizaImportacion.Cantidad) Format="N" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(PolizaImportacion.Monto) Format="N2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(PolizaImportacion.Impno) Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(PolizaImportacion.Linea) Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(PolizaImportacion.Transacted) Format="d" Width="100" AutoFit="true"></GridColumn>
+                                        </GridColumns>
+                                    </SfGrid>
+                                </div>
+                            </ContentTemplate>
+                        </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Co-Ex/SubContratista"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <div style="padding-top: 35px; padding-left:20px;">
+                                    <SfGrid DataSource="@CoexSubs" Query="@(new Query().Where("PID", "equal", customer.ID))"
+                                            Toolbar="DetailToolbaritems" AllowExcelExport="true"
+                                            AllowPaging="true">
+                                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+                                        <GridPageSettings PageSize="6"></GridPageSettings>
+                                        <GridColumns>
+                                            <GridColumn Field=@nameof(CoexSub.ID) Width="60" Visible="false"> </GridColumn>
+                                            <GridColumn Field=@nameof(CoexSub.Proveedor) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(CoexSub.Iscoex) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(CoexSub.Facturano) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(CoexSub.Monto) Format="N2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                        </GridColumns>
+                                    </SfGrid>
+                                </div>
+                            </ContentTemplate>
+                        </TabItem>
+                    </TabItems>
+                </SfTab>
+            </div>
+        </DetailTemplate>
+    </GridTemplates>
+
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Export"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="PaisDestino" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Export.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="70" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Facturano) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.FechaFactura) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Serialno) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Consignatario) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Notificado) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Aduana) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.PaisDestino) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Cargador) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.FechaEmbarque) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.TipoCambio) Format="C5" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Referencias) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.TipoDocumento) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.DuaSimplicada) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Incoterm) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.Activate) TextAlign="TextAlign.Center" Width="120" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.FechaAnulada) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Export.PrimaImportada) TextAlign="TextAlign.Center" Width="120" AutoFit="true"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Export> DefaultGridM;
+    private SfGrid<ProductDetail> DefaultGridD1;
+    private SfGrid<PolizaImportacion> DefaultGridD2;
+    private SfGrid<CoexSub> DefaultGridD3;
+    private SfDialog Dialog;
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+    public void OnActionBegin(ActionEventArgs<Export> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGridM.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Export> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGridM.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+    
+
+public List<Export> Exports { get; set; }
+public List<ProductDetail> ProductDetails { get; set; }
+public List<PolizaImportacion> PolizaImportacions { get; set; }
+public List<CoexSub> CoexSubs { get; set; }
+
+public string val = "";
+private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ExcelExport", "Search",
+    };
+
+private List<Object> DetailToolbaritems = new List<Object>() { "Add", "Edit", "Delete",
+        "ExcelExport", "Search",
+    };
+
+
+protected override void OnInitialized()
+{
+    Exports = Enumerable.Range(1, 75).Select(x => new Export()
+    {
+        ID = 1000 + x,
+        Facturano = (6000 + x).ToString(),
+        FechaFactura = DateTime.Now.AddDays(-x),
+        FechaEmbarque = DateTime.Now.AddDays(x),
+        TipoCambio = new Random().NextDouble() * 10f,
+        RegDate = DateTime.Now.AddDays(-x),
+    }).ToList();
+
+    ProductDetails = Enumerable.Range(1, 75).Select(x => new ProductDetail()
+    {
+        ID = 1000 + x,
+        Hts = (612000 + x).ToString(), 
+        Cantidad = new Random().Next(1000),
+        RegDate = DateTime.Now.AddDays(-x),
+    }).ToList();
+
+    PolizaImportacions = Enumerable.Range(1, 75).Select(x => new PolizaImportacion()
+    {
+        ID = 1000 + x,
+        PID = 1000 + (new Random().Next(25)),
+        Cantidad = new Random().Next(1000),
+        Monto = Convert.ToDecimal(new Random().NextDouble() * 1000f),
+        Linea = x,
+        Transacted = DateTime.Now.AddDays(-x),
+        RegDate = DateTime.Now.AddDays(-x),
+    }).ToList();
+
+    CoexSubs = Enumerable.Range(1, 75).Select(x => new CoexSub()
+    {
+        ID = 1000 + x,
+        PID = 1000 + (new Random().Next(25)),
+        Facturano = x.ToString(),
+        Monto = Convert.ToDecimal(new Random().NextDouble() * 1000f),
+        RegDate = DateTime.Now.AddDays(-x),
+    }).ToList();
+}
+
+public class Export
+{
+    [Key]
+    [Required(ErrorMessage = "ID should not be empty")]
+    [Display(Name = "ID")]
+    public int? ID { get; set; }
+    [Display(Name = "Factura#")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string Facturano { get; set; }
+    [DataType(DataType.Date)]
+    [Display(Name = "Fecha Factura")]
+    [Editable(true)]
+    public DateTime? FechaFactura { get; set; }
+    [Display(Name = "Serial#")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string Serialno { get; set; }
+    [Display(Name = "Consignatario")]
+    public string Consignatario { get; set; }
+
+    [Display(Name = "Notificado")]
+    public string Notificado { get; set; }
+    [Display(Name = "Aduana")]
+    public string Aduana { get; set; }
+    [Display(Name = "Pais Destino")]
+    public string PaisDestino { get; set; }
+    [Display(Name = "Cargador")]
+    public string Cargador { get; set; }
+    [DataType(DataType.Date)]
+    [Display(Name = "Fecha Embarque")]
+    [Editable(true)]
+    public DateTime? FechaEmbarque { get; set; }
+    [Display(Name = "Tipo Cambio")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public double TipoCambio { get; set; }
+
+    [Display(Name = "Referencias")]
+    public string Referencias { get; set; }
+    [Display(Name = "TipoDocumento")]
+    public string TipoDocumento { get; set; }
+    [Display(Name = "DuaSimplicada")]
+    public string DuaSimplicada { get; set; }
+    [Display(Name = "Incoterm")]
+    public string Incoterm { get; set; }
+    [Display(Name = "Closed")]
+    public int? Activate { get; set; }
+    [DataType(DataType.Date)]
+    [Display(Name = "Fecha Anulada")]
+    [Editable(false)]
+    public DateTime? FechaAnulada { get; set; }
+    [Display(Name = "Prima Imp.")]
+    public int? PrimaImportada { get; set; }
+    [DataType(DataType.Date)]
+    [Display(Name = "Reg Date")]
+    [Editable(false)]
+    public DateTime? RegDate { get; set; }
+}
+
+public class ProductDetail
+{
+    [Key]
+    [Required(ErrorMessage = "ID should not be empty")]
+    [Display(Name = "ID")]
+    public int? ID { get; set; }
+    [Display(Name = "PID")]
+    public int? PID { get; set; }
+    [Display(Name = "HTS")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string Hts { get; set; }
+    [Display(Name = "Description")]
+    public string Description { get; set; }
+    [Display(Name = "Category")]
+    public string Category { get; set; }
+
+    [Display(Name = "Cantidad")]
+    public int Cantidad { get; set; }
+    [Display(Name = "Medida")]
+    public string Medida { get; set; }
+    [Display(Name = "Unitario")]
+    public decimal Unitario { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Reg Date")]
+    [Editable(false)]
+    public DateTime? RegDate { get; set; }
+}
+
+public class PolizaImportacion
+{
+    [Key]
+    [Required(ErrorMessage = "ID should not be empty")]
+    [Display(Name = "ID")]
+    public int? ID { get; set; }
+    [Display(Name = "PID")]
+    public int? PID { get; set; }
+    [Display(Name = "Poliza")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string Poliza { get; set; }
+    [Display(Name = "Pais Origen")]
+    public string PaisOrigen { get; set; }
+
+    [Display(Name = "Cantidad")]
+    public int? Cantidad { get; set; }
+    [Display(Name = "Monto")]
+    public decimal Monto { get; set; }
+    [Display(Name = "Imp#")]
+    public string Impno { get; set; }
+    [Display(Name = "Linea")]
+    public int? Linea { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Transacted")]
+    [Editable(false)]
+    public DateTime? Transacted { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Reg Date")]
+    [Editable(false)]
+    public DateTime? RegDate { get; set; }
+}
+
+public class CoexSub
+{
+    [Key]
+    [Required(ErrorMessage = "ID should not be empty")]
+    [Display(Name = "ID")]
+    public int? ID { get; set; }
+    [Display(Name = "PID")]
+    public int? PID { get; set; }
+    [Display(Name = "Proveedor")]
+    public string Proveedor { get; set; }
+    [Display(Name = "Co-ex")]
+    public string Iscoex { get; set; }
+    [Display(Name = "Factura#")]
+    public string Facturano { get; set; }
+    [Display(Name = "Monto")]
+    public decimal Monto { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Reg Date")]
+    [Editable(false)]
+    public DateTime? RegDate { get; set; }
+
+}
+
+public Query GetFileMasterQuery(Export value)
+{
+    return new Query().Where("ID", "equal", value.ID);
+}
+public Query GetFileDetailQuery(Export value)
+{
+    return new Query().Where("PID", "equal", value.ID);
+}
+
+public static List<Export> LocalDataOrigen = new List<Export> {
+            new Export() { PaisDestino= "Team1A" },
+            new Export() { PaisDestino= "Team1B" },
+            new Export() { PaisDestino= "Team2A" },
+            new Export() { PaisDestino= "Team2B" },
+            new Export() { PaisDestino= "Team3A" },
+            new Export() { PaisDestino= "Team3B" },
+            new Export() { PaisDestino= "Administration" }
+    };
+
+public IEditorSettings OrigenIDEditParams = new DropDownEditCellParams
+{
+    Params = new DropDownListModel<object, object>() { DataSource = LocalDataOrigen, AllowFiltering = true }
+};
+
+
+public class Team
+{
+    public string TeamID { get; set; }
+}
+
+public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+{
+    if (args.Item.Id == "Grid_excelexport")
+    {
+        await this.DefaultGridM.ExcelExport();
+    }
+    else if (args.Item.Id == "Transfer")
+    {
+        //You can customized your code here....
+
+    }
+}
+
+}

@@ -1,0 +1,324 @@
+﻿@page "/Systems/Customer/Supplier"
+@page "/Systems/Customer/Supplier/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Supplier
+    <small></small>
+</h1>
+
+<SfGrid ID="Grid" @ref="DefaultGridM" DataSource="@Customers" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true">
+
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var customer = (context as Customer);
+            }
+
+            <div style="padding:20px">
+                <SfTab>
+                    <TabItems>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Contact Email"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <div style="padding:25px">
+                                    <SfGrid DataSource="@CustomerEmails" Query="@(new Query().Where("PID", "equal", customer.ID))"
+                                            Toolbar="DetailToolbaritems" AllowExcelExport="true"
+                                            enableed
+                                            AllowPaging="true">
+                                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+                                        <GridPageSettings PageSize="6"></GridPageSettings>
+                                        <GridColumns>
+                                            <GridColumn Field=@nameof(CustomerEmail.ID) HeaderText="ID" Width="60"> </GridColumn>
+                                            <GridColumn Field=@nameof(CustomerEmail.FullName) Width="130"></GridColumn>
+                                            <GridColumn Field=@nameof(CustomerEmail.Email) Width="130"></GridColumn>
+                                            <GridColumn Field=@nameof(CustomerEmail.Compra) Width="90"></GridColumn>
+                                            <GridColumn Field=@nameof(CustomerEmail.Conta) Width="90"></GridColumn>
+                                            <GridColumn Field=@nameof(CustomerEmail.Activate) Width="90"></GridColumn>
+                                            <GridColumn Field=@nameof(CustomerEmail.RegDate) HeaderText="Created" Format="d" Width="100"></GridColumn>
+                                            <GridColumn HeaderText="" Width="400"></GridColumn>
+                                        </GridColumns>
+                                    </SfGrid>
+                                </div>
+                            </ContentTemplate>
+                        </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Accounts"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <div style="padding-top: 35px; padding-left:20px;">
+                                    <SfGrid DataSource="@CustomerAccounts" Query="@(new Query().Where("PID", "equal", customer.ID))"
+                                            Toolbar="DetailToolbaritems" AllowExcelExport="true"
+                                            AllowPaging="true">
+                                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+                                        <GridPageSettings PageSize="6"></GridPageSettings>
+                                        <GridColumns>
+                                            <GridColumn Field=@nameof(CustomerAccount.ID) Width="60"> </GridColumn>
+                                            <GridColumn Field=@nameof(CustomerAccount.CuentaContable) Width="130"></GridColumn>
+                                            <GridColumn Field=@nameof(CustomerAccount.Activate) Width="90"></GridColumn>
+                                            <GridColumn Field=@nameof(CustomerAccount.RegDate) Format="d" Width="100"></GridColumn>
+                                            <GridColumn HeaderText="" Width="400"></GridColumn>
+                                        </GridColumns>
+                                    </SfGrid>
+                                </div>
+                            </ContentTemplate>
+                        </TabItem>
+                    </TabItems>
+                </SfTab>
+            </div>
+        </DetailTemplate>
+    </GridTemplates>
+
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Customer"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="Clasification" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Customer.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="70"></GridColumn>
+        <GridColumn Field=@nameof(Customer.Codigo) TextAlign="TextAlign.Left" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Customer.Clasification) TextAlign="TextAlign.Left" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Customer.ProveedorConta) TextAlign="TextAlign.Left" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Customer.ProveedorAudit) TextAlign="TextAlign.Left" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Customer.Activate) TextAlign="TextAlign.Center" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Customer.RegDate) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Customer> DefaultGridM;
+    private SfGrid<CustomerEmail> DefaultGridD;
+    private SfGrid<CustomerAccount> DefaultGridD2;
+    private SfDialog Dialog;
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+    public void OnActionBegin(ActionEventArgs<Customer> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGridM.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Customer> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGridM.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<Customer> Customers { get; set; }
+    public List<CustomerEmail> CustomerEmails { get; set; }
+    public List<CustomerAccount> CustomerAccounts { get; set; }
+
+    public string val = "";
+    private List<Object> Toolbaritems = new List<Object>() {
+        new ItemModel() { Text="Add", TooltipText = "Add", PrefixIcon = "e-click", Id="Add" },
+        "Edit", "Delete", "ExcelExport", "Search",
+        new ItemModel() { Text="Copy", TooltipText = "Copy", PrefixIcon = "e-click", Id="Copy" },
+    };
+    private List<Object> DetailToolbaritems = new List<Object>() {"Add", "Edit", "Delete",
+        "ExcelExport", "Search",
+    };
+
+
+    protected override void OnInitialized()
+    {
+        Customers = Enumerable.Range(1, 15).Select(x => new Customer()
+        {
+            ID = 1000 + x,
+            TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
+            ProveedorConta = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(5)],
+            ProveedorAudit = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(5)],
+            Remark = "",
+            RegDate = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        CustomerEmails = Enumerable.Range(1, 7).Select(x => new CustomerEmail()
+        {
+            ID = 1000 + x,
+            PID = 1000 + (new Random().Next(15)),
+            RegDate = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        CustomerAccounts = Enumerable.Range(1, 7).Select(x => new CustomerAccount()
+        {
+            ID = 1000 + x,
+            PID = 1000 + (new Random().Next(15)),
+            RegDate = DateTime.Now.AddDays(-x),
+        }).ToList();
+    }
+
+    public static List<Customer> LocalDataTeam = new List<Customer> {
+            new Customer() { TeamID= "Team1A" },
+            new Customer() { TeamID= "Team1B" },
+            new Customer() { TeamID= "Team2A" },
+            new Customer() { TeamID= "Team2B" },
+            new Customer() { TeamID= "Team3A" },
+            new Customer() { TeamID= "Team3B" },
+            new Customer() { TeamID= "Administration" }
+    };
+
+    public IEditorSettings TeamIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataTeam, AllowFiltering = true }
+    };
+
+    public class Customer
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Codigo")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Codigo { get; set; }
+        [Display(Name = "Clasification")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Clasification { get; set; }
+        [Display(Name = "Proveedor(Conta)")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string ProveedorConta { get; set; }
+        [Display(Name = "Proveedor(Audit)")]
+        public string ProveedorAudit { get; set; }
+
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [Display(Name = "Team")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string TeamID { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Reg Date")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+        [Display(Name = "Activate")]
+        public int? Activate { get; set; }
+    }
+
+    public class CustomerEmail
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "PID")]
+        public int? PID { get; set; }
+        [Display(Name = "Full Name")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string FullName { get; set; }
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string Email { get; set; }
+        [Display(Name = "Compra")]
+        public int? Compra { get; set; }
+        [Display(Name = "Conta")]
+        public int? Conta { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Reg Date")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+        [Display(Name = "Activate")]
+        public int? Activate { get; set; }
+    }
+    public class CustomerAccount
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "PID")]
+        public int? PID { get; set; }
+        [Display(Name = "Cuenta Contable")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string CuentaContable { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Reg Date")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+        [Display(Name = "Activate")]
+        public int? Activate { get; set; }
+    }
+
+    public Query GetFileMasterQuery(Customer value)
+    {
+        return new Query().Where("ID", "equal", value.ID);
+    }
+    public Query GetFileDetailQuery(Customer value)
+    {
+        return new Query().Where("PID", "equal", value.ID);
+    }
+
+    public class Team
+    {
+        public string TeamID { get; set; }
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGridM.ExcelExport();
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+
+        }
+    }
+
+}

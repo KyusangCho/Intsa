@@ -1,5 +1,5 @@
-﻿@page "/Systems/ApprovalStatus"
-@page "/Systems/ApprovalStatus/Index"
+﻿@page "/Systems/ApprovalTemplates"
+@page "/Systems/ApprovalTemplates/Index"
 
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Navigations
@@ -8,16 +8,15 @@
 @using Syncfusion.Blazor.DropDowns
 
 <h1 class="page-header mb-3">
-    Approval Status
-    <small>전자결재 진행상황</small>
+    Approval Templates
+    <small>전자결재 템플릿 관리</small>
 </h1>
 
 
 <SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Approvals" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
-        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems" >
-    <GridSelectionSettings EnableSimpleMultiRowSelection="true" Type="SelectionType.Multiple"></GridSelectionSettings>
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
     <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Approval"></GridEvents>
-    <GridEditSettings AllowAdding="false" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
     <GridPageSettings PageSize="22"></GridPageSettings>
     <GridFilterSettings>
         <GridFilterColumns>
@@ -30,10 +29,8 @@
         <GridColumn Field=@nameof(Approval.Center) TextAlign="TextAlign.Left" Width="120"></GridColumn>
         <GridColumn Field=@nameof(Approval.DeptID) TextAlign="TextAlign.Left" Width="120"></GridColumn>
         <GridColumn Field=@nameof(Approval.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
-        <GridColumn Field=@nameof(Approval.Handler) TextAlign="TextAlign.Left" Width="200"></GridColumn>
-        <GridColumn Field=@nameof(Approval.Status) TextAlign="TextAlign.Left" Width="200"></GridColumn>
-        <GridColumn Field=@nameof(Approval.Approver) TextAlign="TextAlign.Left" Width="200"></GridColumn>
-        <GridColumn Field=@nameof(Approval.Requested) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(Approval.Approvers) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Approval.Created) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
     </GridColumns>
 </SfGrid>
 
@@ -53,6 +50,38 @@
     </DialogButtons>
 </SfDialog>
 
+<SfDialog @ref="DialogAdd" Width="800px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="ClosedAdd"></DialogEvents>
+    <DialogTemplates>
+        <Header> Add Approvers</Header>
+        <Content>
+            <div class="row">
+                <div class="col-12">
+                    <SfGrid ID="Grid2" @ref="DefaultGrid2" DataSource="@Approvers" 
+                            AllowPaging="false" AllowSorting="true" AllowFiltering="false" Height="100%" Width="100%"
+                            Toolbar="ToolbarApproveritems" AllowExcelExport="true" AllowRowDragAndDrop="true">
+                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+                        <GridColumns>
+                            <GridColumn Field=@nameof(Approver.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                            <GridColumn Field=@nameof(Approver.Name) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+                            <GridColumn Field=@nameof(Approver.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
+                            <GridColumn Field=@nameof(Approver.DeptID) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                            <GridColumn Field=@nameof(Approver.Center) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                        </GridColumns>
+                    </SfGrid>
+                </div>
+            </div>
+        </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkAddClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelAddClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
 
 <style>
     .e-click::before {
@@ -63,13 +92,22 @@
 @code {
 
     private SfGrid<Approval> DefaultGrid;
+    private SfGrid<Approver> DefaultGrid2;
     private SfDialog Dialog;
+    private SfDialog DialogAdd;
     public object SelectedData;
     public bool flag = true;
+    public bool flagAdd = true;
 
     public void OnActionBegin(ActionEventArgs<Approval> Args)
     {
-        if (Args.RequestType.ToString() == "Delete" && flag)
+        if (Args.RequestType.ToString() == "Add" && flagAdd)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            DialogAdd.Show();
+            flagAdd = false;
+        }
+        else if (Args.RequestType.ToString() == "Delete" && flag)
         {
             Args.Cancel = true;  //cancel default delete action
             Dialog.Show();
@@ -99,12 +137,25 @@
         Dialog.Hide();
     }
 
+    public void ClosedAdd()
+    {
+        flagAdd = true;
+    }
+    private void OkAddClick()
+    {
+        @*DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button*@
+    DialogAdd.Hide();
+}
+private void CancelAddClick()
+{
+    DialogAdd.Hide();
+}
+
 public List<Approval> Approvals { get; set; }
+public List<Approver> Approvers { get; set; }
 public string val = "";
-private List<Object> Toolbaritems = new List<Object>() { "Edit", "Delete", "ExcelExport", "Search", 
-    new ItemModel() { Text = "Confirm", TooltipText ="Confirm", PrefixIcon="e-click", Id="Confirm" }, 
-    new ItemModel() { Text = "Reject", TooltipText ="Reject", PrefixIcon="e-click", Id="Reject" }, 
-};
+private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ExcelExport", "Search", };
+private List<Object> ToolbarApproveritems = new List<Object>() { "Add", "Delete", };
 
 private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
 
@@ -115,10 +166,17 @@ protected override void OnInitialized()
         ID = 1000 + x,
         TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
         ClassID = (new string[] { "Dashboard", "System", "Code", "Order", "Cost", "Yarn", "Payment", "Factory", })[new Random().Next(8)],
-        Status = (new string[] { "Pending", "In Progress", "Approved", "Rejected", })[new Random().Next(4)],
-        Requested = DateTime.Now.AddDays(-x),
+        Created = DateTime.Now.AddDays(-x),
     }).ToList();
 
+    Approvers = Enumerable.Range(1, 7).Select(x => new Approver()
+    {
+        ID = 1000 + x,
+        TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
+        Name = "INT" + x,
+        Created = DateTime.Now.AddDays(-x),
+        Activate = 1, 
+    }).ToList();
 }
 
 
@@ -162,19 +220,46 @@ public class Approval
     [Required(ErrorMessage = "Field should not be empty")]
     public string TeamID { get; set; }
 
-    [Display(Name = "Handler")]
-    public string Handler { get; set; }
-    [Display(Name = "Status")]
-    public string Status { get; set; }
-    [Display(Name = "Approver")]
-    public string Approver { get; set; }
+    [Display(Name = "Approvers")]
+    public string Approvers { get; set; }
+    [Display(Name = "Remark")]
+    public string Remark { get; set; }
 
     [DataType(DataType.Date)]
-    [Display(Name = "Requested")]
+    [Display(Name = "Created Date")]
     [Editable(false)]
-    public DateTime? Requested { get; set; }
+    public DateTime? Created { get; set; }
+    [Display(Name = "Activate")]
+    public int? Activate { get; set; }
+
 }
 
+
+public class Approver
+{
+    [Key]
+    [Required(ErrorMessage = "ID should not be empty")]
+    [Display(Name = "ID")]
+    public int? ID { get; set; }
+    [Display(Name = "Center")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string Center { get; set; }
+    [Display(Name = "Department")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string DeptID { get; set; }
+    [Display(Name = "Team")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string TeamID { get; set; }
+    [Display(Name = "Name")]
+    public string Name { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Created")]
+    [Editable(false)]
+    public DateTime? Created { get; set; }
+    [Display(Name = "Activate")]
+    public int? Activate { get; set; }
+}
 
 public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
 {

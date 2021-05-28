@@ -1,0 +1,517 @@
+﻿@page "/Logistics/Import"
+@page "/Logistics/Import/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+
+<h1 class="page-header mb-3">
+    Imports
+    <small>수입내역등록</small>
+</h1>
+
+<SfGrid ID="Grid" @ref="DefaultGridM" DataSource="@Imports" AllowPaging="true" AllowSorting="true" AllowFiltering="true"
+        Height="600" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true"
+        FrozenRows="0">
+
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var customer = (context as Import);
+            }
+
+            <div style="padding:20px">
+                <SfTab>
+                    <TabItems>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Import Detail"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <div style="padding:25px">
+                                    <SfGrid DataSource="@ImportDetails" Query="@(new Query().Where("PID", "equal", customer.ID))"
+                                            AllowExcelExport="true"
+                                            AllowPaging="true">
+                                        <GridPageSettings PageSize="6"></GridPageSettings>
+                                        <GridColumns>
+                                            <GridColumn Field=@nameof(ImportDetail.ID) Width="60" Visible="false"> </GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.Linea) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.Description) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.Cantidad) Format="N" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.SaldoC) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.SalidaC) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.Medida) Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.MontoCif) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.CifSaldo) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.Salida) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.ConversionQ) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.Partida) Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.Porcentaje) Format="P2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(ImportDetail.RegDate) HeaderText="Created" Format="d" Width="100" Visible="false"></GridColumn>
+                                        </GridColumns>
+                                    </SfGrid>
+                                </div>
+                            </ContentTemplate>
+                        </TabItem>
+                        <TabItem>
+                            <ChildContent>
+                                <TabHeader Text="Lista de Factura"></TabHeader>
+                            </ChildContent>
+                            <ContentTemplate>
+                                <div style="padding-top: 35px; padding-left:20px;">
+                                    <SfGrid DataSource="@Facturas" Query="@(new Query().Where("PID", "equal", customer.ID))"
+                                            AllowExcelExport="true"
+                                            AllowPaging="true">
+                                        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+                                        <GridPageSettings PageSize="6"></GridPageSettings>
+                                        <GridColumns>
+                                            <GridColumn Field=@nameof(Factura.ID) Width="60" Visible="false"> </GridColumn>
+                                            <GridColumn Field=@nameof(Factura.Facturano) Width="130" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(Factura.FechaFactura) Format="d" Width="100" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(Factura.Consignatario) Width="90" AutoFit="true"></GridColumn>
+                                            <GridColumn Field=@nameof(Factura.PaisDestino) Width="90" AutoFit="true"></GridColumn>
+                                        </GridColumns>
+                                    </SfGrid>
+                                </div>
+                            </ContentTemplate>
+                        </TabItem>
+                    </TabItems>
+                </SfTab>
+            </div>
+        </DetailTemplate>
+    </GridTemplates>
+
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Import"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="PaisOrigen" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Import.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="70" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Polizano) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.FechaPoliza) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.TipoCambio) Format="C5" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.PaisOrigen) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Fianza) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Aduana) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.ConsignatarioImp) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.CifTotal) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.CifSaldo) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.CifSalida) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.FobTotal) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.TotalUnidades) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.TotalSaldoC) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.SalidaC) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.TotalDai) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Flete) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Otros) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Seguro) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.TipoDocumento) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Fileno) TextAlign="TextAlign.Left" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Import.Proveedor) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Awbno) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+        <GridColumn Field=@nameof(Import.Activate) TextAlign="TextAlign.Center" Width="120" AutoFit="true"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<SfDialog @ref="DialogAdd" Width="1000px" Height="800px" Visible="false" EnableResize="true" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="ClosedAdd"></DialogEvents>
+    <DialogTemplates>
+        <Header> Importing Excel</Header>
+        <Content>
+            <div class="row">
+                <div class="col-12">
+                    <SfUploader></SfUploader>
+                </div>
+</div>
+                    <div class="row">
+                        <div class="col-12">
+                            <SfGrid ID="Grid2" @ref="DefaultGridM2" DataSource="@ImportAdd"
+                                    AllowPaging="false" AllowSorting="true" AllowFiltering="false" Height="100%" Width="100%"
+                                    Toolbar="ToolbaritemsImportAdd">
+                                <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+                                <GridColumns>
+                                    <GridColumn Field=@nameof(Import.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="70" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Polizano) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.FechaPoliza) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.TipoCambio) Format="C5" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.PaisOrigen) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Fianza) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Aduana) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.ConsignatarioImp) TextAlign="TextAlign.Left" Width="100" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.CifTotal) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.CifSaldo) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.CifSalida) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.FobTotal) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.TotalUnidades) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.TotalSaldoC) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.SalidaC) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.TotalDai) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Flete) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Otros) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Seguro) Format="C2" TextAlign="TextAlign.Right" Width="90" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.TipoDocumento) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Fileno) TextAlign="TextAlign.Left" Width="150"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Proveedor) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Awbno) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+                                    <GridColumn Field=@nameof(Import.Activate) TextAlign="TextAlign.Center" Width="120" AutoFit="true"></GridColumn>
+                                </GridColumns>
+                            </SfGrid>
+                        </div>
+                    </div>
+        </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkAddClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelAddClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Import> DefaultGridM;
+    private SfGrid<Import> DefaultGridM2;
+    private SfGrid<ImportDetail> DefaultGridD1;
+    private SfGrid<Factura> DefaultGridD2;
+    private SfDialog Dialog;
+    private SfDialog DialogAdd;
+    public object SelectedData;
+    public bool flag = true;
+    public bool flagAdd = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+    public void OnActionBegin(ActionEventArgs<Import> Args)
+    {
+        if (Args.RequestType.ToString() == "Add" && flagAdd)
+        {
+            Args.Cancel = true;  
+            DialogAdd.Show();
+            flagAdd = false;
+        }
+        else if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGridM.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Import> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGridM.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+    public void ClosedAdd()
+    {
+        flagAdd = true;
+    }
+    private void OkAddClick()
+    {
+        @*DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button*@
+    DialogAdd.Hide();
+}
+private void CancelAddClick()
+{
+    DialogAdd.Hide();
+}
+
+public List<Import> Imports { get; set; }
+public List<Import> ImportAdd { get; set; }
+public List<ImportDetail> ImportDetails { get; set; }
+public List<Factura> Facturas { get; set; }
+
+public string val = "";
+private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ExcelExport", "Search",
+    };
+private List<Object> ToolbaritemsImportAdd = new List<Object>() {
+        "Edit", "Delete", "ExcelExport", "Search",
+    };
+
+
+private List<Object> DetailToolbaritems = new List<Object>() {
+        "ExcelExport", "Search",
+    };
+
+
+protected override void OnInitialized()
+{
+    Imports = Enumerable.Range(1, 75).Select(x => new Import()
+    {
+        ID = 1000 + x,
+        TipoCambio = new Random().NextDouble() * 10f,
+        CifTotal = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        CifSaldo = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        CifSalida = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        FobTotal = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        TotalUnidades = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        TotalSaldoC = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        SalidaC = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        TotalDai = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        Flete = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        Otros = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        Seguro = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+
+        RegDate = DateTime.Now.AddDays(-x),
+        FechaPoliza = DateTime.Now.AddDays(-x),
+    }).ToList();
+
+    ImportAdd = Enumerable.Range(1, 75).Select(x => new Import()
+    {
+        ID = 1000 + x,
+        TipoCambio = new Random().NextDouble() * 10f,
+        CifTotal = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        CifSaldo = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        CifSalida = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        FobTotal = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        TotalUnidades = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        TotalSaldoC = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        SalidaC = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        TotalDai = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        Flete = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        Otros = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+        Seguro = Convert.ToDecimal(new Random().NextDouble() * 10000f),
+
+        RegDate = DateTime.Now.AddDays(-x),
+        FechaPoliza = DateTime.Now.AddDays(-x),
+    }).ToList();
+
+    ImportDetails = Enumerable.Range(1, 7).Select(x => new ImportDetail()
+    {
+        ID = 1000 + x,
+        PID = 1000 + (new Random().Next(15)),
+        RegDate = DateTime.Now.AddDays(-x),
+    }).ToList();
+
+    Facturas = Enumerable.Range(1, 7).Select(x => new Factura()
+    {
+        ID = 1000 + x,
+        PID = 1000 + (new Random().Next(15)),
+        RegDate = DateTime.Now.AddDays(-x),
+    }).ToList();
+}
+
+public static List<Import> LocalDataOrigen = new List<Import> {
+            new Import() { PaisOrigen= "Team1A" },
+            new Import() { PaisOrigen= "Team1B" },
+            new Import() { PaisOrigen= "Team2A" },
+            new Import() { PaisOrigen= "Team2B" },
+            new Import() { PaisOrigen= "Team3A" },
+            new Import() { PaisOrigen= "Team3B" },
+            new Import() { PaisOrigen= "Administration" }
+    };
+
+public IEditorSettings OrigenIDEditParams = new DropDownEditCellParams
+{
+    Params = new DropDownListModel<object, object>() { DataSource = LocalDataOrigen, AllowFiltering = true }
+};
+
+public class Import
+{
+    [Key]
+    [Required(ErrorMessage = "ID should not be empty")]
+    [Display(Name = "ID")]
+    public int? ID { get; set; }
+    [Display(Name = "Poliza#")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string Polizano { get; set; }
+    [DataType(DataType.Date)]
+    [Display(Name = "Fecha Poliza")]
+    [Editable(true)]
+    public DateTime? FechaPoliza { get; set; }
+    [Display(Name = "Tipo Cambio")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public double TipoCambio { get; set; }
+
+    [Display(Name = "Pais Origen")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string PaisOrigen { get; set; }
+    [Display(Name = "Fianza")]
+    public int Fianza { get; set; }
+    [Display(Name = "Aduana")]
+    public string Aduana { get; set; }
+    [Display(Name = "Consignatario Imp.")]
+    public string ConsignatarioImp { get; set; }
+
+    [Display(Name = "CIF Total")]
+    public decimal CifTotal { get; set; }
+    [Display(Name = "CIF Saldo")]
+    public decimal CifSaldo { get; set; }
+    [Display(Name = "CIF Salida")]
+    public decimal CifSalida { get; set; }
+    [Display(Name = "FOB Total")]
+    public decimal FobTotal { get; set; }
+    [Display(Name = "Total Unidades")]
+    public decimal TotalUnidades { get; set; }
+    [Display(Name = "TotalSaldo C.")]
+    public decimal TotalSaldoC { get; set; }
+    [Display(Name = "Salida C.")]
+    public decimal SalidaC { get; set; }
+    [Display(Name = "Total Dai")]
+    public decimal TotalDai { get; set; }
+    [Display(Name = "Flete")]
+    public decimal Flete { get; set; }
+    [Display(Name = "Otros")]
+    public decimal Otros { get; set; }
+    [Display(Name = "Seguro")]
+    public decimal Seguro { get; set; }
+
+    [Display(Name = "Tipo Documento")]
+    public string TipoDocumento { get; set; }
+    [Display(Name = "File#")]
+    public string Fileno { get; set; }
+    [Display(Name = "Proveedor")]
+    public string Proveedor { get; set; }
+    [Display(Name = "Awb")]
+    public string Awbno { get; set; }
+    [Display(Name = "Closed")]
+    public int? Activate { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Reg Date")]
+    [Editable(false)]
+    public DateTime? RegDate { get; set; }
+}
+
+public class ImportDetail
+{
+    [Key]
+    [Required(ErrorMessage = "ID should not be empty")]
+    [Display(Name = "ID")]
+    public int? ID { get; set; }
+    [Display(Name = "PID")]
+    public int? PID { get; set; }
+    [Display(Name = "Linea")]
+    [Required(ErrorMessage = "Field should not be empty")]
+    public string Linea { get; set; }
+    [Display(Name = "Description")]
+    public string Description { get; set; }
+    [Display(Name = "Cantidad")]
+    public int? Cantidad { get; set; }
+
+    [Display(Name = "Saldo C.")]
+    public decimal SaldoC { get; set; }
+    [Display(Name = "Salida C.")]
+    public decimal SalidaC { get; set; }
+    [Display(Name = "Medida")]
+    public string Medida { get; set; }
+    [Display(Name = "Monto CIF")]
+    public decimal MontoCif { get; set; }
+    [Display(Name = "CIF Saldo $")]
+    public decimal CifSaldo { get; set; }
+    [Display(Name = "Salida $")]
+    public decimal Salida { get; set; }
+    [Display(Name = "Conversion Q")]
+    public decimal ConversionQ { get; set; }
+    [Display(Name = "Partida")]
+    public string Partida { get; set; }
+    [Display(Name = "Porcentaje")]
+    public decimal Porcentaje { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Reg Date")]
+    [Editable(false)]
+    public DateTime? RegDate { get; set; }
+}
+
+public class Factura
+{
+    [Key]
+    [Required(ErrorMessage = "ID should not be empty")]
+    [Display(Name = "ID")]
+    public int? ID { get; set; }
+    [Display(Name = "PID")]
+    public int? PID { get; set; }
+    [Display(Name = "Factura#")]
+    public string Facturano { get; set; }
+    [DataType(DataType.Date)]
+    [Display(Name = "Fecha Factura")]
+    [Editable(false)]
+    public DateTime? FechaFactura { get; set; }
+    [Display(Name = "Consignatario")]
+    public string Consignatario { get; set; }
+    [Display(Name = "Pais Destino")]
+    public string PaisDestino { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Reg Date")]
+    [Editable(false)]
+    public DateTime? RegDate { get; set; }
+
+}
+
+public Query GetFileMasterQuery(Import value)
+{
+    return new Query().Where("ID", "equal", value.ID);
+}
+public Query GetFileDetailQuery(Import value)
+{
+    return new Query().Where("PID", "equal", value.ID);
+}
+
+public class Team
+{
+    public string TeamID { get; set; }
+}
+
+public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+{
+    if (args.Item.Id == "Grid_excelexport")
+    {
+        await this.DefaultGridM.ExcelExport();
+    }
+    else if (args.Item.Id == "Transfer")
+    {
+        //You can customized your code here....
+
+    }
+}
+
+}
