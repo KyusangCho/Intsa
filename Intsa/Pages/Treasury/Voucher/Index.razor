@@ -1,0 +1,484 @@
+﻿@page "/Treasury/Voucher"
+@page "/Treasury/Voucher/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Buttons
+
+@inject IJSRuntime JSRuntime
+
+<h1 class="page-header mb-3">
+    Voucher
+    <small>개인비용 청구관리</small>
+</h1>
+
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Vouchers" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Voucher"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridFilterSettings>
+        <GridFilterColumns>
+            <GridFilterColumn Field="TeamID" MatchCase="false" Operator="Syncfusion.Blazor.Operator.StartsWith" Predicate="and" Value="@val"></GridFilterColumn>
+        </GridFilterColumns>
+    </GridFilterSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Voucher.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.DeptID) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.TeamID) EditType="EditType.DropDownEdit" EditorSettings="@TeamIDEditParams" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.Voucherno) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.FechaEmision) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.FormaPago) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.Monto) Format="N2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.Moneda) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.CreatedBy) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Voucher.Status) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+
+<SfDialog @ref="DialogAdd" Width="1100px" Height="700px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="ClosedAdd"></DialogEvents>
+    <DialogTemplates>
+        <Header> New Voucher</Header>
+        <Content>
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-xl-4">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" for="exampleFormControlSelect1">Department</label>
+                                    <SfDropDownList TValue="string" TItem="string"></SfDropDownList>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label" for="exampleFormControlSelect1">Equipo</label>
+                                    <SfDropDownList TValue="string" TItem="string"></SfDropDownList>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label" for="exampleFormControlFile1">Check Name</label>
+                                    <SfTextBox Placeholder="Check Name"></SfTextBox>
+                                </div>
+                                
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" for="exampleFormControlSelect1">Fecha de Emision</label>
+                                    <SfDatePicker TValue="DateTime?" Placeholder='Choose a Date'></SfDatePicker>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label" for="exampleFormControlSelect2">Monto</label>
+                                    <SfNumericTextBox TValue="decimal?" Value=0></SfNumericTextBox>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label" for="exampleFormControlSelect2">Forma de Pago</label>
+                                    <SfDropDownList TValue="string" TItem="string"></SfDropDownList>
+                                </div>
+                                
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" for="exampleFormControlFile1">Credit Limit</label>
+                                    <SfTextBox Value="10"></SfTextBox>
+                                    <SfDatePicker TValue="DateTime?"></SfDatePicker>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="form-label" for="exampleFormControlSelect2">Moneda</label>
+                                    <SfRadioButton Label="QTZ" Name="qtz" Value="qtz" @bind-Checked="stringChecked"></SfRadioButton>
+                                    <SfRadioButton Label="USD" Name="usd" Value="usd" @bind-Checked="stringChecked"></SfRadioButton>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <SfGrid ID="GridD" @ref="DefaultGridD" DataSource="@VoucherDetails" AllowPaging="true" AllowSorting="true" AllowFiltering="false" 
+                                Height="300px" Width="100%"
+                                Toolbar="SubToolbaritems">
+                            <GridEvents OnActionBegin="OnAddActionBegin" TValue="VoucherDetail"></GridEvents>
+                            <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog" Dialog="DialogParams"></GridEditSettings>
+                            <GridPageSettings PageSize="10"></GridPageSettings>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(VoucherDetail.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(VoucherDetail.FechaFactura) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+                                <GridColumn Field=@nameof(VoucherDetail.Facturano) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(VoucherDetail.CuentaContable) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(VoucherDetail.Description) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(VoucherDetail.Qty) Format="N3" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(VoucherDetail.Monto) Format="N2" TextAlign="TextAlign.Right" Width="120"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="multiline col-12">
+                                <SfTextBox Width="100%" Multiline=true Placeholder="Nota"></SfTextBox>
+                            </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-xl-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label" for="exampleFormControlSelect1">Approval</label>
+                                        <SfDropDownList TValue="string" TItem="string" Placeholder="Select a approver"></SfDropDownList>
+                                        <SfDropDownList TValue="string" TItem="string" Placeholder="Select a approver"></SfDropDownList>
+                                        <SfDropDownList TValue="string" TItem="string" Placeholder="Select a approver"></SfDropDownList>
+                                        <SfDropDownList TValue="string" TItem="string" Placeholder="Select a approver"></SfDropDownList>
+                                        <SfDropDownList TValue="string" TItem="string" Placeholder="Select a approver"></SfDropDownList>
+                                    </div>
+
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label" for="exampleFormControlSelect1">Approval</label>
+                                        <SfDropDownList TValue="string" TItem="string" Placeholder="Select a approver"></SfDropDownList>
+                                        <SfDropDownList TValue="string" TItem="string" Placeholder="Select a approver"></SfDropDownList>
+                                        <SfDropDownList TValue="string" TItem="string" Placeholder="Select a approver"></SfDropDownList>
+                                    </div>
+
+                                </div>
+                            </div>
+</li>
+                </ul>
+            </div>
+        </Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkAddClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelAddClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .multiline {
+        margin-top: 60px;
+        width: 100%;
+        height: 50px; 
+    }
+    .e-btn.e-flat.e-primary, .e-btn.e-flat.e-primary:focus {
+        background-color: #317ab9;
+        border-color: #265f91;
+        color: #fff;
+    }
+
+        .e-btn.e-flat.e-primary:hover, .e-btn.e-flat.e-primary:active {
+            background-color: #21527d;
+            border-color: #163854;
+            color: #fff;
+        }
+
+    .close-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .error-msg {
+        color: #66afe9;
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: 10px;
+    }
+
+    .error-detail {
+        position: relative;
+        left: 56px;
+        margin: 0 0 21px;
+    }
+
+    .e-icons.close-icon.col-lg-2:before {
+        content: '\e7e9';
+        font-size: 26px;
+        color: #d9534f;
+        position: relative;
+        left: 1px;
+        bottom: 18px;
+    }
+
+    .e-dialog .e-footer-content {
+        background-color: #f8f8f8;
+    }
+
+    .e-dialog.e-control.e-popup, .e-dialog.e-control.e-popup .e-dlg-header-content {
+        background-color: #d9edf7;
+    }
+
+    .e-dialog.e-control.e-popup {
+        padding: 3px;
+    }
+
+    .e-dialog.e-control .e-dlg-header-content {
+        padding: 10px;
+    }
+
+    .e-dialog.e-control .e-footer-content {
+        padding: 8px 12px;
+    }
+
+    .e-dialog.e-control .e-dlg-content {
+        padding: 15px 0 0;
+        padding-left: 5px;
+    }
+
+    .msg-wrapper.col-lg-12 {
+        margin-top: 20px;
+    }
+
+    .e-click::before {
+        content: '\e525';
+    }
+
+    .e-download::before {
+        content: '\e603';
+    }
+
+    .e-upload::before {
+        content: '\e60f';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Voucher> DefaultGrid;
+    private SfGrid<VoucherDetail> DefaultGridD;
+    private SfDialog Dialog;
+    private SfDialog DialogAdd;
+    private DialogEffect AnimationEffect = DialogEffect.Zoom;
+    private DialogSettings DialogParams = new DialogSettings { Width = "800px", Height = "80%" };
+    private string stringChecked = "qtz";
+
+    public object SelectedData;
+    public bool flag = true;
+    public bool flagAdd = true;
+
+    public void OnActionBegin(ActionEventArgs<Voucher> Args)
+    {
+        if (Args.RequestType.ToString() == "Add" && flagAdd)
+        {
+            Args.Cancel = true;
+            DialogAdd.Show();
+            flagAdd = false;
+        }
+        else if(Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Voucher> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+
+    public void OnAddActionBegin(ActionEventArgs<VoucherDetail> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+    }
+
+    #region Delete
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    public void Closed()
+    {
+        flag = true;
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    #endregion
+    #region Add
+    private void OkAddClick()
+    {
+        DialogAdd.Hide();
+    }
+    public void ClosedAdd()
+    {
+        flagAdd = true;
+    }
+    private void CancelAddClick()
+    {
+        DialogAdd.Hide();
+    }
+    #endregion
+
+    public List<Voucher> Vouchers { get; set; }
+    public List<VoucherDetail> VoucherDetails { get; set; }
+    public string val = "";
+
+    private List<Object> Toolbaritems = new List<Object>() {  "Add", "Edit", "Delete", "ExcelExport", "Search",
+        new ItemModel() { Text="Copy", TooltipText = "Copy", PrefixIcon = "e-download", Id="Copy" },
+    };
+
+    private List<Object> SubToolbaritems = new List<Object>() {  "Add", "Edit", "Delete", "Search",
+    };
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        Vouchers = Enumerable.Range(1, 750).Select(x => new Voucher()
+        {
+            ID = 1000 + x,
+            TeamID = (new string[] { "Team1A", "Team1B", "Team2A", "Team2B", "Team3A", "Team3B", "Administration" })[new Random().Next(5)],
+            RegDate = DateTime.Now.AddDays(-x),
+            FechaEmision = DateTime.Now.AddDays(-x),
+            Voucherno =  (2105000 + x).ToString(),
+            Moneda = (new string[] {"$", "Q"})[new Random().Next(2)],
+            Monto = Convert.ToDecimal(new Random().NextDouble() * 1000.0f),
+            Status = "Emitido",
+        }).ToList();
+
+        VoucherDetails = Enumerable.Range(1, 20).Select(x => new VoucherDetail()
+        {
+            ID = 1000 + x,
+            PID = 1000 + x,
+            FechaFactura = DateTime.Now.AddDays(-x),
+            Facturano = (2105000 + x).ToString(),
+            Qty = Convert.ToDecimal(new Random().NextDouble() * 10.0f),
+            Monto = Convert.ToDecimal(new Random().NextDouble() * 1000.0f),
+        }).ToList();
+    }
+
+    public IEditorSettings TeamIDEditParams = new DropDownEditCellParams
+    {
+        Params = new DropDownListModel<object, object>() { DataSource = LocalDataTeam, AllowFiltering = true }
+    };
+
+
+    public class Voucher
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Dept Name")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string DeptID { get; set; }
+        [Display(Name = "Team Name")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string TeamID { get; set; }
+        [Display(Name = "Voucher#")]
+        public string Voucherno { get; set; }
+        [Display(Name = "Fecha Emision")]
+        [Editable(false)]
+        public DateTime? FechaEmision { get; set; }
+        [Display(Name = "Nombre de Cheque")]
+        public string Cheque { get; set; }
+        [Display(Name = "Forma de Pago")]
+        public string FormaPago { get; set; }
+
+        [Display(Name = "Monto")]
+        public decimal Monto { get; set; }
+        [Display(Name = "Moneda")]
+        public string Moneda { get; set; }
+
+        [Display(Name = "Created by")]
+        public string CreatedBy { get; set; }
+        [Display(Name = "Status")]
+        public string Status { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created")]
+        [Editable(false)]
+        public DateTime? RegDate { get; set; }
+    }
+
+    public class VoucherDetail
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "PID")]
+        public int? PID { get; set; }
+
+        [Display(Name = "Fecha Factura")]
+        [Editable(true)]
+        public DateTime? FechaFactura { get; set; }
+        [Display(Name = "Factura#")]
+        public string Facturano { get; set; }
+        [Display(Name = "Cuenta Contable")]
+        public string CuentaContable { get; set; }
+        [Display(Name = "Descripcion")]
+        public string Description { get; set; }
+
+        [Display(Name = "Cantidad")]
+        public decimal Qty { get; set; }
+        [Display(Name = "Monto")]
+        public decimal Monto { get; set; }
+
+        [Display(Name = "Created by")]
+        public string CreatedBy { get; set; }
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "TemplateDownload")
+        {
+            await JSRuntime.InvokeAsync<object>("open", "https://s3.amazonaws.com/int.boards/WebTemplate_Material_Purchase_Requisition.xlsx", "_blank");
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+        }
+    }
+
+    public static List<Voucher> LocalDataTeam = new List<Voucher> {
+            new Voucher() { TeamID= "Team1A" },
+            new Voucher() { TeamID= "Team1B" },
+            new Voucher() { TeamID= "Team2A" },
+            new Voucher() { TeamID= "Team2B" },
+            new Voucher() { TeamID= "Team3A" },
+            new Voucher() { TeamID= "Team3B" },
+            new Voucher() { TeamID= "Administration" }
+    };
+
+}
