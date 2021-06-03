@@ -1,10 +1,12 @@
 ﻿using Intsa.Models.Boards;
 using Intsa.Pages.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Intsa.Pages
 {
@@ -14,6 +16,7 @@ namespace Intsa.Pages
         public INoticeRepository NoticeRepositoryAsyncReference { get; set; }
         [Inject]
         public NavigationManager NavigationManagerReference { get; set; }
+
 
         protected List<BoardNotices> models;
 
@@ -138,7 +141,7 @@ namespace Intsa.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            
+
             //ChartPoints = Enumerable.Range(1, 11).Select(x => new ColumnChartData()
             //{
             //    Lineno = "Linea " + x, 
@@ -153,7 +156,6 @@ namespace Intsa.Pages
             //{
             //    NavigationManagerReference.NavigateTo("/Boards/Notices"); 
             //}
-
             await DisplayData();
         }
 
@@ -167,8 +169,8 @@ namespace Intsa.Pages
             {
                 models = resultSet.Records.ToList();
             }
-
             VisibleProperty = false;
+            
         }
 
         protected void NameClick(int id)
@@ -193,6 +195,7 @@ namespace Intsa.Pages
             public double Meta { get; set; }
             public double ProductQty { get; set; }
         }
+
 
     }
 }

@@ -64,18 +64,36 @@
     </div>
 </div>
 
-            
+<SfDialog @ref="Dialog" Width="400px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Generar texto</Header>
+        <Content> ¿Está seguro de generar un archivo de texto para las facturas seleccionadas?</Content>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@AnimationEffect" Duration=400 />
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
 <style>
     .e-click::before {
         content: '\e525';
     }
 </style>
 
-@code    { 
+@code    {
 
     private SfGrid<Export> DefaultGridM;
     private SfGrid<Factura> DefaultGridFactura;
     private SfDialog Dialog;
+    private DialogEffect AnimationEffect = DialogEffect.Zoom;
     public object SelectedData;
     public bool flag = true;
     public void Closed()
@@ -114,7 +132,8 @@
     public List<Factura> Facturas { get; set; }
 
     public string val = "";
-    private List<Object> Toolbaritems = new List<Object>() { "Generar Texto",
+    private List<Object> Toolbaritems = new List<Object>() {
+         new ItemModel() { Text = "Generar Texto", TooltipText ="Generar Texto", PrefixIcon="e-click", Id="GenerarTexto" },
          new ItemModel() { Text = "Confirm", TooltipText ="Confirm", PrefixIcon="e-click", Id="Confirm" },
          "Generar XML", "Eliminar Todos",
     };
@@ -263,12 +282,14 @@
         {
             await this.DefaultGridM.ExcelExport();
         }
-        else if (args.Item.Id == "Transfer")
+        else if (args.Item.Id == "GenerarTexto")
         {
-            //You can customized your code here....
+            args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
 
         }
     }
 
 
-    }
+}

@@ -143,6 +143,7 @@
     <PackageReference Include="Syncfusion.Blazor.FileManager" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.Inputs" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.Kanban" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Notifications" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.ProgressBar" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.RichTextEditor" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.Schedule" Version="19.1.0.54" />

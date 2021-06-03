@@ -1,5 +1,1169 @@
-﻿<h3>Index</h3>
+﻿@page "/Sales/Analysis/MonthlyStatus"
+@page "/Sales/Analysis/MonthlyStatus/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Charts
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Calendars
+
+<h1 class="page-header mb-3">
+    Monthly Report
+    <small>월간 업무 보고서 (영업부)</small>
+</h1>
+
+@{
+    var Initial = (new string[] { "Team" });
+}
+
+<div class="card">
+    <div class="card-header d-flex">
+        <span class="flex-grow-1">
+            <div class="row">
+                <div class="col-5">
+                    <SfDropDownList TValue="string" TItem="string" Placeholder="Select a period"></SfDropDownList>
+                </div>
+            </div>
+        </span>
+        <a href="#" data-toggle="card-expand" class="text-muted text-decoration-none"><i class="fa fa-fw fa-expand"></i> Expand</a>
+    </div>
+    <div class="card-body">
+        <div class="accordion" id="accordionWeekly">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading1">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                        월간 출고 완료 및 계획
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+
+                        <div class="control-section">
+
+                            <div class="row">
+                                <div class="col-6">
+                                    <SfAccumulationChart EnableBorderOnMouseMove="false" Title="월간 출고 완료 금액" EnableSmartLabels="true">
+                                        <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                                        <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : <b>${point.y}%</b>"></AccumulationChartTooltipSettings>
+                                        <AccumulationChartSeriesCollection>
+                                            <AccumulationChartSeries DataSource="@WeeklyShippedAmt" Name="WeeklyShipped" XName="Buyer" YName="Amount" StartAngle="60" InnerRadius="0%">
+                                                <AccumulationDataLabelSettings Name="DataLabelMappingName" Visible="true" Position="AccumulationLabelPosition.Inside">
+                                                    <AccumulationChartConnector Length="20px" Type="ConnectorType.Curve"></AccumulationChartConnector>
+                                                </AccumulationDataLabelSettings>
+                                            </AccumulationChartSeries>
+                                        </AccumulationChartSeriesCollection>
+                                    </SfAccumulationChart>
+                                </div>
+                                <div class="col-6">
+                                    <SfAccumulationChart EnableBorderOnMouseMove="false" Title="월간 출고 계획 금액" EnableSmartLabels="true">
+                                        <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
+                                        <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : <b>${point.y}%</b>"></AccumulationChartTooltipSettings>
+                                        <AccumulationChartSeriesCollection>
+                                            <AccumulationChartSeries DataSource="@WeeklyShippedAmt" Name="WeeklyShipped" XName="Buyer" YName="Amount" StartAngle="60" InnerRadius="0%">
+                                                <AccumulationDataLabelSettings Name="DataLabelMappingName" Visible="true" Position="AccumulationLabelPosition.Inside">
+                                                    <AccumulationChartConnector Length="20px" Type="ConnectorType.Curve"></AccumulationChartConnector>
+                                                </AccumulationDataLabelSettings>
+                                            </AccumulationChartSeries>
+                                        </AccumulationChartSeriesCollection>
+                                    </SfAccumulationChart>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <SfChart Title="MONTHLY SHIP AMOUNT">
+                                        <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
+                                        <ChartLegendSettings Visible="false"></ChartLegendSettings>
+                                        <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category" EdgeLabelPlacement="EdgeLabelPlacement.Shift">
+                                            <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+                                        </ChartPrimaryXAxis>
+                                        <ChartPrimaryYAxis LabelFormat="{value}$" RangePadding="ChartRangePadding.None" Minimum="0" Maximum="6000" Interval="1000">
+                                            <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
+                                            <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+                                        </ChartPrimaryYAxis>
+                                        <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
+                                        <ChartSeriesCollection>
+                                            <ChartSeries DataSource="@ChartData" Name="ShipAmount" XName="Weekno" Width="2" Fill="#1e90ff"
+                                                         Opacity="1" YName="Amount" Type="ChartSeriesType.Line" PointColorMapping="Color">
+                                                <ChartMarker Visible="true" Width="5" Height="5" Fill="#1e90ff">
+                                                </ChartMarker>
+                                            </ChartSeries>
+
+                                        </ChartSeriesCollection>
+                                    </SfChart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                        1. 새 오더 수주 내역 (Status of new order received)
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@OrderStatuses"
+                                AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+                                AllowExcelExport="true" AllowPdfExport="true"
+                                AllowGrouping="true">
+                            <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
+                                <CaptionTemplate>
+                                    @{
+                                        @*var order = (context as CaptionTemplateContext);*@
+                                        <div></div>
+                                    }
+                                </CaptionTemplate>
+                            </GridGroupSettings>
+                            <GridAggregates>
+                                <GridAggregate>
+                                    <GridAggregateColumns>
+                                        <GridAggregateColumn Field=@nameof(OrderStatus.Balqty) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(OrderStatus.Uprice) Type="AggregateType.Average" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Average</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Average</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+
+                                        <GridAggregateColumn Field=@nameof(OrderStatus.OrderBalAmt) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+
+                                        <GridAggregateColumn Field=@nameof(OrderStatus.TotalAmount) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                    </GridAggregateColumns>
+                                </GridAggregate>
+                            </GridAggregates>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(OrderStatus.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130" AutoFit="true"></GridColumn>
+
+                                <GridColumn Field=@nameof(OrderStatus.Styleno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Balqty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Uprice) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.OrderBalAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.TotalAmount) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.GoalAmount) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.GoalRates) Format="P1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Remark) TextAlign="TextAlign.Left" AutoFit="true"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                        2. 지난 달 출고 현황 (Last week's shipment status)
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid2" @ref="DefaultGrid2" DataSource="@LastShipments"
+                                AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+                                AllowExcelExport="true" AllowPdfExport="true"
+                                AllowGrouping="true">
+                            <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
+                                <CaptionTemplate>
+                                    @{
+                                        @*var order = (context as CaptionTemplateContext);*@
+                                        <div></div>
+                                    }
+                                </CaptionTemplate>
+                            </GridGroupSettings>
+                            <GridAggregates>
+                                <GridAggregate>
+                                    <GridAggregateColumns>
+                                        <GridAggregateColumn Field=@nameof(LastShipment.PlannedQty) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(LastShipment.PlannedAmt) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(LastShipment.ShippedQty) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(LastShipment.ShippedAmt) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(LastShipment.BalanceQty) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(LastShipment.BalanceAmt) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+
+                                    </GridAggregateColumns>
+                                </GridAggregate>
+                            </GridAggregates>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(LastShipment.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
+
+                                <GridColumn Field=@nameof(LastShipment.Fileno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.PlannedQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.PlannedAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.ShippedQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.ShippedAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.BalanceQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.BalanceAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+
+                                <GridColumn Field=@nameof(LastShipment.Remark) TextAlign="TextAlign.Left" AutoFit="true"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
+                        2-1. 주간 미 출고 세부 사항 (Detail of Last week's balance q'ty)
+                    </button>
+                </h2>
+                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid3" @ref="DefaultGrid3" DataSource="@NotShipments"
+                                AllowPaging="false" AllowSorting="true" AllowFiltering="false" Height="100%" Width="100%">
+                            <GridColumns>
+                                <GridColumn Field=@nameof(NotShipment.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(NotShipment.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(NotShipment.Teamleader) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NotShipment.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NotShipment.BalanceQty) HeaderTextAlign="TextAlign.Center" Format="N" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NotShipment.BalanceAmt) HeaderTextAlign="TextAlign.Center" Format="C2" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NotShipment.Factory) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NotShipment.Reason) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
+                        3. 금월 출고 계획 (This week's shipment plan)
+                    </button>
+                </h2>
+                <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid4" @ref="DefaultGrid4" DataSource="@CurrentShipments"
+                                AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+                                AllowExcelExport="true" AllowPdfExport="true"
+                                AllowGrouping="true">
+                            <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
+                                <CaptionTemplate>
+                                    @{
+                                        @*var order = (context as CaptionTemplateContext);*@
+                                        <div></div>
+                                    }
+                                </CaptionTemplate>
+                            </GridGroupSettings>
+                            <GridAggregates>
+                                <GridAggregate>
+                                    <GridAggregateColumns>
+                                        <GridAggregateColumn Field=@nameof(CurrentShipment.PlannedQty) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(CurrentShipment.PlannedAmt) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+
+
+                                    </GridAggregateColumns>
+                                </GridAggregate>
+                            </GridAggregates>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(CurrentShipment.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Fileno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.PlannedQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.PlannedAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Factory) TextAlign="TextAlign.Left" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Remark) TextAlign="TextAlign.Left"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+                        4. 차주 출고 계획 (Next week's shipment plan)
+                    </button>
+                </h2>
+                <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid5" @ref="DefaultGrid5" DataSource="@NextShipments"
+                                AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+                                AllowExcelExport="true" AllowPdfExport="true"
+                                AllowGrouping="true">
+                            <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
+                                <CaptionTemplate>
+                                    @{
+                                        @*var order = (context as CaptionTemplateContext);*@
+                                        <div></div>
+                                    }
+                                </CaptionTemplate>
+                            </GridGroupSettings>
+                            <GridAggregates>
+                                <GridAggregate>
+                                    <GridAggregateColumns>
+                                        <GridAggregateColumn Field=@nameof(NextShipment.PlannedQty) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(NextShipment.PlannedAmt) Type="AggregateType.Sum" Format="C2">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+
+
+                                    </GridAggregateColumns>
+                                </GridAggregate>
+                            </GridAggregates>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(NextShipment.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.Fileno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.PlannedQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.PlannedAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.Factory) TextAlign="TextAlign.Left" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(NextShipment.Remark) TextAlign="TextAlign.Left"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7">
+                        5. 견본 생산 계획 (Sample production plan)
+                    </button>
+                </h2>
+                <div id="collapse7" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid7" @ref="DefaultGrid7" DataSource="@Samples"
+                                AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
+                                AllowExcelExport="true" AllowPdfExport="true"
+                                AllowGrouping="true" AllowTextWrap="true">
+                            <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
+                                <CaptionTemplate>
+                                    @{
+                                        @*var order = (context as CaptionTemplateContext);*@
+                                        <div></div>
+                                    }
+                                </CaptionTemplate>
+                            </GridGroupSettings>
+                            <GridAggregates>
+                                <GridAggregate>
+                                    <GridAggregateColumns>
+                                        <GridAggregateColumn Field=@nameof(Sample.Styleno) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(Sample.OrderQty) Type="AggregateType.Sum" Format="N">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+
+
+                                    </GridAggregateColumns>
+                                </GridAggregate>
+                            </GridAggregates>
+                            <GridColumns>
+                                <GridColumn Field=@nameof(Sample.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.SamplePhase) TextAlign="TextAlign.Left" Width="150"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.SampleType) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.Season) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.Styleno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.OrderQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.Contact) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.Comments) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sample.Remark) TextAlign="TextAlign.Left"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8">
+                        6. 바이어 방문 및 출장 계획
+                    </button>
+                </h2>
+                <div id="collapse8" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid6" @ref="DefaultGrid6" DataSource="@BusinessTrips" AllowPaging="false" AllowSorting="true" Height="100%" Width="100%">
+                            <GridColumns>
+                                <GridColumn Field=@nameof(BusinessTrip.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Notice) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.VisitStart) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.VisitEnd) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Visitor) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Purpose) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Destination) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Contact) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(BusinessTrip.Remark) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading9">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9">
+                        7. 팀별 공지 사항 (바이어동향, 신규생산업체 개발건, 협력업체 동향주시건등 업무에 관하여 공유해야 하는 모든 사항)
+                    </button>
+                </h2>
+                <div id="collapse9" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        <SfGrid ID="Grid8" @ref="DefaultGrid8" DataSource="@TeamNotices" AllowPaging="false" AllowSorting="true" Height="100%" Width="100%">
+                            <GridColumns>
+                                <GridColumn Field=@nameof(TeamNotice.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(TeamNotice.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(TeamNotice.Subject) TextAlign="TextAlign.Left" Width="700"></GridColumn>
+                                <GridColumn Field=@nameof(TeamNotice.Contact) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(TeamNotice.Remark) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                            </GridColumns>
+                        </SfGrid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+
+    .e-excel::before {
+        content: '\e242';
+    }
+
+    .e-pdf::before {
+        content: '\e240';
+    }
+</style>
 
 @code {
 
+    public DateTime? DateValue { get; set; } = DateTime.Now;
+    public string val = "";
+
+    private SfGrid<OrderStatus> DefaultGrid;
+    private SfGrid<LastShipment> DefaultGrid2;
+    private SfGrid<NotShipment> DefaultGrid3;
+    private SfGrid<CurrentShipment> DefaultGrid4;
+    private SfGrid<NextShipment> DefaultGrid5;
+    private SfGrid<BusinessTrip> DefaultGrid6;
+    private SfGrid<TeamNotice> DefaultGrid8;
+    private SfGrid<Sample> DefaultGrid7;
+
+    public List<OrderStatus> OrderStatuses { get; set; }
+    public List<LastShipment> LastShipments { get; set; }
+    public List<CurrentShipment> CurrentShipments { get; set; }
+    public List<NextShipment> NextShipments { get; set; }
+    public List<NotShipment> NotShipments { get; set; }
+    public List<BusinessTrip> BusinessTrips { get; set; }
+    public List<TeamNotice> TeamNotices { get; set; }
+    public List<Sample> Samples { get; set; }
+
+    protected override void OnInitialized()
+    {
+        OrderStatuses = Enumerable.Range(1, 45).Select(x => new OrderStatus()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            Styleno = new Random().Next(600000),
+            Pono = new Random().Next(600000),
+            Balqty = new Random().Next(600000),
+            Uprice = Convert.ToDecimal(new Random().NextDouble() * 10.0f),
+            OrderBalAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            TotalAmount = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            GoalAmount = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            GoalRates = Convert.ToDecimal(new Random().NextDouble() ),
+            Created = DateTime.Now.AddDays(-x),
+            Delivery = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        LastShipments = Enumerable.Range(1, 45).Select(x => new LastShipment()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            Fileno = new Random().Next(60),
+            Pono = new Random().Next(600),
+            PlannedQty = new Random().Next(600000),
+            PlannedAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            ShippedQty = new Random().Next(600000),
+            ShippedAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            BalanceQty = new Random().Next(600000),
+            BalanceAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+
+            Created = DateTime.Now.AddDays(-x),
+            Delivery = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        NotShipments = Enumerable.Range(1, 3).Select(x => new NotShipment()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            BalanceQty = new Random().Next(600000),
+            BalanceAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+
+            Created = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        CurrentShipments = Enumerable.Range(1, 45).Select(x => new CurrentShipment()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(6)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            Fileno = new Random().Next(60),
+            Pono = new Random().Next(600),
+            PlannedQty = new Random().Next(600000),
+            PlannedAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+
+            Created = DateTime.Now.AddDays(-x),
+            Delivery = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        NextShipments = Enumerable.Range(1, 45).Select(x => new NextShipment()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(6)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            Fileno = new Random().Next(60),
+            Pono = new Random().Next(600),
+            PlannedQty = new Random().Next(600000),
+            PlannedAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+
+            Created = DateTime.Now.AddDays(-x),
+            Delivery = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        Samples = Enumerable.Range(1, 45).Select(x => new Sample()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(6)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            Styleno = new Random().Next(60),
+            OrderQty = new Random().Next(600),
+
+            Created = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        BusinessTrips = Enumerable.Range(1, 5).Select(x => new BusinessTrip()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
+
+            VisitStart = DateTime.Now.AddDays(-x),
+            VisitEnd = DateTime.Now.AddDays(-x),
+        }).ToList();
+
+        TeamNotices = Enumerable.Range(1, 1).Select(x => new TeamNotice()
+        {
+            ID = 1000 + x,
+            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
+        }).ToList();
+    }
+
+    public List<PieData> WeeklyShippedAmt { get; set; } = new List<PieData>
+{
+        new PieData { Buyer = "American Eagle Outfitters", Amount = 46, DataLabelMappingName = "American Eagle Outfitters: 46" },
+        new PieData { Buyer = "Express", Amount = 26, DataLabelMappingName = "Express: 26" },
+        new PieData { Buyer = "LIG", Amount = 19, DataLabelMappingName = "LIG: 19" },
+        new PieData { Buyer = "Lucky Opco", Amount = 17, DataLabelMappingName = "Lucky Opco: 17" },
+        new PieData { Buyer = "Jcrew", Amount = 12, DataLabelMappingName = "Jcrew: 12"  },
+        new PieData { Buyer = "Belk", Amount = 10, DataLabelMappingName = "Belk: 10" },
+        new PieData { Buyer = "Kontoor", Amount = 9, DataLabelMappingName = "Kontoor: 9" },
+        new PieData { Buyer = "Maternity Opco", Amount = 27, DataLabelMappingName = "Maternity Opco: 27" },
+        new PieData { Buyer = "Abercrombie & Fitch", Amount = 8, DataLabelMappingName = "Abercrombie & Fitch: 8" },
+        new PieData { Buyer = "Kohl's", Amount = 8, DataLabelMappingName = "Kohl's: 8" },
+        new PieData { Buyer = "Urban Outfitters", Amount = 8, DataLabelMappingName = "Urban Outfitters: 8" },
+        new PieData { Buyer = "Guess", Amount = 4, DataLabelMappingName = "Guess: 4" },
+        new PieData { Buyer = "Lane Bryant", Amount = 4, DataLabelMappingName = "Lane Bryant: 4" },
+        new PieData { Buyer = "Maurices", Amount = 3, DataLabelMappingName = "Maurices: 3" },
+        new PieData { Buyer = "Torrid", Amount = 3, DataLabelMappingName = "Torrid: 3" },
+        new PieData { Buyer = "Land's End", Amount = 3, DataLabelMappingName = "Land's End: 3" },
+    };
+
+    public class PieData
+    {
+        public string Buyer { get; set; }
+        public double Amount { get; set; }
+        public string DataLabelMappingName { get; set; }
+    }
+
+    public List<LineChartData> ChartData = Enumerable.Range(1, 52).Select(x => new LineChartData()
+    {
+        Weekno = x,
+        Amount = x < 23 ? new Random().Next(5000) : 0,
+        @*Color = "#1e90ff",*@
+    }).ToList();
+
+    public class LineChartData
+    {
+        public int Weekno { get; set; }
+        public double Amount { get; set; }
+        @*public string Color { get; set; }*@
+    }
+
+    public class OrderStatus
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "TeamManager")]
+        public string Teamleader { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Delivery")]
+        public DateTime Delivery { get; set; }
+
+        [Display(Name = "No. of Style")]
+        public int Styleno { get; set; }
+        [Display(Name = "No. of PO")]
+        public int Pono { get; set; }
+        [Display(Name = "Order Bal Q'ty")]
+        public int Balqty { get; set; }
+        [Display(Name = "U/Price")]
+        public decimal Uprice { get; set; }
+        [Display(Name = "Order Bal in $")]
+        public decimal OrderBalAmt { get; set; }
+        [Display(Name = "TTL O/Amount rcvd")]
+        public decimal TotalAmount { get; set; }
+        [Display(Name = "Goal Amount")]
+        public decimal GoalAmount { get; set; }
+        [Display(Name = "% of Accumulated vs Goal Amount")]
+        public decimal GoalRates { get; set; }
+
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public class LastShipment
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "TeamManager")]
+        public string Teamleader { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Delivery")]
+        public DateTime Delivery { get; set; }
+
+        [Display(Name = "No. of File")]
+        public int Fileno { get; set; }
+        [Display(Name = "No. of PO")]
+        public int Pono { get; set; }
+        [Display(Name = "Planned Q'ty")]
+        public int PlannedQty { get; set; }
+        [Display(Name = "Planned($)")]
+        public decimal PlannedAmt { get; set; }
+        [Display(Name = "Shipped Q'ty")]
+        public int ShippedQty { get; set; }
+        [Display(Name = "Shipped($)")]
+        public decimal ShippedAmt { get; set; }
+        [Display(Name = "Balance Q'ty")]
+        public int BalanceQty { get; set; }
+        [Display(Name = "Balance($)")]
+        public decimal BalanceAmt { get; set; }
+
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public class NotShipment
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "TeamManager")]
+        public string Teamleader { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+
+        [Display(Name = "Balance Q'ty")]
+        public int BalanceQty { get; set; }
+        [Display(Name = "Balance($)")]
+        public decimal BalanceAmt { get; set; }
+        [Display(Name = "Factory")]
+        public string Factory { get; set; }
+        [Display(Name = "Reason")]
+        public string Reason { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public class CurrentShipment
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "TeamManager")]
+        public string Teamleader { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Delivery")]
+        public DateTime Delivery { get; set; }
+
+        [Display(Name = "No. of File")]
+        public int Fileno { get; set; }
+        [Display(Name = "No. of PO")]
+        public int Pono { get; set; }
+        [Display(Name = "Planned Q'ty")]
+        public int PlannedQty { get; set; }
+        [Display(Name = "Planned($)")]
+        public decimal PlannedAmt { get; set; }
+
+        [Display(Name = "Factory")]
+        public string Factory { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public class NextShipment
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "TeamManager")]
+        public string Teamleader { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Delivery")]
+        public DateTime Delivery { get; set; }
+
+        [Display(Name = "No. of File")]
+        public int Fileno { get; set; }
+        [Display(Name = "No. of PO")]
+        public int Pono { get; set; }
+        [Display(Name = "Planned Q'ty")]
+        public int PlannedQty { get; set; }
+        [Display(Name = "Planned($)")]
+        public decimal PlannedAmt { get; set; }
+
+        [Display(Name = "Factory")]
+        public string Factory { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public class Sample
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+        [Display(Name = "Sample Phase")]
+        public string SamplePhase { get; set; }
+        [Display(Name = "Sample Type")]
+        public string SampleType { get; set; }
+        [Display(Name = "Season")]
+        public string Season { get; set; }
+
+        [Display(Name = "No. of Style")]
+        public int Styleno { get; set; }
+        [Display(Name = "Order Q'ty")]
+        public int OrderQty { get; set; }
+
+        [Display(Name = "Contact")]
+        public string Contact { get; set; }
+        [Display(Name = "Additional Comments")]
+        public string Comments { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public class BusinessTrip
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "Buyer")]
+        public string Buyer { get; set; }
+        [Display(Name = "Notice")]
+        public string Notice { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Visit Start")]
+        public DateTime VisitStart { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Visit End")]
+        public DateTime VisitEnd { get; set; }
+
+        [Display(Name = "Visitor")]
+        public string Visitor { get; set; }
+        [Display(Name = "Purpose")]
+        public string Purpose { get; set; }
+        [Display(Name = "Destination")]
+        public string Destination { get; set; }
+        [Display(Name = "Contact")]
+        public string Contact { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+    public class TeamNotice
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Team")]
+        public string Team { get; set; }
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
+        [Display(Name = "Contact")]
+        public string Contact { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+    }
+
+
+    private async Task ExcelExport_Clicked(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Grid_pdfexport")
+        {
+            await this.DefaultGrid.PdfExport();
+        }
+    }
 }
