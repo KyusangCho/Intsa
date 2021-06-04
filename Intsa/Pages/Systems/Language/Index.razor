@@ -1,0 +1,152 @@
+﻿@page "/Systems/Language"
+@page "/Systems/Language/Index"
+
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Navigations
+@using System.ComponentModel.DataAnnotations
+@using Syncfusion.Blazor.Popups
+@using Syncfusion.Blazor.DropDowns
+
+<h1 class="page-header mb-3">
+    Languages
+    <small>언어 관리</small>
+</h1>
+
+<SfGrid ID="Grid" @ref="DefaultGrid" DataSource="@Languages" AllowPaging="true" AllowSorting="true" AllowFiltering="true" Height="100%" Width="100%"
+        Toolbar="Toolbaritems" AllowExcelExport="true" ContextMenuItems="ContextMenuitems">
+    <GridEvents OnActionBegin="OnActionBegin" OnToolbarClick="ToolbarClickHandler" RowSelected="RowSelectHandler" TValue="Language"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog"></GridEditSettings>
+    <GridPageSettings PageSize="22"></GridPageSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(Language.ID) HeaderText="Order ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+        <GridColumn Field=@nameof(Language.TextID) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(Language.English) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Language.Korean) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Language.Spanish) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Language.Created) HeaderText="Create Date" Format="MM/dd/yyyy HH:mm:ss" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<SfDialog @ref="Dialog" Width="250px" Visible="false" ShowCloseIcon="true" IsModal="true">
+    <DialogEvents Closed="Closed"></DialogEvents>
+    <DialogTemplates>
+        @*Here you can customize the Header and Content of delete confirmation dialog*@
+        <Header> Delete Record</Header>
+        <Content> You are about to Delete a Record @SelectedData ?</Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton OnClick="@OkClick">
+            <DialogButtonModel Content="OK" IsPrimary="true"></DialogButtonModel>
+        </DialogButton>
+        <DialogButton OnClick="@CancelClick">
+            <DialogButtonModel Content="Cancel"></DialogButtonModel>
+        </DialogButton>
+    </DialogButtons>
+</SfDialog>
+
+<style>
+    .e-click::before {
+        content: '\e525';
+    }
+    .e-download::before {
+        content: '\e603';
+    }
+
+    .e-upload::before {
+        content: '\e60f';
+    }
+</style>
+
+@code {
+
+    private SfGrid<Language> DefaultGrid;
+    private SfDialog Dialog;
+    public object SelectedData;
+    public bool flag = true;
+    public void Closed()
+    {
+        flag = true;
+    }
+
+    public void OnActionBegin(ActionEventArgs<Language> Args)
+    {
+        if (Args.RequestType.ToString() == "Delete" && flag)
+        {
+            Args.Cancel = true;  //cancel default delete action
+            Dialog.Show();
+            flag = false;
+        }
+        else if (Args.RequestType.ToString() == "Excel Export")
+        {
+            this.DefaultGrid.ExcelExport();
+        }
+    }
+    public void RowSelectHandler(RowSelectEventArgs<Language> Args)
+    {
+        SelectedData = Args.Data.ID;
+    }
+    private void OkClick()
+    {
+        DefaultGrid.DeleteRecord();   //delete the record programatically while clikcing OK button
+        Dialog.Hide();
+    }
+    private void CancelClick()
+    {
+        Dialog.Hide();
+    }
+
+    public List<Language> Languages { get; set; }
+    public string val = "";
+    private List<Object> Toolbaritems = new List<Object>() { "Add", "Edit", "Delete", "ExcelExport", "Search",
+        new ItemModel() { Text="Upload Excel", TooltipText = "Upload Excel", PrefixIcon = "e-upload", Id="UploadExcel" },
+    };
+
+    private List<Object> ContextMenuitems = new List<Object> { "FirstPage", "PrevPage", "LastPage", "NextPage" };
+
+    protected override void OnInitialized()
+    {
+        Languages = Enumerable.Range(1, 250).Select(x => new Language()
+        {
+            ID = 1000 + x,
+            TextID = (1000 + x).ToString(),
+            Created = DateTime.Now.AddDays(-x).AddSeconds(new Random().Next(100)),
+        }).ToList();
+    }
+
+
+    public class Language
+    {
+        [Key]
+        [Required(ErrorMessage = "ID should not be empty")]
+        [Display(Name = "ID")]
+        public int? ID { get; set; }
+        [Display(Name = "Text ID")]
+        [Required(ErrorMessage = "Field should not be empty")]
+        public string TextID { get; set; }
+        [Display(Name = "English")]
+        public string English { get; set; }
+        [Display(Name = "Korean")]
+        public string Korean { get; set; }
+        [Display(Name = "Spanish")]
+        public string Spanish { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Created Date")]
+        [Editable(false)]
+        public DateTime? Created { get; set; }
+    }
+
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "Grid_excelexport")
+        {
+            await this.DefaultGrid.ExcelExport();
+        }
+        else if (args.Item.Id == "Transfer")
+        {
+            //You can customized your code here....
+
+        }
+    }
+
+}

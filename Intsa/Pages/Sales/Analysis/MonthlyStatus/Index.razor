@@ -2,11 +2,9 @@
 @page "/Sales/Analysis/MonthlyStatus/Index"
 
 @using Syncfusion.Blazor.Grids
-@using Syncfusion.Blazor.Navigations
 @using System.ComponentModel.DataAnnotations
 @using Syncfusion.Blazor.Charts
 @using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Calendars
 
 <h1 class="page-header mb-3">
     Monthly Report
@@ -47,7 +45,7 @@
                                         <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
                                         <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : <b>${point.y}%</b>"></AccumulationChartTooltipSettings>
                                         <AccumulationChartSeriesCollection>
-                                            <AccumulationChartSeries DataSource="@WeeklyShippedAmt" Name="WeeklyShipped" XName="Buyer" YName="Amount" StartAngle="60" InnerRadius="0%">
+                                            <AccumulationChartSeries DataSource="@WeeklyShippedAmt" Name="MonthlyShipped" XName="Buyer" YName="Amount" StartAngle="60" InnerRadius="0%">
                                                 <AccumulationDataLabelSettings Name="DataLabelMappingName" Visible="true" Position="AccumulationLabelPosition.Inside">
                                                     <AccumulationChartConnector Length="20px" Type="ConnectorType.Curve"></AccumulationChartConnector>
                                                 </AccumulationDataLabelSettings>
@@ -60,7 +58,7 @@
                                         <AccumulationChartLegendSettings Visible="false"></AccumulationChartLegendSettings>
                                         <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : <b>${point.y}%</b>"></AccumulationChartTooltipSettings>
                                         <AccumulationChartSeriesCollection>
-                                            <AccumulationChartSeries DataSource="@WeeklyShippedAmt" Name="WeeklyShipped" XName="Buyer" YName="Amount" StartAngle="60" InnerRadius="0%">
+                                            <AccumulationChartSeries DataSource="@WeeklyShippedAmt" Name="MonthlyShipped" XName="Buyer" YName="Amount" StartAngle="60" InnerRadius="0%">
                                                 <AccumulationDataLabelSettings Name="DataLabelMappingName" Visible="true" Position="AccumulationLabelPosition.Inside">
                                                     <AccumulationChartConnector Length="20px" Type="ConnectorType.Curve"></AccumulationChartConnector>
                                                 </AccumulationDataLabelSettings>
@@ -77,15 +75,20 @@
                                         <ChartPrimaryXAxis ValueType="Syncfusion.Blazor.Charts.ValueType.Category" EdgeLabelPlacement="EdgeLabelPlacement.Shift">
                                             <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
                                         </ChartPrimaryXAxis>
-                                        <ChartPrimaryYAxis LabelFormat="{value}$" RangePadding="ChartRangePadding.None" Minimum="0" Maximum="6000" Interval="1000">
+                                        <ChartPrimaryYAxis LabelFormat="{value}$" RangePadding="ChartRangePadding.None" Minimum="0" Maximum="15000000" Interval="5000000">
                                             <ChartAxisLineStyle Width="0"></ChartAxisLineStyle>
                                             <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
                                         </ChartPrimaryYAxis>
                                         <ChartTooltipSettings Enable="true"></ChartTooltipSettings>
                                         <ChartSeriesCollection>
                                             <ChartSeries DataSource="@ChartData" Name="ShipAmount" XName="Weekno" Width="2" Fill="#1e90ff"
-                                                         Opacity="1" YName="Amount" Type="ChartSeriesType.Line" PointColorMapping="Color">
+                                                         Opacity="1" YName="OrderAmount" Type="ChartSeriesType.Column" PointColorMapping="Color">
                                                 <ChartMarker Visible="true" Width="5" Height="5" Fill="#1e90ff">
+                                                </ChartMarker>
+                                            </ChartSeries>
+                                            <ChartSeries DataSource="@ChartData" Name="ShipAmount" XName="Weekno" Width="2" Fill="#84CF45"
+                                                         Opacity="1" YName="ShipAmount" Type="ChartSeriesType.Column" PointColorMapping="Color">
+                                                <ChartMarker Visible="true" Width="5" Height="5" Fill="#84CF45">
                                                 </ChartMarker>
                                             </ChartSeries>
 
@@ -205,7 +208,7 @@
                                 <GridColumn Field=@nameof(OrderStatus.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(OrderStatus.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
                                 </GridColumn>
-                                <GridColumn Field=@nameof(OrderStatus.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.Delivery) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Right" Width="130" AutoFit="true"></GridColumn>
 
                                 <GridColumn Field=@nameof(OrderStatus.Styleno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(OrderStatus.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
@@ -214,17 +217,31 @@
                                 <GridColumn Field=@nameof(OrderStatus.OrderBalAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(OrderStatus.TotalAmount) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(OrderStatus.GoalAmount) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(OrderStatus.GoalRates) Format="P1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(OrderStatus.GoalRates) Format="P1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(OrderStatus.Remark) TextAlign="TextAlign.Left" AutoFit="true"></GridColumn>
                             </GridColumns>
                         </SfGrid>
                     </div>
                 </div>
             </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading11">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11">
+                        1-1. 누적 오더 수주 비교
+                    </button>
+                </h2>
+                <div id="collapse11" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
+                    <div class="accordion-body">
+                        
+                    </div>
+                </div>
+            </div>
+
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading3">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
-                        2. 지난 달 출고 현황 (Last week's shipment status)
+                        2. 지난 달 출고 현황 (Last month's shipment status)
                     </button>
                 </h2>
                 <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
@@ -361,7 +378,7 @@
                                 <GridColumn Field=@nameof(LastShipment.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(LastShipment.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(LastShipment.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(LastShipment.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(LastShipment.Delivery) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
 
                                 <GridColumn Field=@nameof(LastShipment.Fileno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(LastShipment.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
@@ -378,34 +395,11 @@
                     </div>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading4">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
-                        2-1. 주간 미 출고 세부 사항 (Detail of Last week's balance q'ty)
-                    </button>
-                </h2>
-                <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
-                    <div class="accordion-body">
-                        <SfGrid ID="Grid3" @ref="DefaultGrid3" DataSource="@NotShipments"
-                                AllowPaging="false" AllowSorting="true" AllowFiltering="false" Height="100%" Width="100%">
-                            <GridColumns>
-                                <GridColumn Field=@nameof(NotShipment.ID) IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
-                                <GridColumn Field=@nameof(NotShipment.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(NotShipment.Teamleader) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NotShipment.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NotShipment.BalanceQty) HeaderTextAlign="TextAlign.Center" Format="N" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NotShipment.BalanceAmt) HeaderTextAlign="TextAlign.Center" Format="C2" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NotShipment.Factory) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NotShipment.Reason) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left"></GridColumn>
-                            </GridColumns>
-                        </SfGrid>
-                    </div>
-                </div>
-            </div>
+            
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading4">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
-                        3. 금월 출고 계획 (This week's shipment plan)
+                        3. 금월 출고 계획 (This month's shipment plan)
                     </button>
                 </h2>
                 <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
@@ -471,7 +465,7 @@
                                 <GridColumn Field=@nameof(CurrentShipment.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
                                 <GridColumn Field=@nameof(CurrentShipment.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(CurrentShipment.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(CurrentShipment.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(CurrentShipment.Delivery) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(CurrentShipment.Fileno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(CurrentShipment.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
                                 <GridColumn Field=@nameof(CurrentShipment.PlannedQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
@@ -486,12 +480,12 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading4">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
-                        4. 차주 출고 계획 (Next week's shipment plan)
+                        4. 금월 봉제 라인 계획 (This Month's sewing production plan)
                     </button>
                 </h2>
                 <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
                     <div class="accordion-body">
-                        <SfGrid ID="Grid5" @ref="DefaultGrid5" DataSource="@NextShipments"
+                        <SfGrid ID="Grid5" @ref="DefaultGrid5" DataSource="@Sewings"
                                 AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
                                 AllowExcelExport="true" AllowPdfExport="true"
                                 AllowGrouping="true">
@@ -506,7 +500,7 @@
                             <GridAggregates>
                                 <GridAggregate>
                                     <GridAggregateColumns>
-                                        <GridAggregateColumn Field=@nameof(NextShipment.PlannedQty) Type="AggregateType.Sum" Format="N">
+                                        <GridAggregateColumn Field=@nameof(Sewing.OrderQty) Type="AggregateType.Sum" Format="N">
                                             <GroupFooterTemplate>
                                                 @{
                                                     var aggregate = (context as AggregateTemplateContext);
@@ -524,7 +518,133 @@
                                                 }
                                             </FooterTemplate>
                                         </GridAggregateColumn>
-                                        <GridAggregateColumn Field=@nameof(NextShipment.PlannedAmt) Type="AggregateType.Sum" Format="C2">
+                                        <GridAggregateColumn Field=@nameof(Sewing.Sew1) Type="AggregateType.Sum" Format="N1">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(Sewing.Sew2) Type="AggregateType.Sum" Format="N1">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(Sewing.Sew3) Type="AggregateType.Sum" Format="N1">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(Sewing.Sew4) Type="AggregateType.Sum" Format="N1">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(Sewing.Sew5) Type="AggregateType.Sum" Format="N1">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(Sewing.Sew6) Type="AggregateType.Sum" Format="N1">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(Sewing.Sew7) Type="AggregateType.Sum" Format="N1">
+                                            <GroupFooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </GroupFooterTemplate>
+                                            <FooterTemplate>
+                                                @{
+                                                    var aggregate = (context as AggregateTemplateContext);
+                                                    <div>
+                                                        <p>@aggregate.Sum</p>
+                                                    </div>
+                                                }
+                                            </FooterTemplate>
+                                        </GridAggregateColumn>
+                                        <GridAggregateColumn Field=@nameof(Sewing.Total) Type="AggregateType.Sum" Format="N1">
                                             <GroupFooterTemplate>
                                                 @{
                                                     var aggregate = (context as AggregateTemplateContext);
@@ -548,126 +668,45 @@
                                 </GridAggregate>
                             </GridAggregates>
                             <GridColumns>
-                                <GridColumn Field=@nameof(NextShipment.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.Delivery) HeaderText="Create Date" Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.Fileno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.Pono) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.PlannedQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.PlannedAmt) Format="C2" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.Factory) TextAlign="TextAlign.Left" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(NextShipment.Remark) TextAlign="TextAlign.Left"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Teamleader) TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Delivery) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Center" Width="130" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.OrderQty) Format="N0" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Sew1) Format="N1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Sew2) Format="N1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Sew3) Format="N1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Sew4) Format="N1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Sew5) Format="N1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Sew6) Format="N1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Sew7) Format="N1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Total) Format="N1" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" AutoFit="true"></GridColumn>
+                                <GridColumn Field=@nameof(Sewing.Remark) TextAlign="TextAlign.Left"></GridColumn>
                             </GridColumns>
                         </SfGrid>
                     </div>
                 </div>
             </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading4">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7">
-                        5. 견본 생산 계획 (Sample production plan)
-                    </button>
-                </h2>
-                <div id="collapse7" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
-                    <div class="accordion-body">
-                        <SfGrid ID="Grid7" @ref="DefaultGrid7" DataSource="@Samples"
-                                AllowPaging="false" AllowSorting="true" Height="100%" Width="100%"
-                                AllowExcelExport="true" AllowPdfExport="true"
-                                AllowGrouping="true" AllowTextWrap="true">
-                            <GridGroupSettings ShowDropArea="false" Columns="@Initial" ShowGroupedColumn="true" ShowToggleButton="false">
-                                <CaptionTemplate>
-                                    @{
-                                        @*var order = (context as CaptionTemplateContext);*@
-                                        <div></div>
-                                    }
-                                </CaptionTemplate>
-                            </GridGroupSettings>
-                            <GridAggregates>
-                                <GridAggregate>
-                                    <GridAggregateColumns>
-                                        <GridAggregateColumn Field=@nameof(Sample.Styleno) Type="AggregateType.Sum" Format="N">
-                                            <GroupFooterTemplate>
-                                                @{
-                                                    var aggregate = (context as AggregateTemplateContext);
-                                                    <div>
-                                                        <p>@aggregate.Sum</p>
-                                                    </div>
-                                                }
-                                            </GroupFooterTemplate>
-                                            <FooterTemplate>
-                                                @{
-                                                    var aggregate = (context as AggregateTemplateContext);
-                                                    <div>
-                                                        <p>@aggregate.Sum</p>
-                                                    </div>
-                                                }
-                                            </FooterTemplate>
-                                        </GridAggregateColumn>
-                                        <GridAggregateColumn Field=@nameof(Sample.OrderQty) Type="AggregateType.Sum" Format="N">
-                                            <GroupFooterTemplate>
-                                                @{
-                                                    var aggregate = (context as AggregateTemplateContext);
-                                                    <div>
-                                                        <p>@aggregate.Sum</p>
-                                                    </div>
-                                                }
-                                            </GroupFooterTemplate>
-                                            <FooterTemplate>
-                                                @{
-                                                    var aggregate = (context as AggregateTemplateContext);
-                                                    <div>
-                                                        <p>@aggregate.Sum</p>
-                                                    </div>
-                                                }
-                                            </FooterTemplate>
-                                        </GridAggregateColumn>
-
-
-                                    </GridAggregateColumns>
-                                </GridAggregate>
-                            </GridAggregates>
-                            <GridColumns>
-                                <GridColumn Field=@nameof(Sample.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.SamplePhase) TextAlign="TextAlign.Left" Width="150"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.SampleType) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.Season) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.Styleno) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.OrderQty) Format="N" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Right" Width="110" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.Contact) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.Comments) TextAlign="TextAlign.Left" Width="150" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(Sample.Remark) TextAlign="TextAlign.Left"></GridColumn>
-                            </GridColumns>
-                        </SfGrid>
-                    </div>
-                </div>
-            </div>
+            
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading4">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8">
-                        6. 바이어 방문 및 출장 계획
+                        5. 바이어 추이 및 주요 동향 (Customer's transition & current trends)
                     </button>
                 </h2>
                 <div id="collapse8" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
                     <div class="accordion-body">
-                        <SfGrid ID="Grid6" @ref="DefaultGrid6" DataSource="@BusinessTrips" AllowPaging="false" AllowSorting="true" Height="100%" Width="100%">
+                        <SfGrid ID="Grid6" @ref="DefaultGrid6" DataSource="@CustomerTrends" AllowPaging="false" AllowSorting="true" Height="100%" Width="100%">
                             <GridColumns>
-                                <GridColumn Field=@nameof(BusinessTrip.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                <GridColumn Field=@nameof(CustomerTrend.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
+                                <GridColumn Field=@nameof(CustomerTrend.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
                                 </GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                <GridColumn Field=@nameof(CustomerTrend.Buyer) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
                                 </GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.Notice) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.VisitStart) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.VisitEnd) Format="d" Type="ColumnType.Date" TextAlign="TextAlign.Left" Width="130"></GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.Visitor) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.Purpose) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.Destination) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.Contact) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(BusinessTrip.Remark) TextAlign="TextAlign.Left" Width="200"></GridColumn>
+                                <GridColumn Field=@nameof(CustomerTrend.Teamleader) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true">
+                                </GridColumn>
+                                <GridColumn Field=@nameof(CustomerTrend.Notice) TextAlign="TextAlign.Left" Width="800" ></GridColumn>
                             </GridColumns>
                         </SfGrid>
                     </div>
@@ -676,7 +715,7 @@
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading9">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9">
-                        7. 팀별 공지 사항 (바이어동향, 신규생산업체 개발건, 협력업체 동향주시건등 업무에 관하여 공유해야 하는 모든 사항)
+                        6. 공지 사항 (바이어 동향, 신규 생산 업체 개발건, 협력 업체 동향 주시건등 업무에 관하여 공유해야 하는 모든 사항)
                     </button>
                 </h2>
                 <div id="collapse9" class="accordion-collapse collapse" data-bs-parent="#accordionWeekly">
@@ -685,9 +724,9 @@
                             <GridColumns>
                                 <GridColumn Field=@nameof(TeamNotice.ID) HeaderText="ID" IsPrimaryKey="true" TextAlign="TextAlign.Left" Width="120" Visible="false"></GridColumn>
                                 <GridColumn Field=@nameof(TeamNotice.Team) HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Left" Width="120" AutoFit="true"></GridColumn>
-                                <GridColumn Field=@nameof(TeamNotice.Subject) TextAlign="TextAlign.Left" Width="700"></GridColumn>
+                                <GridColumn Field=@nameof(TeamNotice.Subject) TextAlign="TextAlign.Left" Width="800"></GridColumn>
                                 <GridColumn Field=@nameof(TeamNotice.Contact) TextAlign="TextAlign.Left" Width="120"></GridColumn>
-                                <GridColumn Field=@nameof(TeamNotice.Remark) TextAlign="TextAlign.Left" Width="120"></GridColumn>
+                                <GridColumn Field=@nameof(TeamNotice.Remark) TextAlign="TextAlign.Left" Width="300"></GridColumn>
                             </GridColumns>
                         </SfGrid>
                     </div>
@@ -719,21 +758,17 @@
 
     private SfGrid<OrderStatus> DefaultGrid;
     private SfGrid<LastShipment> DefaultGrid2;
-    private SfGrid<NotShipment> DefaultGrid3;
     private SfGrid<CurrentShipment> DefaultGrid4;
-    private SfGrid<NextShipment> DefaultGrid5;
-    private SfGrid<BusinessTrip> DefaultGrid6;
+    private SfGrid<Sewing> DefaultGrid5;
+    private SfGrid<CustomerTrend> DefaultGrid6;
     private SfGrid<TeamNotice> DefaultGrid8;
-    private SfGrid<Sample> DefaultGrid7;
 
     public List<OrderStatus> OrderStatuses { get; set; }
     public List<LastShipment> LastShipments { get; set; }
     public List<CurrentShipment> CurrentShipments { get; set; }
-    public List<NextShipment> NextShipments { get; set; }
-    public List<NotShipment> NotShipments { get; set; }
-    public List<BusinessTrip> BusinessTrips { get; set; }
+    public List<Sewing> Sewings { get; set; }
+    public List<CustomerTrend> CustomerTrends { get; set; }
     public List<TeamNotice> TeamNotices { get; set; }
-    public List<Sample> Samples { get; set; }
 
     protected override void OnInitialized()
     {
@@ -774,18 +809,6 @@
             Delivery = DateTime.Now.AddDays(-x),
         }).ToList();
 
-        NotShipments = Enumerable.Range(1, 3).Select(x => new NotShipment()
-        {
-            ID = 1000 + x,
-            Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
-            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
-
-            BalanceQty = new Random().Next(600000),
-            BalanceAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
-
-            Created = DateTime.Now.AddDays(-x),
-        }).ToList();
-
         CurrentShipments = Enumerable.Range(1, 45).Select(x => new CurrentShipment()
         {
             ID = 1000 + x,
@@ -801,41 +824,32 @@
             Delivery = DateTime.Now.AddDays(-x),
         }).ToList();
 
-        NextShipments = Enumerable.Range(1, 45).Select(x => new NextShipment()
+        Sewings = Enumerable.Range(1, 45).Select(x => new Sewing()
         {
             ID = 1000 + x,
             Team = (new string[] { "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(6)],
             Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
 
-            Fileno = new Random().Next(60),
-            Pono = new Random().Next(600),
-            PlannedQty = new Random().Next(600000),
-            PlannedAmt = Convert.ToDecimal(new Random().NextDouble() * 10000.0f),
+            OrderQty = new Random().Next(600000),
+            Sew1 = Convert.ToDecimal(new Random().Next(10)),
+            Sew2 = Convert.ToDecimal(new Random().Next(10)),
+            Sew3 = Convert.ToDecimal(new Random().Next(10)),
+            Sew4 = Convert.ToDecimal(new Random().Next(10)),
+            Sew5 = Convert.ToDecimal(new Random().Next(10)),
+            Sew6 = Convert.ToDecimal(new Random().Next(10)),
+            Sew7 = Convert.ToDecimal(new Random().Next(10)),
+            Total = Convert.ToDecimal(new Random().Next(10)),
 
             Created = DateTime.Now.AddDays(-x),
             Delivery = DateTime.Now.AddDays(-x),
         }).ToList();
 
-        Samples = Enumerable.Range(1, 45).Select(x => new Sample()
-        {
-            ID = 1000 + x,
-            Team = (new string[] { "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(6)],
-            Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
-
-            Styleno = new Random().Next(60),
-            OrderQty = new Random().Next(600),
-
-            Created = DateTime.Now.AddDays(-x),
-        }).ToList();
-
-        BusinessTrips = Enumerable.Range(1, 5).Select(x => new BusinessTrip()
+        CustomerTrends = Enumerable.Range(1, 5).Select(x => new CustomerTrend()
         {
             ID = 1000 + x,
             Team = (new string[] { "Administration", "Team1A", "Team1C", "Team2A", "Team2B", "Team3A", "Team3B", })[new Random().Next(7)],
             Buyer = (new string[] { "BELUGA INC", "EXPRESS", "JCREW", "MATERNITY OPCO", "KOHL'S", "TORRID", "MAURICES", "LUCKY OPCO" })[new Random().Next(8)],
 
-            VisitStart = DateTime.Now.AddDays(-x),
-            VisitEnd = DateTime.Now.AddDays(-x),
         }).ToList();
 
         TeamNotices = Enumerable.Range(1, 1).Select(x => new TeamNotice()
@@ -872,17 +886,19 @@
         public string DataLabelMappingName { get; set; }
     }
 
-    public List<LineChartData> ChartData = Enumerable.Range(1, 52).Select(x => new LineChartData()
+    public List<LineChartData> ChartData = Enumerable.Range(1, 12).Select(x => new LineChartData()
     {
         Weekno = x,
-        Amount = x < 23 ? new Random().Next(5000) : 0,
+        OrderAmount = x < 10 ? new Random().Next(13000000) : 0,
+        ShipAmount = x < 7 ? new Random().Next(13000000) : 0,
         @*Color = "#1e90ff",*@
     }).ToList();
 
     public class LineChartData
     {
         public int Weekno { get; set; }
-        public double Amount { get; set; }
+        public double OrderAmount { get; set; }
+        public double ShipAmount { get; set; }
         @*public string Color { get; set; }*@
     }
 
@@ -968,33 +984,6 @@
         public DateTime Created { get; set; }
     }
 
-    public class NotShipment
-    {
-        [Key]
-        [Required(ErrorMessage = "ID should not be empty")]
-        [Display(Name = "ID")]
-        public int? ID { get; set; }
-        [Display(Name = "Team")]
-        public string Team { get; set; }
-        [Display(Name = "TeamManager")]
-        public string Teamleader { get; set; }
-        [Display(Name = "Buyer")]
-        public string Buyer { get; set; }
-
-        [Display(Name = "Balance Q'ty")]
-        public int BalanceQty { get; set; }
-        [Display(Name = "Balance($)")]
-        public decimal BalanceAmt { get; set; }
-        [Display(Name = "Factory")]
-        public string Factory { get; set; }
-        [Display(Name = "Reason")]
-        public string Reason { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Created Date")]
-        public DateTime Created { get; set; }
-    }
-
     public class CurrentShipment
     {
         [Key]
@@ -1030,7 +1019,7 @@
         public DateTime Created { get; set; }
     }
 
-    public class NextShipment
+    public class Sewing
     {
         [Key]
         [Required(ErrorMessage = "ID should not be empty")]
@@ -1046,51 +1035,25 @@
         [Display(Name = "Delivery")]
         public DateTime Delivery { get; set; }
 
-        [Display(Name = "No. of File")]
-        public int Fileno { get; set; }
-        [Display(Name = "No. of PO")]
-        public int Pono { get; set; }
-        [Display(Name = "Planned Q'ty")]
-        public int PlannedQty { get; set; }
-        [Display(Name = "Planned($)")]
-        public decimal PlannedAmt { get; set; }
-
-        [Display(Name = "Factory")]
-        public string Factory { get; set; }
-        [Display(Name = "Remark")]
-        public string Remark { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Created Date")]
-        public DateTime Created { get; set; }
-    }
-
-    public class Sample
-    {
-        [Key]
-        [Required(ErrorMessage = "ID should not be empty")]
-        [Display(Name = "ID")]
-        public int? ID { get; set; }
-        [Display(Name = "Team")]
-        public string Team { get; set; }
-        [Display(Name = "Buyer")]
-        public string Buyer { get; set; }
-        [Display(Name = "Sample Phase")]
-        public string SamplePhase { get; set; }
-        [Display(Name = "Sample Type")]
-        public string SampleType { get; set; }
-        [Display(Name = "Season")]
-        public string Season { get; set; }
-
-        [Display(Name = "No. of Style")]
-        public int Styleno { get; set; }
         [Display(Name = "Order Q'ty")]
         public int OrderQty { get; set; }
+        [Display(Name = "INT_1")]
+        public decimal Sew1 { get; set; }
+        [Display(Name = "JS")]
+        public decimal Sew2 { get; set; }
+        [Display(Name = "Apparel Links")]
+        public decimal Sew3 { get; set; }
+        [Display(Name = "Grand Apparel")]
+        public decimal Sew4 { get; set; }
+        [Display(Name = "Hanah Trading")]
+        public decimal Sew5 { get; set; }
+        [Display(Name = "Industrial Hana")]
+        public decimal Sew6 { get; set; }
+        [Display(Name = "Victoria Garment")]
+        public decimal Sew7 { get; set; }
+        [Display(Name = "Total")]
+        public decimal Total { get; set; }
 
-        [Display(Name = "Contact")]
-        public string Contact { get; set; }
-        [Display(Name = "Additional Comments")]
-        public string Comments { get; set; }
         [Display(Name = "Remark")]
         public string Remark { get; set; }
 
@@ -1099,7 +1062,7 @@
         public DateTime Created { get; set; }
     }
 
-    public class BusinessTrip
+    public class CustomerTrend
     {
         [Key]
         [Required(ErrorMessage = "ID should not be empty")]
@@ -1109,25 +1072,10 @@
         public string Team { get; set; }
         [Display(Name = "Buyer")]
         public string Buyer { get; set; }
+        [Display(Name = "TeamManager")]
+        public string Teamleader { get; set; }
         [Display(Name = "Notice")]
         public string Notice { get; set; }
-        [DataType(DataType.Date)]
-        [Display(Name = "Visit Start")]
-        public DateTime VisitStart { get; set; }
-        [DataType(DataType.Date)]
-        [Display(Name = "Visit End")]
-        public DateTime VisitEnd { get; set; }
-
-        [Display(Name = "Visitor")]
-        public string Visitor { get; set; }
-        [Display(Name = "Purpose")]
-        public string Purpose { get; set; }
-        [Display(Name = "Destination")]
-        public string Destination { get; set; }
-        [Display(Name = "Contact")]
-        public string Contact { get; set; }
-        [Display(Name = "Remark")]
-        public string Remark { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]

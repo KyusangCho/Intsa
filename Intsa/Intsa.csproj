@@ -140,6 +140,7 @@
     <PackageReference Include="Syncfusion.Blazor.Charts" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.Core" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.Data" Version="19.1.0.54" />
+    <PackageReference Include="Syncfusion.Blazor.Diagrams" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.FileManager" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.Inputs" Version="19.1.0.54" />
     <PackageReference Include="Syncfusion.Blazor.Kanban" Version="19.1.0.54" />

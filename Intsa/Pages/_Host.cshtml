@@ -152,16 +152,16 @@
                                     <span class="menu-text">Notice</span>
                                 </a>
                             </div>
-                            <div class="menu-item">
-                                <a href="/Boards/Suggestion" class="menu-link">
+                            @*<div class="menu-item">
+                                <a href="/Boards/Suggestion" class="menu-link disabled">
                                     <span class="menu-text">Suggestions</span>
                                 </a>
                             </div>
                             <div class="menu-item">
-                                <a href="/Boards/Survey" class="menu-link">
+                                <a href="/Boards/Survey" class="menu-link disabled">
                                     <span class="menu-text">Survey</span>
                                 </a>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
 
@@ -500,12 +500,31 @@
                                         <span class="menu-text">Billing & Payment</span>
                                     </a>
                                 </div>
-                                <div class="menu-item">
+                                <div class="menu-item has-sub">
                                     <a href="#" class="menu-link">
-                                        <span class="menu-icon"><i class="fas fa-file"></i></span>
                                         <span class="menu-text">Analysis</span>
+                                        <span class="menu-caret"><b class="caret"></b></span>
                                     </a>
+                                    <div class="menu-submenu">
+                                        <div class="menu-item">
+                                            <a href="/Materials/Analysis/Yarn" class="menu-link">
+                                                <span class="menu-text">Yarn</span><span class="e-badge bg-primary text-white">New</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-item">
+                                            <a href="#" class="menu-link">
+                                                <span class="menu-text">Fabric</span>
+                                            </a>
+                                        </div>
+                                        <div class="menu-item">
+                                            <a href="#" class="menu-link">
+                                                <span class="menu-text">Trim</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
                                 </div>
+                                
                             </div>
                         </div>
                         <!-- 자재관리 END menu -->
@@ -922,20 +941,28 @@
 
                                     </div>
                                 </div>
-                                <div class="menu-item">
-                                    <a href="#" class="menu-link">
+                                @*<div class="menu-item">
+                                    <a href="#" class="menu-link ">
                                         <span class="menu-icon">
                                             <i class="fa fa-clock"></i>
                                         </span>
-                                        <span class="menu-text">Batch Processing</span>
+                                        <span class="menu-text disabled">Batch Processing</span>
                                     </a>
-                                </div>
+                                </div>*@
                                 <div class="menu-item">
                                     <a href="/Systems/Transactions" class="menu-link">
                                         <span class="menu-icon">
                                             <i class="fa fa-clock"></i>
                                         </span>
-                                        <span class="menu-text">Transaction History</span>
+                                        <span class="menu-text">Transaction History</span><span class="e-badge bg-primary text-white">New</span>
+                                    </a>
+                                </div>
+                                <div class="menu-item">
+                                    <a href="/Systems/Language" class="menu-link">
+                                        <span class="menu-icon">
+                                            <i class="fa fa-clock"></i>
+                                        </span>
+                                        <span class="menu-text">Languages</span><span class="e-badge bg-primary text-white">New</span>
                                     </a>
                                 </div>
 
@@ -944,7 +971,7 @@
                                         <span class="menu-icon">
                                             <i class="fa fa-file-archive"></i>
                                         </span>
-                                        <span class="menu-text">File Manager</span>
+                                        <span class="menu-text">File Manager</span><span class="e-badge bg-primary text-white">New</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
@@ -952,7 +979,7 @@
                                         <span class="menu-icon">
                                             <i class="fa fa-file-archive"></i>
                                         </span>
-                                        <span class="menu-text">개발진행관리</span>
+                                        <span class="menu-text">Development Status</span>
                                     </a>
                                 </div>
 
